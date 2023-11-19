@@ -8,10 +8,9 @@ import { Persona } from '../../models/persona';
 
 @Component({
   selector: 'app-estudiante',
-  standalone: true,
-  imports: [CommonModule],
   templateUrl: './estudiante.component.html',
-  styleUrl: './estudiante.component.css'
+  styleUrls: ['./estudiante.component.scss'],
+  providers: [PersonaService]
 })
 
 export class EstudianteComponent {
@@ -42,12 +41,12 @@ export class EstudianteComponent {
   }
 
   createEstudiante(form: NgForm){
-    if(form.value.id_automovil){
+    if(form.value.cedula){
       this.personaService.putEstudiante(form.value).subscribe((res) => {
         Swal.fire({
           position: 'top',
           icon: 'success',
-          title: 'Registro actualizado',
+          title: 'Registro correcto',
           showConfirmButton: false,
           timer: 1500,
         });
@@ -82,6 +81,4 @@ export class EstudianteComponent {
     this.personaService.selectedEstudiante = persona;
     this.personaService.putEstudiante(persona);
   }
-
-
 }
