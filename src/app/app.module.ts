@@ -12,15 +12,15 @@ import { EstudianteComponent } from "./components/estudiante/estudiante.componen
         AppComponent,
         EstudianteComponent
     ],
-    providers: [],
-    bootstrap: [AppComponent],
     imports: [
         BrowserModule,
         AppRoutingModule,
         FormsModule,
         ReactiveFormsModule,
         HttpClientModule,
-    ]
+    ],
+    providers: [],
+    bootstrap: [AppComponent],
 })
 export class AppModule {
 }

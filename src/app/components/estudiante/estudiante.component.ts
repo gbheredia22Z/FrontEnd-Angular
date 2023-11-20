@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { NgForm, FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import Swal from 'sweetalert2';
 import { PersonaService } from '../../services/persona.service';
@@ -40,43 +39,44 @@ export class EstudianteComponent {
     });
   }
 
-  createEstudiante(form: NgForm){
-    if(form.value.cedula){
-      this.personaService.putEstudiante(form.value).subscribe((res) => {
-        Swal.fire({
-          position: 'top',
-          icon: 'success',
-          title: 'Registro correcto',
-          showConfirmButton: false,
-          timer: 1500,
-        });
-        this.getEstudiante();
-      }); 
-    }else{
-      if(form.valid){
-        this.personaService.postEstudiante(form.value).subscribe((res) => {
+  createEstudiante(form: NgForm) {
+    if (form.valid) {
+      this.personaService.postEstudiante(form.value).subscribe(
+        (res) => {
+          this.handleSuccess('Nuevo registro agregado');
           form.reset();
-          Swal.fire({
-            position: 'top',
-            icon: 'success',
-            title: 'Nuevo registro agregado',
-            showConfirmButton: false,
-            timer: 1500,
-          });
           this.getEstudiante();
-        });
-      }else{
-        Swal.fire({
-          position: 'top',
-          icon: 'error',
-          title: 'Llene todos todos los campos',
-          showConfirmButton: false,
-          timer: 1500,
-        });
-      }
-      
+        },
+        (error) => {
+          console.error('Error al agregar nuevo estudiante:', error);
+          this.handleError('Error al agregar nuevo estudiante');
+        }
+      );
+    } else {
+      this.handleError('Llene todos los campos');
     }
   }
+  
+  private handleSuccess(message: string) {
+    Swal.fire({
+      position: 'top',
+      icon: 'success',
+      title: message,
+      showConfirmButton: false,
+      timer: 1500,
+    });
+  }
+  
+  private handleError(errorMessage: string) {
+    Swal.fire({
+      position: 'top',
+      icon: 'error',
+      title: errorMessage,
+      showConfirmButton: false,
+      timer: 1500,
+    });
+  }
+  
   updateEstudiante(persona: Persona){
     this.personaService.selectedEstudiante = persona;
     this.personaService.putEstudiante(persona);

@@ -1,52 +1,145 @@
 <div class="container mt-4">
-    <h2>Formulario Bootstrap</h2>
+   
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Nombre</th>
+                <th scope="col">Apellido</th>
+                <th scope="col">Cedula</th>
+                <th scope="col">Fecha Nacimiento</th>
+                <th scope="col">Direccion</th>
+                <th scope="col">Correo</th>
+                <th scope="col">Celular</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let estudiantes of personaService.estudiantes">
+                <td>{{estudiantes.nombre}}</td>
+                <td>{{estudiantes.apellido}}</td>
+                <td>{{estudiantes.cedula}}</td>
+                <td>{{estudiantes.fechaNacimiento}}</td>
+                <td>{{estudiantes.direccion}}</td>
+                <td>{{estudiantes.correo}}</td>
+                <td>{{estudiantes.celular}}</td>
+                <td>
+                    <a data-toggle="modal" data-target="#formModal2" style="cursor: pointer"><i class="material-icons"
+                            (click)="updateEstudiante(estudiantes)">Editar</i></a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 
-    <form #estudianteForm="ngForm"> 
+    <form #estudianteForm="ngForm">
         <!-- Campo de texto -->
-        <div class="input-group">      
-            <input name="code" class="form-control" type="hidden" name="id_estudiante" #id="ngModel" [(ngModel)]="personaService.selectedEstudiante.id"/>
-          </div>
+        <div class="input-group">
+            <input name="code" class="form-control" type="hidden" name="id_estudiante" #id="ngModel"
+                [(ngModel)]="personaService.selectedEstudiante.id" />
+        </div>
         <div class="mb-3">
             <label for="nombre" class="form-label">Nombre:</label>
-            <input type="text" class="form-control" id="nombre" placeholder="Ingresa tu nombre" #nombre="ngModel"
-                [(ngModel)]="personaService.selectedEstudiante.nombre">
+            <input type="text" class="form-control" id="nombre" placeholder="Ingresa tu nombre"
+                [(ngModel)]="personaService.selectedEstudiante.nombre" name="nombre">
             <label for="apellido" class="form-label">Apellido:</label>
             <input type="text" class="form-control" id="apellido" placeholder="Ingresa tu apellido" #apellido="ngModel"
-            [(ngModel)]="personaService.selectedEstudiante.apellido">
+                [(ngModel)]="personaService.selectedEstudiante.apellido" name="apellido">
         </div>
 
         <div class="mb-3">
             <label for="cedula" class="form-label">Cedula:</label>
             <input type="text" class="form-control" id="cedula" placeholder="Ingresa tu cedula" #cedula="ngModel"
-            [(ngModel)]="personaService.selectedEstudiante.cedula">
+                [(ngModel)]="personaService.selectedEstudiante.cedula" name="cedula">
         </div>
 
         <div class="mb-3">
             <label for="fechaNacimiento" class="form-label">Fecha de Nacimiento:</label>
             <input type="date" class="form-control" id="fechaNacimiento" #fechaNacimiento="ngModel"
-            [(ngModel)]="personaService.selectedEstudiante.fechaNacimiento">
+                [(ngModel)]="personaService.selectedEstudiante.fechaNacimiento" name="fechaNacimiento">
         </div>
 
         <div class="mb-3">
             <label for="direccion" class="form-label">Direccion:</label>
-            <input type="text" class="form-control" id="direccion" placeholder="Ingresa tu direccion" #direccion="ngModel"
-            [(ngModel)]="personaService.selectedEstudiante.direccion">
+            <input type="text" class="form-control" id="direccion" placeholder="Ingresa tu direccion"
+                #direccion="ngModel" [(ngModel)]="personaService.selectedEstudiante.direccion" name="direccion">
         </div>
 
         <!-- Campo de correo electrónico -->
         <div class="mb-3">
             <label for="correo" class="form-label">Correo electrónico:</label>
-            <input type="email" class="form-control" id="correo" placeholder="Ingresa tu correo electrónico" #correo="ngModel"
-            [(ngModel)]="personaService.selectedEstudiante.correo">
+            <input type="email" class="form-control" id="correo" placeholder="Ingresa tu correo electrónico"
+                #correo="ngModel" [(ngModel)]="personaService.selectedEstudiante.correo" name="correo">
         </div>
 
         <div class="mb-3">
             <label for="celular" class="form-label">Número de Celular:</label>
-            <input type="tel" class="form-control" id="celular" placeholder="Ingresa tu número de celular" #celular="ngModel"
-            [(ngModel)]="personaService.selectedEstudiante.celular">
+            <input type="tel" class="form-control" id="celular" placeholder="Ingresa tu número de celular"
+                #celular="ngModel" [(ngModel)]="personaService.selectedEstudiante.celular" name="celular">
         </div>
 
         <!-- Botón de enviar -->
         <button type="button" class="btn btn-primary" (click)="createEstudiante(estudianteForm)">Guardar</button>
     </form>
+
+
+
+
+    <div
+    class="modal fade"
+    id="formModal2"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="IdmodalLabel"
+    aria-hidden="true"
+    >
+    <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="IdmodalLabel">Editar Estudiante</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form #estudianteForm="ngForm">
+            <div class="mb-3">
+                <label for="nombre" class="form-label">Nombre:</label>
+                <input type="text" class="form-control" id="nombre" placeholder="Ingresa tu nombre"
+                    [(ngModel)]="personaService.selectedEstudiante.nombre" name="nombre">
+                <label for="apellido" class="form-label">Apellido:</label>
+                <input type="text" class="form-control" id="apellido" placeholder="Ingresa tu apellido" #apellido="ngModel"
+                    [(ngModel)]="personaService.selectedEstudiante.apellido" name="apellido">
+            </div>
+    
+    
+            <div class="mb-3">
+                <label for="direccion" class="form-label">Direccion:</label>
+                <input type="text" class="form-control" id="direccion" placeholder="Ingresa tu direccion"
+                    #direccion="ngModel" [(ngModel)]="personaService.selectedEstudiante.direccion" name="direccion">
+            </div>
+    
+            <!-- Campo de correo electrónico -->
+            <div class="mb-3">
+                <label for="correo" class="form-label">Correo electrónico:</label>
+                <input type="email" class="form-control" id="correo" placeholder="Ingresa tu correo electrónico"
+                    #correo="ngModel" [(ngModel)]="personaService.selectedEstudiante.correo" name="correo">
+            </div>
+    
+            <div class="mb-3">
+                <label for="celular" class="form-label">Número de Celular:</label>
+                <input type="tel" class="form-control" id="celular" placeholder="Ingresa tu número de celular"
+                    #celular="ngModel" [(ngModel)]="personaService.selectedEstudiante.celular" name="celular">
+            </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          Cancelar
+        </button>
+        <button type="button" class="btn btn-primary" (click)="createEstudiante(estudianteForm)">Guardar</button>
+      </div>
+    </div>
 </div>
