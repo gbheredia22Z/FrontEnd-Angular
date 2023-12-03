@@ -5,12 +5,14 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
 import { EstudianteComponent } from "./components/estudiante/estudiante.component";
+import { AreaEstudianteComponent } from './components/area-estudiante/area-estudiante.component';
 
 
 @NgModule({
     declarations: [
         AppComponent,
-        EstudianteComponent
+        EstudianteComponent,
+        AreaEstudianteComponent
     ],
     imports: [
         BrowserModule,
