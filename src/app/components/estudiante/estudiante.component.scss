@@ -1,9 +1,58 @@
 .nav.justify-content-center {
     background-color: #F57037;
-    padding: 10px; /* Ajusta el padding según sea necesario */
+    padding: 10px;
+    /* Ajusta el padding según sea necesario */
 }
-  
+
 .nav.justify-content-center .nav-item .nav-link {
-    color: white; /* Cambia el color del texto a blanco */
+    color: white;
+    /* Cambia el color del texto a blanco */
 }
-  
+
+.est {
+    font-size: 20px;
+    text-align: center;
+    margin-top: 15px;
+}
+
+.d-flex {
+    margin-left: 50px;
+}
+
+#modal {
+    margin-left: 30%;
+    background-color: #545454;
+    border-color: #545454;
+}
+
+#exampleModalLabel {
+    display: block;
+    margin: auto;
+    margin-left: 39%;
+}
+
+#btn-g {
+    background-color: #F5C020;
+    border-color: #F5C020;
+    margin-right: 42%;
+    border-radius: 100px;
+}
+
+.form-control {
+    border-color: #F57037;
+    border-radius: 100px;
+}
+
+.modal-body {
+    background-color: #F2F3F7;
+}
+
+#exampleModal .modal-dialog {
+    max-width: 53%;
+    margin: 1.75rem auto;
+}
+
+#exampleModal .modal input {
+    width: 105%;
+    
+}
