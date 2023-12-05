@@ -1,10 +1,10 @@
-.nav.justify-content-center {
-    background-color: #F57037;
-    padding: 10px; /* Ajusta el padding según sea necesario */
+.d-inline-block {
+    color: white;
+    /* Cambia el color del texto a blanco */
 }
-  
-.nav.justify-content-center .nav-item .nav-link {
-    color: white; /* Cambia el color del texto a blanco */
+
+.navbar {
+    background-color: #F57037;
 }
 
 .container {
@@ -31,23 +31,22 @@
     text-align: center;
 }
 
-img {
-    max-width: 100%;
-    max-height: 100%;
+.img1 {
+    margin-left: 120px; 
 }
 
 /* footer.component.css */
 .footer {
     background-color: #F57037;
     color: #fff;
-    padding: 10px 0;
+    padding: 0px 0;
     text-align: center;
     position: fixed;
     bottom: 0;
     left: 0;
     width: 100%;
 }
-  
+
 .container2 {
     max-width: 1200px;
     margin: 0 auto;
@@ -55,4 +54,3 @@ img {
 }
 
 
-  

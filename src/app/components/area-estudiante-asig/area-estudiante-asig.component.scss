@@ -1,0 +1,92 @@
+.d-inline-block {
+    color: white;
+    /* Cambia el color del texto a blanco */
+}
+
+.navbar {
+    background-color: #F57037;
+}
+
+.container {
+    display: flex;
+    align-items: center;
+    padding-top: 100px;
+}
+
+
+.text {
+    flex: 1;
+    padding: 20px;
+    font-size: 210%;
+    margin-left: 40%;
+    color: #545454;
+}
+
+.rounded-container {
+    width: 50%;
+    height: 50%;
+    margin: 0 auto;
+    /* Centrar el contenedor */
+    overflow: hidden;
+    /* Ocultar el contenido que sobresale del contenedor */
+    background-color: #545454;
+    /* Color de fondo opcional */
+    padding: 15px;
+    /* Ajustar el espacio interior según sea necesario */
+    border-radius: 20px;
+    /* Radio de las esquinas para hacerlas circulares */
+}
+
+/* Estilos para las cards */
+.card {
+    margin-bottom: 20px;
+    /* Espaciado entre las cards */
+}
+
+/* Estilos para centrar los botones */
+.centered-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 10%;
+    /* O ajusta la altura según tus necesidades */
+}
+
+/* Estilos para los botones naranjas */
+.orange-button {
+    background-color: #F57037;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+/* Estilos adicionales para la tarjeta si es necesario */
+.card {
+    width: 18rem;
+    text-align: center;
+    background-color: #F57037;
+    color: white;
+    border: none;
+    padding: 10px;
+    margin: 0 5px;
+    border-radius: 5px;
+    text-decoration: none;
+}
+
+.footer {
+    background-color: #F57037;
+    color: #fff;
+    padding: 0px 0;
+    text-align: center;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+}

@@ -6,13 +6,15 @@ import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
 import { EstudianteComponent } from "./components/estudiante/estudiante.component";
 import { AreaEstudianteComponent } from './components/area-estudiante/area-estudiante.component';
+import { AreaEstudianteAsigComponent } from './components/area-estudiante-asig/area-estudiante-asig.component';
 
 
 @NgModule({
     declarations: [
         AppComponent,
         EstudianteComponent,
-        AreaEstudianteComponent
+        AreaEstudianteComponent,
+        AreaEstudianteAsigComponent
     ],
     imports: [
         BrowserModule,

@@ -35,7 +35,7 @@
                             <input name="code" class="form-control" type="hidden" name="id_estudiante" #id="ngModel"
                                 [(ngModel)]="personaService.selectedEstudiante.id" />
                         </div>
-                    
+
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label for="nombre" class="form-label">Nombre:</label>
@@ -44,53 +44,59 @@
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label for="apellido" class="form-label">Apellido:</label>
-                                <input type="text" class="form-control" id="apellido" placeholder="Ingresa tu apellido" #apellido="ngModel"
-                                    [(ngModel)]="personaService.selectedEstudiante.apellido" name="apellido">
+                                <input type="text" class="form-control" id="apellido" placeholder="Ingresa tu apellido"
+                                    #apellido="ngModel" [(ngModel)]="personaService.selectedEstudiante.apellido"
+                                    name="apellido">
                             </div>
                         </div>
-                    
+
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label for="cedula" class="form-label">Cedula:</label>
-                                <input type="text" class="form-control" id="cedula" placeholder="Ingresa tu cedula" #cedula="ngModel"
-                                    [(ngModel)]="personaService.selectedEstudiante.cedula" name="cedula">
+                                <input type="text" class="form-control" id="cedula" placeholder="Ingresa tu cedula"
+                                    #cedula="ngModel" [(ngModel)]="personaService.selectedEstudiante.cedula"
+                                    name="cedula">
                             </div>
-                    
+
                             <div class="col-md-6 mb-3">
                                 <label for="fechaNacimiento" class="form-label">Fecha de Nacimiento:</label>
                                 <input type="date" class="form-control" id="fechaNacimiento" #fechaNacimiento="ngModel"
-                                    [(ngModel)]="personaService.selectedEstudiante.fechaNacimiento" name="fechaNacimiento">
+                                    [(ngModel)]="personaService.selectedEstudiante.fechaNacimiento"
+                                    name="fechaNacimiento">
                             </div>
                         </div>
-                    
+
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label for="direccion" class="form-label">Direccion:</label>
-                                <input type="text" class="form-control" id="direccion" placeholder="Ingresa tu direccion" #direccion="ngModel"
+                                <input type="text" class="form-control" id="direccion"
+                                    placeholder="Ingresa tu direccion" #direccion="ngModel"
                                     [(ngModel)]="personaService.selectedEstudiante.direccion" name="direccion">
                             </div>
-                    
+
                             <div class="col-md-6 mb-3">
                                 <!-- Campo de correo electrónico -->
                                 <label for="correo" class="form-label">Correo electrónico:</label>
-                                <input type="email" class="form-control" id="correo" placeholder="Ingresa tu correo electrónico"
-                                    #correo="ngModel" [(ngModel)]="personaService.selectedEstudiante.correo" name="correo">
+                                <input type="email" class="form-control" id="correo"
+                                    placeholder="Ingresa tu correo electrónico" #correo="ngModel"
+                                    [(ngModel)]="personaService.selectedEstudiante.correo" name="correo">
                             </div>
                         </div>
-                    
+
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label for="celular" class="form-label">Número de Celular:</label>
-                                <input type="tel" class="form-control" id="celular" placeholder="Ingresa tu número de celular"
-                                    #celular="ngModel" [(ngModel)]="personaService.selectedEstudiante.celular" name="celular">
+                                <input type="tel" class="form-control" id="celular"
+                                    placeholder="Ingresa tu número de celular" #celular="ngModel"
+                                    [(ngModel)]="personaService.selectedEstudiante.celular" name="celular">
                             </div>
                         </div>
-                    </form>    
+                    </form>
                 </div>
                 <div class="modal-footer">
-                     <!-- Botón de enviar -->
-                     <button type="button" class="btn btn-primary" id="btn-g"
-                     (click)="createEstudiante(estudianteForm)">Guardar</button>
+                    <!-- Botón de enviar -->
+                    <button type="button" class="btn btn-primary" id="btn-g"
+                        (click)="createEstudiante(estudianteForm)">Guardar</button>
                 </div>
             </div>
         </div>
@@ -120,8 +126,8 @@
                     <td>{{estudiantes.correo}}</td>
                     <td>{{estudiantes.celular}}</td>
                     <td>
-                        <a data-toggle="modal" data-target="#formModal2" style="cursor: pointer"><i
-                                class="material-icons" (click)="updateEstudiante(estudiantes)">Editar</i></a>
+                        <button type="button" class="btn btn-primary" id="btn-g"
+                            (click)="updateEstudiante(estudiantes)">Editar</button>
                     </td>
                 </tr>
             </tbody>
