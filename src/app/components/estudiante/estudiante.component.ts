@@ -1,11 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { NgForm, FormBuilder, FormGroup, Validators, FormControl, NgModel, AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
-
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
 import { PersonaService } from '../../services/persona.service';
 import { Persona } from '../../models/persona';
-
 
 
 @Component({
@@ -28,7 +26,16 @@ export class EstudianteComponent implements OnInit, OnDestroy {
 
     });
   }
+  validateFieldLength(value: string, maxLength: number, fieldName: string): { isValid: boolean, error?: string } {
+    if (value.length > maxLength) {
+      return {
+        isValid: false,
+        error: `El campo ${fieldName} debe tener máximo ${maxLength} caracteres`
+      };
+    }
 
+    return { isValid: true };
+  }
 
   constructor(public personaService: PersonaService, private fb: FormBuilder) {
     this.myForm = this.fb.group({
@@ -62,7 +69,7 @@ export class EstudianteComponent implements OnInit, OnDestroy {
       this.getEstudiante();
     }
   }
-  
+
   openAddEstudianteModal() {
     // Resetea el formulario antes de abrir el modal para un nuevo estudiante
     this.myForm.reset();
@@ -79,41 +86,41 @@ export class EstudianteComponent implements OnInit, OnDestroy {
     $('#addEstudianteModal').modal('hide');
   }
 
-
   filterNumeric(event: any): void {
     const inputElement = event.target as HTMLInputElement;
     inputElement.value = inputElement.value.replace(/[^0-9]/g, '');
   }
 
-  validateForm(form: any): boolean {
+  validateForm(form: any): { isValid: boolean, errors: { [key: string]: string } } {
+    const errors: { [key: string]: string } = {};
     let isValid = true;
 
     if (form.nombre.length > 100) {
       isValid = false;
-      // Mostrar mensaje de error para el campo de nombres
+      errors['nombre'] = 'El nombre debe tener máximo 100 caracteres';
     }
 
     if (form.apellido.length > 100) {
       isValid = false;
-      // Mostrar mensaje de error para el campo de apellidos
+      errors['apellido'] = 'El apellido debe tener máximo 100 caracteres';
     }
 
-    if (!form.correo.includes('@')) {
+    if (!form.correo.includes('@') || form.correo.length > 100) {
       isValid = false;
-      // Mostrar mensaje de error para el campo de correo electrónico
+      errors['correo'] = 'Ingrese un correo electrónico válido y con máximo 100 caracteres';
     }
 
     if (form.celular.length !== 10) {
       isValid = false;
-      // Mostrar mensaje de error para el campo de teléfono
+      errors['celular'] = 'El número de teléfono debe tener 10 dígitos';
     }
 
     if (form.direccion.length > 100) {
       isValid = false;
-      // Mostrar mensaje de error para el campo de dirección
+      errors['direccion'] = 'La dirección debe tener máximo 100 caracteres';
     }
 
-    return isValid;
+    return { isValid, errors };
   }
 
   validarCedulaEcuatoriana(cedula: string): boolean {
@@ -132,7 +139,23 @@ export class EstudianteComponent implements OnInit, OnDestroy {
     if (digitoTercer < 0 || digitoTercer > 5) {
       return false;
     }
+
     // Algoritmo de validación de dígitos verificadores
+    const coeficientes: number[] = [2, 1, 2, 1, 2, 1, 2, 1, 2];
+    let suma = 0;
+
+    for (let i = 0; i < 9; i++) {
+      const producto = coeficientes[i] * Number(cedula[i]);
+      suma += producto > 9 ? producto - 9 : producto;
+    }
+
+    const decenaSuperior = Math.ceil(suma / 10) * 10;
+    const digitoVerificador = decenaSuperior - suma;
+
+    if (digitoVerificador !== Number(cedula[9])) {
+      return false;
+    }
+
     return true;
   }
 
