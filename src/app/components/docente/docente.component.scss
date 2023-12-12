@@ -20,11 +20,23 @@
 }
 
 #modal {
-    margin-left: 30%;
+    margin-left: 39%;
     background-color: #545454;
     border-color: #545454;
 }
 
+#buscar{
+    margin-left: 8%;
+    border-color: #545454;
+    width: 30%;
+}
+
+#direccion{
+    border-color: #F57037;
+    border-radius: 100px;
+    width: 215%;
+    height: 75%;
+}
 #exampleModalLabel {
     display: block;
     margin: auto;

@@ -18,7 +18,6 @@ import { Persona } from '../../models/persona';
 export class EstudianteComponent implements OnInit, OnDestroy {
   myForm: FormGroup;
   searchQuery: any;
-  onSearch: any;
   private subscriptions: Subscription[] = [];
   isEditModalOpen = false;
 
@@ -52,6 +51,18 @@ export class EstudianteComponent implements OnInit, OnDestroy {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
+  onSearch(): void {
+    // Lógica para filtrar estudiantes por cédula
+    if (this.searchQuery && this.searchQuery.trim() !== '') {
+      this.personaService.estudiantes = this.personaService.estudiantes.filter(estudiante =>
+        estudiante.cedula.includes(this.searchQuery.trim())
+      );
+    } else {
+      // Si la consulta está vacía, muestra todos los estudiantes nuevamente
+      this.getEstudiante();
+    }
+  }
+  
   openAddEstudianteModal() {
     // Resetea el formulario antes de abrir el modal para un nuevo estudiante
     this.myForm.reset();

@@ -20,10 +20,17 @@
 }
 
 #modal {
-    margin-left: 30%;
+    margin-left: 39%;
     background-color: #545454;
     border-color: #545454;
 }
+
+#buscar{
+    margin-left: 8%;
+    border-color: #545454;
+    width: 30%;
+}
+
 
 #exampleModalLabel {
     display: block;
@@ -45,6 +52,8 @@
 .modal-body {
     background-color: #F2F3F7;
 }
+
+
 
 #exampleModal .modal-dialog {
     max-width: 53%;

@@ -8,9 +8,19 @@
 </nav>
 
 <p class="est"><b> Estudiantes </b> </p>
+<br>
+<div class="d-flex align-items-center">
+    <!-- Campo de búsqueda -->
+    <input type="text" class="form-control" id="buscar" placeholder="Buscar por cédula" [(ngModel)]="searchQuery"
+        (input)="onSearch()" maxlength="10">
 
-<button type="button" class="btn btn-primary" id="modal" (click)="openAddEstudianteModal()">
-    Añadir Estudiante </button>
+    <!-- Botón "Añadir Estudiante" -->
+    <button type="button" class="btn btn-primary" id="modal" (click)="openAddEstudianteModal()">
+        Añadir Estudiante
+    </button>
+</div>
+<br>
+
 <!-- Modal -->
 <div class="modal fade" id="addEstudianteModal" tabindex="-1" aria-labelledby="addEstudianteModalLabel"
     aria-hidden="true">

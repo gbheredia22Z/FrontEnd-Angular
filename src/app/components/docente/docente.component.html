@@ -9,8 +9,17 @@
     </nav>
 
     <p class="est"><b> Docentes </b> </p>
-    <button type="button" class="btn btn-primary" id="modal" (click)="openAddDocenteModal()">
-        Añadir Docente </button>
+    <br>
+    <div class="d-flex align-items-center">
+        <!-- Campo de búsqueda -->
+        <input type="text" class="form-control" id="buscar" placeholder="Buscar por cédula" [(ngModel)]="searchQuery"
+            (input)="onSearch()" maxlength="10">
+
+        <!-- Botón "Añadir Estudiante" -->
+        <button type="button" class="btn btn-primary" id="modal" (click)="openAddDocenteModal()">
+            Añadir Estudiante
+        </button>
+    </div>
     <!-- Modal -->
     <div class="modal fade" id="addDocenteModal" tabindex="-1" aria-labelledby="addDocenteModalLabel"
         aria-hidden="true">
@@ -94,7 +103,7 @@
 
     <div class="container mt-4">
         <table class="table table-bordered text-center">
-            <thead >
+            <thead>
                 <tr>
                     <th scope="col">Nombre</th>
                     <th scope="col">Apellido</th>
@@ -134,27 +143,40 @@
                                         <!-- Campo de ID oculto -->
                                         <input type="hidden" [(ngModel)]="personaService.selectedDocente.id"
                                             name="id" />
+                                        <div class="row">
+                                            <div class="col-md-6 mb-3">
+                                                <label for="nombre" class="form-label">Nombre:</label>
+                                                <input type="text" class="form-control" id="nombre"
+                                                    [(ngModel)]="personaService.selectedDocente.nombre" name="nombre">
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label for="apellido" class="form-label">Apellido:</label>
+                                                <input type="text" class="form-control" id="apellido"
+                                                    [(ngModel)]="personaService.selectedDocente.apellido"
+                                                    name="apellido">
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6 mb-3">
+                                                <label for="direccion" class="form-label">Dirección:</label>
+                                                <input type="text" class="form-control" id="direccion"
+                                                    [(ngModel)]="personaService.selectedDocente.direccion" name="direccion">
+                                            </div>
+                                        
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6 mb-3">
+                                                <label for="correo" class="form-label">Correo:</label>
+                                                <input type="text" class="form-control" id="correo"
+                                                    [(ngModel)]="personaService.selectedDocente.correo" name="correo">
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label for="celular" class="form-label">Celular:</label>
+                                                <input type="text" class="form-control" id="celular"
+                                                    [(ngModel)]="personaService.selectedDocente.celular" name="celular">
+                                            </div>
+                                        </div>
 
-                                        <div class="mb-3">
-                                            <label for="nombre" class="form-label">Nombre:</label>
-                                            <input type="text" class="form-control" id="nombre"
-                                                [(ngModel)]="personaService.selectedDocente.nombre" name="nombre">
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="apellido" class="form-label">Apellido:</label>
-                                            <input type="text" class="form-control" id="apellido"
-                                                [(ngModel)]="personaService.selectedDocente.apellido" name="apellido">
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="correo" class="form-label">Correo:</label>
-                                            <input type="text" class="form-control" id="correo"
-                                                [(ngModel)]="personaService.selectedDocente.correo" name="correo">
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="celular" class="form-label">Celular:</label>
-                                            <input type="text" class="form-control" id="celular"
-                                                [(ngModel)]="personaService.selectedDocente.celular" name="celular">
-                                        </div>
 
                                         <!-- Botón de guardar en el modal de edición -->
                                         <button type="button" class="btn btn-primary"
