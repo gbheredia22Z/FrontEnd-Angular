@@ -18,6 +18,7 @@ export class PeriodoComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription[] = [];
   isEditModalOpen = false;
 
+
   getPeriodo() {
     this.periodoService.getPeriodo().subscribe((res) => {
       this.periodoService.periodos = res as Periodo[];

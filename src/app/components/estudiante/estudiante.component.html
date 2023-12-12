@@ -21,6 +21,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
                     (click)="closeAddEstudianteModal()"></button>
             </div>
+
             <div class="modal-body">
                 <form #estudianteForm="ngForm">
                     <div class="input-group">
@@ -95,7 +96,7 @@
 <div class="container mt-4">
 
 
-    <table class="table table-bordered">
+    <table class="table table-bordered text-center">
         <thead>
             <tr>
                 <th scope="col">Nombre</th>
@@ -130,8 +131,6 @@
                                 <h1 class="modal-title fs-5" id="exampleModalLabel">Editar Estudiante</h1>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
                                     (click)="closeEditEstudianteModal()"></button>
-
-
                             </div>
                             <div class="modal-body">
                                 <form #estudianteForm2="ngForm">
@@ -147,6 +146,11 @@
                                         <label for="apellido" class="form-label">Apellido:</label>
                                         <input type="text" class="form-control" id="apellido"
                                             [(ngModel)]="personaService.selectedEstudiante.apellido" name="apellido">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="direccion" class="form-label">Dirección:</label>
+                                        <input type="text" class="form-control" id="direccion"
+                                            [(ngModel)]="personaService.selectedEstudiante.direccion" name="direccion">
                                     </div>
                                     <div class="mb-3">
                                         <label for="correo" class="form-label">Correo:</label>

@@ -33,12 +33,13 @@
                             <input type="text" class="form-control" id="anioLectivo" placeholder="Ingrese año lectivo"
                                 [(ngModel)]="periodoService.selectedPeriodo.anioLectivo" name="anioLectivo" required>
                         </div>
-                        <div class="col-md-6 mb-3">
+                                                 
+                          <div class="col-md-6 mb-3">
                             <label for="estado" class="form-label">Estado:</label>
                             <input type="text" class="form-control" id="estado" placeholder="Ingresa el estado"
-                                #apellido="ngModel" [(ngModel)]="periodoService.selectedPeriodo.estado"
-                                name="estado" required>
-                        </div>
+                              #apellido="ngModel" [(ngModel)]="periodoService.selectedPeriodo.estado" name="estado" required>
+                          </div>
+                          
                     </div>
 
                 </form>

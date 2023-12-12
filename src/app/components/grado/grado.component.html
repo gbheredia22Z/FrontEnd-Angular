@@ -1,0 +1,78 @@
+<nav>
+    <ul class="nav justify-content-center">
+        <li class="nav-item">
+            <a class="nav-link active" routerLink="/admin" routerLinkActive="active">Inicio</a>
+        </li>
+
+    </ul>
+</nav>
+
+<p class="est"><b> Grado </b> </p>
+<button type="button" class="btn btn-primary" id="modal" (click)="openAddGradoModal()">
+    Añadir Grado </button>
+<!-- Modal -->
+<div class="modal fade" id="addGradoModal" tabindex="-1" aria-labelledby="addGradoModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel"> Añadir Grado</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                    (click)="closeAddGradoModal()"></button>
+            </div>
+            <div class="modal-body">
+                <form #gradoForm="ngForm">
+                    <div class="input-group">
+                        <input name="code" class="form-control" type="hidden" name="id_grado" #id="ngModel"
+                            [(ngModel)]="gradoService.selectedGrado.id" />
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="nombreGrado" class="form-label">Nombre Grado:</label>
+                            <input type="text" class="form-control" id="nombreGrado"
+                                placeholder="Ingrese nombre de grado"
+                                [(ngModel)]="gradoService.selectedGrado.nombreGrado" name="nombreGrado" required>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label for="persId" class="form-label">ID Persona:</label>
+                            <input type="text" class="form-control" id="persId"
+                                placeholder="Ingresa el id de la persona" #apellido="ngModel"
+                                [(ngModel)]="gradoService.selectedGrado.persId" name="persId" required>
+                        </div>
+
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="btn-g"
+                    (click)="createGrado(gradoForm)">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="container mt-4">
+
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th scope="col">Nombre Grado </th>
+                <th scope="col">ID Persona</th>
+                <th scope="col"> Acción </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let grado of gradoService.grados">
+                <td>{{grado.nombreGrado}}</td>
+                <td>{{grado.persId}}</td>
+                <td>
+
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

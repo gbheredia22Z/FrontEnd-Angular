@@ -9,6 +9,8 @@ import { DocenteComponent } from './components/docente/docente.component';
 import { AdminComponent } from './components/admin/admin.component';
 import { PeriodoComponent } from './components/periodo/periodo.component';
 import { AsignaturaComponent } from './components/asignatura/asignatura.component';
+import { GradoComponent } from './components/grado/grado.component';
+import { MatriculaComponent } from './components/matricula/matricula.component';
 
 
 @NgModule({
@@ -18,7 +20,9 @@ import { AsignaturaComponent } from './components/asignatura/asignatura.componen
         DocenteComponent,
         AdminComponent,
         PeriodoComponent,
-        AsignaturaComponent
+        AsignaturaComponent,
+        GradoComponent,
+        MatriculaComponent
     ],
     imports: [
         BrowserModule,

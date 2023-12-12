@@ -1,30 +1,29 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NgForm, FormBuilder, FormGroup, Validators, FormControl, NgModel, AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
-import { Asignatura } from '../../models/asignatura';
+import { Grado } from '../../models/grado';
 import { Subscription } from 'rxjs/internal/Subscription';
 import Swal from 'sweetalert2';
-import { AsignaturaService } from '../../services/asignatura.service';
-
+import { GradoService } from '../../services/grado.service';
 @Component({
-  selector: 'app-asignatura',
-  templateUrl: './asignatura.component.html',
-  styleUrl: './asignatura.component.scss'
+  selector: 'app-grado',
+  templateUrl: './grado.component.html',
+  styleUrl: './grado.component.scss'
 })
-export class AsignaturaComponent implements OnInit, OnDestroy {
+export class GradoComponent implements OnInit, OnDestroy {
   myForm: FormGroup;
   searchQuery: any;
   onSearch: any;
   private subscriptions: Subscription[] = [];
   isEditModalOpen = false;
 
-  getAsignatura() {
-    this.asignaturaService.getAsignatura().subscribe((res) => {
-      this.asignaturaService.asignaturas = res as Asignatura[];
+  getGrado() {
+    this.gradoService.getGrado().subscribe((res) => {
+      this.gradoService.grados = res as Grado[];
       console.log(res);
 
     });
   }
-  constructor(public asignaturaService: AsignaturaService, private fb: FormBuilder) {
+  constructor(public gradoService: GradoService, private fb: FormBuilder) {
     this.myForm = this.fb.group({
       id: new FormControl('', Validators.required),
       anioLectivo: ['', Validators.required],
@@ -33,32 +32,32 @@ export class AsignaturaComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.getAsignatura();
+    this.getGrado();
   }
 
   ngOnDestroy(): void {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  openAddAsignaturaModal() {
+  openAddGradoModal() {
     // Resetea el formulario antes de abrir el modal para un nuevo estudiante
     this.myForm.reset();
 
     // Crea una nueva instancia de Persona para evitar problemas con la edición
-    this.asignaturaService.selectedAsignatura = new Asignatura();
+    this.gradoService.selectedGrado = new Grado();
 
     // Abre el modal de añadir estudiante
-    const modal = document.getElementById('addAsignaturaModal');
+    const modal = document.getElementById('addGradoModal');
     if (modal) {
       modal.classList.add('show'); // Agrega la clase 'show' para mostrar el modal
       modal.style.display = 'block'; // Establece el estilo 'display' en 'block'
     }
-    $('#addAsignaturaModal').modal('hide');
+    $('#addGradoModal').modal('hide');
   }
 
-  createAsignatura(form: NgForm): void {
+  createGrado(form: NgForm): void {
     if (form.value.id) {
-      this.asignaturaService.putAsignatura(form.value).subscribe((res) => {
+      this.gradoService.putGrado(form.value).subscribe((res) => {
         Swal.fire({
           position: 'top',
           icon: 'success',
@@ -66,12 +65,12 @@ export class AsignaturaComponent implements OnInit, OnDestroy {
           showConfirmButton: false,
           timer: 1500,
         });
-        this.getAsignatura();
-        this.closeAddAsignaturaModal();
+        this.getGrado();
+        this.closeAddGradoModal();
       });
     } else {
       if (form.valid) {
-        this.asignaturaService.postAsignatura(form.value).subscribe((res) => {
+        this.gradoService.postGrado(form.value).subscribe((res) => {
           form.reset();
           Swal.fire({
             position: 'top',
@@ -80,8 +79,8 @@ export class AsignaturaComponent implements OnInit, OnDestroy {
             showConfirmButton: false,
             timer: 1500,
           });
-          this.getAsignatura();
-          this.closeAddAsignaturaModal();
+          this.getGrado();
+          this.closeAddGradoModal();
         });
       } else {
         Swal.fire({
@@ -95,8 +94,8 @@ export class AsignaturaComponent implements OnInit, OnDestroy {
     }
   }
 
-  closeAddAsignaturaModal(): void {
-    const modal = document.getElementById('addAsignaturaModal');
+  closeAddGradoModal(): void {
+    const modal = document.getElementById('addGradoModal');
     if (modal) {
       modal.classList.remove('show'); // Quita la clase 'show' para ocultar el modal
       modal.style.display = 'none'; // Establece el estilo 'display' en 'none'
@@ -104,5 +103,7 @@ export class AsignaturaComponent implements OnInit, OnDestroy {
   }
 
 }
+
+
 
 declare var $: any;

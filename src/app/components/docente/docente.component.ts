@@ -67,43 +67,32 @@ export class DocenteComponent {
 
 
   createDocente(form: NgForm): void {
-    if (form.value.id) {
-      this.personaService.putDocente(form.value).subscribe((res) => {
+    this.personaService.postDocente(form.value).subscribe(
+      (res) => {
+        form.reset();
         Swal.fire({
           position: 'top',
           icon: 'success',
-          title: 'Registro actualizado',
+          title: 'Nuevo docente agregado',
           showConfirmButton: false,
           timer: 1500,
         });
         this.getDocente();
         this.closeAddDocenteModal();
-      });
-    } else {
-      if (form.valid) {
-        this.personaService.postDocente(form.value).subscribe((res) => {
-          form.reset();
-          Swal.fire({
-            position: 'top',
-            icon: 'success',
-            title: 'Nuevo registro agregado',
-            showConfirmButton: false,
-            timer: 1500,
-          });
-          this.getDocente();
-          this.closeAddDocenteModal();
-        });
-      } else {
+      },
+      (error) => {
+        console.error('Error al crear docente:', error);
         Swal.fire({
           position: 'top',
           icon: 'error',
-          title: 'Llene todos todos los campos',
+          title: 'Error al crear docente',
           showConfirmButton: false,
           timer: 1500,
         });
       }
-    }
+    );
   }
+  
 
   // Agregar un método para cerrar el modal de añadir estudiante
   closeAddDocenteModal(): void {

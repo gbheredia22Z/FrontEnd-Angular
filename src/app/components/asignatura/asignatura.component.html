@@ -1,1 +1,90 @@
-<p>asignatura works!</p>
+<nav>
+    <ul class="nav justify-content-center">
+        <li class="nav-item">
+            <a class="nav-link active" routerLink="/admin" routerLinkActive="active">Inicio</a>
+        </li>
+
+    </ul>
+</nav>
+
+<p class="est"><b> Asignatura </b> </p>
+
+<button type="button" class="btn btn-primary" id="modal" (click)="openAddAsignaturaModal()">
+    Añadir Asignatura </button>
+<!-- Modal -->
+<div class="modal fade" id="addAsignaturaModal" tabindex="-1" aria-labelledby="addAsignaturaModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel"> Añadir Asignatura</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                    (click)="closeAddAsignaturaModal()"></button>
+            </div>
+            <div class="modal-body">
+                <form #asignaturaForm="ngForm">
+                    <div class="input-group">
+                        <input name="code" class="form-control" type="hidden" name="id_asignatura" #id="ngModel"
+                            [(ngModel)]="asignaturaService.selectedAsignatura.id" />
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="nombreAsignatura" class="form-label">Nombre Materia:</label>
+                            <input type="text" class="form-control" id="nombreAsignatura" placeholder="Ingrese nombre de materia"
+                                [(ngModel)]="asignaturaService.selectedAsignatura.nombreMateria" name="nombreAsignatura" required>
+                        </div>
+                                                 
+                          <div class="col-md-6 mb-3">
+                            <label for="estado" class="form-label">Estado:</label>
+                            <input type="text" class="form-control" id="estado" placeholder="Ingresa el estado"
+                              #apellido="ngModel" [(ngModel)]="asignaturaService.selectedAsignatura.estado" name="estado" required>
+                          </div>
+                          
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="grado" class="form-label"> Grado:</label>
+                            <input type="text" class="form-control" id="grado" placeholder="Ingrese grado"
+                                [(ngModel)]="asignaturaService.selectedAsignatura.idGrado" name="grado" required>
+                        </div>
+                                                 
+
+                          
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="btn-g"
+                    (click)="createAsignatura(asignaturaForm)">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="container mt-4">
+
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th scope="col">Nombre Asignatura </th>
+                <th scope="col">Estado</th>
+                <th scope="col">Grado </th>
+                <th scope="col"> Acción </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let asignatura of asignaturaService.asignaturas">
+                <td>{{asignatura.nombreMateria}}</td>
+                <td>{{asignatura.estado}}</td>
+                <td>{{asignatura.idGrado}}</td>
+               
+                <td>
+                    
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
