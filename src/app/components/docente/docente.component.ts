@@ -1,37 +1,31 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { NgForm, FormBuilder, FormGroup, Validators, FormControl, NgModel, AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
-
+import { NgForm, FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
 import { PersonaService } from '../../services/persona.service';
 import { Persona } from '../../models/persona';
 
 
-
 @Component({
-  selector: 'app-estudiante',
-  templateUrl: './estudiante.component.html',
-  styleUrls: ['./estudiante.component.scss'],
-  providers: [PersonaService]
+  selector: 'app-docente',
+  templateUrl: './docente.component.html',
+  styleUrl: './docente.component.scss'
 })
-
-export class EstudianteComponent implements OnInit, OnDestroy {
-  myForm: FormGroup;
-  searchQuery: any;
-  onSearch: any;
+export class DocenteComponent {
+  myForm!: FormGroup;
   private subscriptions: Subscription[] = [];
+  onSearch: any;
+  docentes: Persona[] = [];
+  searchQuery: string = '';
   isEditModalOpen = false;
 
-  getEstudiante() {
-    this.personaService.getEstudiante().subscribe((res) => {
-      this.personaService.estudiantes = res as Persona[];
+  getDocente() {
+    this.personaService.getDocente().subscribe((res) => {
+      this.personaService.docentes = res as Persona[];
       console.log(res);
 
     });
   }
-
-
-
   constructor(public personaService: PersonaService, private fb: FormBuilder) {
     this.myForm = this.fb.group({
       id: new FormControl('', Validators.required),
@@ -46,33 +40,35 @@ export class EstudianteComponent implements OnInit, OnDestroy {
     });
   }
   ngOnInit(): void {
-    this.getEstudiante();
+    this.getDocente();
   }
 
   ngOnDestroy(): void {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  openAddEstudianteModal() {
+  
+
+  openAddDocenteModal() {
     // Resetea el formulario antes de abrir el modal para un nuevo estudiante
     this.myForm.reset();
 
     // Crea una nueva instancia de Persona para evitar problemas con la edición
-    this.personaService.selectedEstudiante = new Persona();
+    this.personaService.selectedDocente = new Persona();
 
     // Abre el modal de añadir estudiante
-    const modal = document.getElementById('addEstudianteModal');
+    const modal = document.getElementById('addDocenteModal');
     if (modal) {
       modal.classList.add('show'); // Agrega la clase 'show' para mostrar el modal
       modal.style.display = 'block'; // Establece el estilo 'display' en 'block'
     }
-    $('#addEstudianteModal').modal('hide');
+    $('#addDocenteModal').modal('hide');
   }
 
 
-  createEstudiante(form: NgForm): void {
+  createDocente(form: NgForm): void {
     if (form.value.id) {
-      this.personaService.putEstudiante(form.value).subscribe((res) => {
+      this.personaService.putDocente(form.value).subscribe((res) => {
         Swal.fire({
           position: 'top',
           icon: 'success',
@@ -80,12 +76,12 @@ export class EstudianteComponent implements OnInit, OnDestroy {
           showConfirmButton: false,
           timer: 1500,
         });
-        this.getEstudiante();
-        this.closeAddEstudianteModal();
+        this.getDocente();
+        this.closeAddDocenteModal();
       });
     } else {
       if (form.valid) {
-        this.personaService.postEstudiante(form.value).subscribe((res) => {
+        this.personaService.postDocente(form.value).subscribe((res) => {
           form.reset();
           Swal.fire({
             position: 'top',
@@ -94,8 +90,8 @@ export class EstudianteComponent implements OnInit, OnDestroy {
             showConfirmButton: false,
             timer: 1500,
           });
-          this.getEstudiante();
-          this.closeAddEstudianteModal();
+          this.getDocente();
+          this.closeAddDocenteModal();
         });
       } else {
         Swal.fire({
@@ -110,17 +106,17 @@ export class EstudianteComponent implements OnInit, OnDestroy {
   }
 
   // Agregar un método para cerrar el modal de añadir estudiante
-  closeAddEstudianteModal(): void {
-    const modal = document.getElementById('addEstudianteModal');
+  closeAddDocenteModal(): void {
+    const modal = document.getElementById('addDocenteModal');
     if (modal) {
       modal.classList.remove('show'); // Quita la clase 'show' para ocultar el modal
       modal.style.display = 'none'; // Establece el estilo 'display' en 'none'
     }
   }
 
-  editEstudiante(estudiante: Persona) {
+  editDocente(docente: Persona) {
     // Clona el estudiante para evitar cambios directos
-    this.personaService.selectedEstudiante = { ...estudiante };
+    this.personaService.selectedDocente = { ...docente };
 
     // Abre el modal de edición
     const modal = document.getElementById('editModal');
@@ -130,8 +126,8 @@ export class EstudianteComponent implements OnInit, OnDestroy {
     }
   }
 
-  updateEstudiante(form: NgForm) {
-    this.personaService.putEstudiante(this.personaService.selectedEstudiante).subscribe((res) => {
+  updateDocente(form: NgForm) {
+    this.personaService.putDocente(this.personaService.selectedDocente).subscribe((res) => {
       Swal.fire({
         position: 'top',
         icon: 'success',
@@ -139,14 +135,14 @@ export class EstudianteComponent implements OnInit, OnDestroy {
         showConfirmButton: false,
         timer: 1500,
       });
-      this.getEstudiante();
+      this.getDocente();
 
       // Cierra el modal de edición utilizando $
       $('#editModal').modal('hide');
     });
   }
 
-  closeEditEstudianteModal(): void {
+  closeEditDocenteModal(): void {
     const modal = document.getElementById('editModal');
     if (modal) {
       modal.classList.remove('show'); // Quita la clase 'show' para ocultar el modal
@@ -154,8 +150,4 @@ export class EstudianteComponent implements OnInit, OnDestroy {
     }
   }
 }
-
 declare var $: any;
-
-
-

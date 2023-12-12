@@ -18,23 +18,18 @@
     flex: 1;
     padding: 20px;
     font-size: 210%;
-    margin-left: 40%;
+    margin-left: 43%;
     color: #545454;
 }
 
 .rounded-container {
-    width: 50%;
-    height: 50%;
+    width: 55%;
+    height: 100%;
     margin: 0 auto;
-    /* Centrar el contenedor */
     overflow: hidden;
-    /* Ocultar el contenido que sobresale del contenedor */
     background-color: #545454;
-    /* Color de fondo opcional */
     padding: 15px;
-    /* Ajustar el espacio interior según sea necesario */
     border-radius: 20px;
-    /* Radio de las esquinas para hacerlas circulares */
 }
 
 /* Estilos para las cards */
@@ -52,12 +47,11 @@
     /* O ajusta la altura según tus necesidades */
 }
 
-/* Estilos para los botones naranjas */
 .orange-button {
-    background-color: #F57037;
-    color: white;
+    background-color: white;
+    color: #545454;
     border: none;
-    padding: 10px 20px;
+    padding: 10px 10px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
@@ -67,14 +61,14 @@
     border-radius: 5px;
 }
 
-/* Estilos adicionales para la tarjeta si es necesario */
+
 .card {
-    width: 18rem;
+    width: 10rem;
     text-align: center;
-    background-color: #F57037;
+    background-color: white;
     color: white;
     border: none;
-    padding: 10px;
+    padding: 5px;
     margin: 0 5px;
     border-radius: 5px;
     text-decoration: none;

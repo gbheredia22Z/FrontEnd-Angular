@@ -1,0 +1,172 @@
+<body>
+    <nav>
+        <ul class="nav justify-content-center">
+            <li class="nav-item">
+                <a class="nav-link active" routerLink="/admin" routerLinkActive="active">Inicio</a>
+            </li>
+
+        </ul>
+    </nav>
+
+    <p class="est"><b> Docentes </b> </p>
+    <button type="button" class="btn btn-primary" id="modal" (click)="openAddDocenteModal()">
+        Añadir Docente </button>
+    <!-- Modal -->
+    <div class="modal fade" id="addDocenteModal" tabindex="-1" aria-labelledby="addDocenteModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel"> Añadir Docente </h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                        (click)="closeAddDocenteModal()"></button>
+                </div>
+                <div class="modal-body">
+                    <form #docenteForm="ngForm">
+                        <div class="input-group">
+                            <input name="code" class="form-control" type="hidden" name="id_docente" #id="ngModel"
+                                [(ngModel)]="personaService.selectedDocente.id" />
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="nombre" class="form-label">Nombre:</label>
+                                <input type="text" class="form-control" id="nombre" placeholder="Ingresa tu nombre"
+                                    [(ngModel)]="personaService.selectedDocente.nombre" name="nombre" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="apellido" class="form-label">Apellido:</label>
+                                <input type="text" class="form-control" id="apellido" placeholder="Ingresa tu apellido"
+                                    #apellido="ngModel" [(ngModel)]="personaService.selectedDocente.apellido"
+                                    name="apellido" required>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="cedula" class="form-label">Cedula:</label>
+                                <input type="text" class="form-control" id="cedula" placeholder="Ingresa tu cedula"
+                                    #cedula="ngModel" [(ngModel)]="personaService.selectedDocente.cedula" name="cedula"
+                                    required>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label for="fechaNacimiento" class="form-label">Fecha de Nacimiento:</label>
+                                <input type="date" class="form-control" id="fechaNacimiento" #fechaNacimiento="ngModel"
+                                    [(ngModel)]="personaService.selectedDocente.fechaNacimiento" name="fechaNacimiento"
+                                    required>
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="direccion" class="form-label">Direccion:</label>
+                                <input type="text" class="form-control" id="direccion"
+                                    placeholder="Ingresa tu direccion" #direccion="ngModel"
+                                    [(ngModel)]="personaService.selectedDocente.direccion" name="direccion" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="correo" class="form-label">Correo electrónico:</label>
+                                <input type="email" class="form-control" id="correo"
+                                    placeholder="Ingresa tu correo electrónico" #correo="ngModel"
+                                    [(ngModel)]="personaService.selectedDocente.correo" name="correo" required>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="celular" class="form-label">Número de Celular:</label>
+                                <input type="tel" class="form-control" id="celular"
+                                    placeholder="Ingresa tu número de celular" #celular="ngModel"
+                                    [(ngModel)]="personaService.selectedDocente.celular" name="celular" required>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="btn-g"
+                        (click)="createDocente(docenteForm)">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mt-4">
+        <table class="table table-bordered table-striped text-center">
+            <thead class="bg-primary text-white">
+                <tr>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Apellido</th>
+                    <th scope="col">Cedula</th>
+                    <th scope="col">Fecha Nacimiento</th>
+                    <th scope="col">Direccion</th>
+                    <th scope="col">Correo</th>
+                    <th scope="col">Celular</th>
+                    <th scope="col">Acción</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let docente of personaService.docentes">
+                    <td>{{docente.nombre}}</td>
+                    <td>{{docente.apellido}}</td>
+                    <td>{{docente.cedula}}</td>
+                    <td>{{ docente.fechaNacimiento | date:'dd-MM-yyyy' }}</td>
+                    <td>{{docente.direccion}}</td>
+                    <td>{{docente.correo}}</td>
+                    <td>{{docente.celular}}</td>
+                    <td>
+                        <button type="button" class="btn btn-primary" id="btn-g"
+                            (click)="editDocente(docente)">Editar</button>
+                    </td>
+                    <!-- Modal de Edición -->
+                    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Editar Docente</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                                        (click)="closeEditDocenteModal()"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form #docenteForm2="ngForm">
+                                        <!-- Campo de ID oculto -->
+                                        <input type="hidden" [(ngModel)]="personaService.selectedDocente.id"
+                                            name="id" />
+
+                                        <div class="mb-3">
+                                            <label for="nombre" class="form-label">Nombre:</label>
+                                            <input type="text" class="form-control" id="nombre"
+                                                [(ngModel)]="personaService.selectedDocente.nombre" name="nombre">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="apellido" class="form-label">Apellido:</label>
+                                            <input type="text" class="form-control" id="apellido"
+                                                [(ngModel)]="personaService.selectedDocente.apellido" name="apellido">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="correo" class="form-label">Correo:</label>
+                                            <input type="text" class="form-control" id="correo"
+                                                [(ngModel)]="personaService.selectedDocente.correo" name="correo">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="celular" class="form-label">Celular:</label>
+                                            <input type="text" class="form-control" id="celular"
+                                                [(ngModel)]="personaService.selectedDocente.celular" name="celular">
+                                        </div>
+
+                                        <!-- Botón de guardar en el modal de edición -->
+                                        <button type="button" class="btn btn-primary"
+                                            (click)="updateDocente(docenteForm2)">Guardar</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
