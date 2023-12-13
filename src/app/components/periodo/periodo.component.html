@@ -26,22 +26,22 @@
                         <input name="code" class="form-control" type="hidden" name="id_periodo" #id="ngModel"
                             [(ngModel)]="periodoService.selectedPeriodo.id" />
                     </div>
-
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label for="anioLectivo" class="form-label">Año Lectivo:</label>
                             <input type="text" class="form-control" id="anioLectivo" placeholder="Ingrese año lectivo"
                                 [(ngModel)]="periodoService.selectedPeriodo.anioLectivo" name="anioLectivo" required>
                         </div>
-                                                 
-                          <div class="col-md-6 mb-3">
-                            <label for="estado" class="form-label">Estado:</label>
-                            <input type="text" class="form-control" id="estado" placeholder="Ingresa el estado"
-                              #apellido="ngModel" [(ngModel)]="periodoService.selectedPeriodo.estado" name="estado" required>
-                          </div>
-                          
-                    </div>
 
+                        <div class="col-md-6 mb-3">
+                            <label for="estado" class="form-label">Estado:</label>
+                            <select class="form-select" aria-label="Selecciona el estado" id="estado" name="estado"
+                                [(ngModel)]="periodoService.selectedPeriodo.estado" required>
+                                <option value="A">A</option>
+                                <option value="I">I</option>
+                            </select>
+                        </div>
+                    </div>
                 </form>
             </div>
             <div class="modal-footer">
@@ -52,10 +52,7 @@
     </div>
 </div>
 
-
 <div class="container mt-4">
-
-
     <table class="table table-bordered text-center">
         <thead>
             <tr>
@@ -68,7 +65,6 @@
             <tr *ngFor="let periodo of periodoService.periodos">
                 <td>{{periodo.anioLectivo}}</td>
                 <td>{{periodo.estado}}</td>
-               
                 <td>
                     <button type="button" class="btn btn-primary" id="btn-g"
                         (click)="editPeriodo(periodo)">Editar</button>
@@ -82,24 +78,27 @@
                                 <h1 class="modal-title fs-5" id="exampleModalLabel">Editar Periodo</h1>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
                                     (click)="closeEditPeriodoModal()"></button>
-
-
                             </div>
                             <div class="modal-body">
                                 <form #periodoForm2="ngForm">
                                     <!-- Campo de ID oculto -->
                                     <input type="hidden" [(ngModel)]="periodoService.selectedPeriodo.id" name="id" />
-
-                                    <div class="mb-3">
-                                        <label for="anioLectivo" class="form-label">Año Lectivo:</label>
-                                        <input type="text" class="form-control" id="anioLectivo"
-                                            [(ngModel)]="periodoService.selectedPeriodo.anioLectivo" name="anioLectivo">
-                                    </div>
-                                    
-                                    <div class="mb-3">
-                                        <label for="estado" class="form-label">Estado:</label>
-                                        <input type="text" class="form-control" id="estado"
-                                            [(ngModel)]="periodoService.selectedPeriodo.estado" name="estado">
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="anioLectivo" class="form-label">Año Lectivo:</label>
+                                            <input type="text" class="form-control" id="anioLectivo"
+                                                [(ngModel)]="periodoService.selectedPeriodo.anioLectivo"
+                                                name="anioLectivo">
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="estado" class="form-label">Estado:</label>
+                                            <select class="form-select" aria-label="Selecciona el estado" id="estado"
+                                                name="estado" [(ngModel)]="periodoService.selectedPeriodo.estado"
+                                                required>
+                                                <option value="A">A</option>
+                                                <option value="I">I</option>
+                                            </select>
+                                        </div>
                                     </div>
                                     <!-- Botón de guardar en el modal de edición -->
                                     <button type="button" class="btn btn-primary"

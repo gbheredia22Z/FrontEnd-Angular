@@ -23,6 +23,10 @@ export class GradoService {
   getGrado() {
     return this.http.get(this.URL_API);
   }
+
+  getDocentes() {
+    return this.http.get<any[]>('http://127.0.0.1:3000/api/docente'); // Ajusta la ruta según tu API
+  }
   postGrado(grado: Grado) {
     return this.http.post(this.URL_API, grado);
   }

@@ -11,11 +11,10 @@ import { Persona } from '../../models/persona';
   templateUrl: './docente.component.html',
   styleUrl: './docente.component.scss'
 })
-export class DocenteComponent {
-  myForm!: FormGroup;
+export class DocenteComponent implements OnInit, OnDestroy {
+  myForm: FormGroup;
+  searchQuery: any;
   private subscriptions: Subscription[] = [];
-  docentes: Persona[] = [];
-  searchQuery: string = '';
   isEditModalOpen = false;
 
   getDocente() {
@@ -25,6 +24,17 @@ export class DocenteComponent {
 
     });
   }
+  validateFieldLength(value: string, maxLength: number, fieldName: string): { isValid: boolean, error?: string } {
+    if (value.length > maxLength) {
+      return {
+        isValid: false,
+        error: `El campo ${fieldName} debe tener máximo ${maxLength} caracteres`
+      };
+    }
+
+    return { isValid: true };
+  }
+
   constructor(public personaService: PersonaService, private fb: FormBuilder) {
     this.myForm = this.fb.group({
       id: new FormControl('', Validators.required),
@@ -47,13 +57,13 @@ export class DocenteComponent {
   }
 
   onSearch(): void {
-    // Lógica para filtrar estudiantes por cédula
+    // Lógica para filtrar docentes por cédula
     if (this.searchQuery && this.searchQuery.trim() !== '') {
       this.personaService.docentes = this.personaService.docentes.filter(docente =>
         docente.cedula.includes(this.searchQuery.trim())
       );
     } else {
-      // Si la consulta está vacía, muestra todos los estudiantes nuevamente
+      // Si la consulta está vacía, muestra todos los docentes nuevamente
       this.getDocente();
     }
   }
@@ -63,7 +73,7 @@ export class DocenteComponent {
     this.myForm.reset();
 
     // Crea una nueva instancia de Persona para evitar problemas con la edición
-    this.personaService.selectedDocente = new Persona();
+    this.personaService.selectedDocente = new Persona();
 
     // Abre el modal de añadir estudiante
     const modal = document.getElementById('addDocenteModal');
@@ -74,6 +84,78 @@ export class DocenteComponent {
     $('#addDocenteModal').modal('hide');
   }
 
+  filterNumeric(event: any): void {
+    const inputElement = event.target as HTMLInputElement;
+    inputElement.value = inputElement.value.replace(/[^0-9]/g, '');
+  }
+
+  validateForm(form: any): { isValid: boolean, errors: { [key: string]: string } } {
+    const errors: { [key: string]: string } = {};
+    let isValid = true;
+
+    if (form.nombre.length > 100) {
+      isValid = false;
+      errors['nombre'] = 'El nombre debe tener máximo 100 caracteres';
+    }
+
+    if (form.apellido.length > 100) {
+      isValid = false;
+      errors['apellido'] = 'El apellido debe tener máximo 100 caracteres';
+    }
+
+    if (!form.correo.includes('@') || form.correo.length > 100) {
+      isValid = false;
+      errors['correo'] = 'Ingrese un correo electrónico válido y con máximo 100 caracteres';
+    }
+
+    if (form.celular.length !== 10) {
+      isValid = false;
+      errors['celular'] = 'El número de teléfono debe tener 10 dígitos';
+    }
+
+    if (form.direccion.length > 100) {
+      isValid = false;
+      errors['direccion'] = 'La dirección debe tener máximo 100 caracteres';
+    }
+
+    return { isValid, errors };
+  }
+
+  validarCedulaEcuatoriana(cedula: string): boolean {
+    const cedulaRegExp = /^[0-9]{10}$/;
+
+    if (!cedulaRegExp.test(cedula)) {
+      return false;
+    }
+
+    const provincia = Number(cedula.substring(0, 2));
+    if (provincia < 0 || provincia > 24) {
+      return false;
+    }
+
+    const tercerDigito = Number(cedula[2]);
+    if (tercerDigito < 0 || tercerDigito > 5) {
+      return false;
+    }
+
+    // Algoritmo de validación de dígitos verificadores
+    const coeficientes = [2, 1, 2, 1, 2, 1, 2, 1, 2];
+    let suma = 0;
+
+    for (let i = 0; i < 9; i++) {
+      let producto = coeficientes[i] * Number(cedula[i]);
+      suma += (producto > 9) ? producto - 9 : producto;
+    }
+
+    const decenaSuperior = Math.ceil(suma / 10) * 10;
+    const digitoVerificador = decenaSuperior - suma;
+
+    if (digitoVerificador !== Number(cedula[9])) {
+      return false;
+    }
+
+    return true;
+  }
 
   createDocente(form: NgForm): void {
     this.personaService.postDocente(form.value).subscribe(
@@ -101,9 +183,10 @@ export class DocenteComponent {
       }
     );
   }
-  
 
-  // Agregar un método para cerrar el modal de añadir estudiante
+
+
+  // Agregar un método para cerrar el modal de añadir docente
   closeAddDocenteModal(): void {
     const modal = document.getElementById('addDocenteModal');
     if (modal) {
@@ -148,4 +231,5 @@ export class DocenteComponent {
     }
   }
 }
+
 declare var $: any;

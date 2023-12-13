@@ -26,6 +26,8 @@ export class EstudianteComponent implements OnInit, OnDestroy {
 
     });
   }
+
+ 
   validateFieldLength(value: string, maxLength: number, fieldName: string): { isValid: boolean, error?: string } {
     if (value.length > maxLength) {
       return {
@@ -86,6 +88,7 @@ export class EstudianteComponent implements OnInit, OnDestroy {
     $('#addEstudianteModal').modal('hide');
   }
 
+  
   filterNumeric(event: any): void {
     const inputElement = event.target as HTMLInputElement;
     inputElement.value = inputElement.value.replace(/[^0-9]/g, '');
@@ -110,10 +113,11 @@ export class EstudianteComponent implements OnInit, OnDestroy {
       errors['correo'] = 'Ingrese un correo electrónico válido y con máximo 100 caracteres';
     }
 
-    if (form.celular.length !== 10) {
+    if (!/^09\d{8}$/.test(form.celular)) {
       isValid = false;
-      errors['celular'] = 'El número de teléfono debe tener 10 dígitos';
+      errors['celular'] = 'El número de teléfono debe comenzar con "09" y tener 10 dígitos';
     }
+    
 
     if (form.direccion.length > 100) {
       isValid = false;
@@ -122,6 +126,8 @@ export class EstudianteComponent implements OnInit, OnDestroy {
 
     return { isValid, errors };
   }
+  
+  
 
   validarCedulaEcuatoriana(cedula: string): boolean {
     const cedulaRegExp = /^[0-9]{10}$/;
@@ -186,8 +192,6 @@ export class EstudianteComponent implements OnInit, OnDestroy {
     );
   }
 
-
-
   // Agregar un método para cerrar el modal de añadir estudiante
   closeAddEstudianteModal(): void {
     const modal = document.getElementById('addEstudianteModal');
@@ -230,6 +234,47 @@ export class EstudianteComponent implements OnInit, OnDestroy {
     if (modal) {
       modal.classList.remove('show'); // Quita la clase 'show' para ocultar el modal
       modal.style.display = 'none'; // Establece el estilo 'display' en 'none'
+    }
+  }
+  validarFechaNacimiento(): void {
+    const fechaNacimientoControl = this.myForm.get('fechaNacimiento');
+    if (fechaNacimientoControl) {
+      const fechaNacimiento = new Date(fechaNacimientoControl.value);
+      const fechaActual = new Date();
+      const fechaMinima = new Date();
+      fechaMinima.setFullYear(fechaMinima.getFullYear() - 5);
+  
+      const errors: ValidationErrors = {};
+  
+      if (fechaNacimientoControl.errors && fechaNacimientoControl.errors['required']) {
+        errors['required'] = true;
+      }
+  
+      if (fechaNacimientoControl.errors && fechaNacimientoControl.errors['min']) {
+        errors['min'] = fechaNacimientoControl.errors['min'];
+      }
+  
+      if (fechaNacimientoControl.errors && fechaNacimientoControl.errors['max']) {
+        errors['max'] = fechaNacimientoControl.errors['max'];
+      }
+  
+      if (fechaNacimientoControl.errors && fechaNacimientoControl.errors['matDatepickerMin']) {
+        errors['matDatepickerMin'] = fechaNacimientoControl.errors['matDatepickerMin'];
+      }
+  
+      if (fechaNacimiento.toDateString() === fechaActual.toDateString()) {
+        errors['invalidFechaActual'] = true;
+      }
+  
+      if (fechaNacimiento < fechaMinima) {
+        errors['invalidFechaMinima'] = true;
+      }
+  
+      if (fechaNacimiento > fechaActual) {
+        errors['invalidFechaFutura'] = true;
+      }
+  
+      fechaNacimientoControl.setErrors(Object.keys(errors).length > 0 ? errors : null);
     }
   }
 }

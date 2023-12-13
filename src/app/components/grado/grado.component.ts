@@ -1,20 +1,24 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { NgForm, FormBuilder, FormGroup, Validators, FormControl, NgModel, AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
+import { NgForm, FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { Grado } from '../../models/grado';
 import { Subscription } from 'rxjs/internal/Subscription';
 import Swal from 'sweetalert2';
 import { GradoService } from '../../services/grado.service';
+
+
 @Component({
   selector: 'app-grado',
   templateUrl: './grado.component.html',
   styleUrl: './grado.component.scss'
 })
 export class GradoComponent implements OnInit, OnDestroy {
+  
   myForm: FormGroup;
   searchQuery: any;
   onSearch: any;
   private subscriptions: Subscription[] = [];
   isEditModalOpen = false;
+  docentes: any[] = [];
 
   getGrado() {
     this.gradoService.getGrado().subscribe((res) => {
@@ -23,7 +27,7 @@ export class GradoComponent implements OnInit, OnDestroy {
 
     });
   }
-  constructor(public gradoService: GradoService, private fb: FormBuilder) {
+  constructor(public gradoService: GradoService, private fb: FormBuilder) {    
     this.myForm = this.fb.group({
       id: new FormControl('', Validators.required),
       anioLectivo: ['', Validators.required],
@@ -33,6 +37,13 @@ export class GradoComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.getGrado();
+    this.getDocentes();
+  }
+
+  getDocentes() {
+    this.gradoService.getDocentes().subscribe((res) => {
+      this.docentes = res;
+    });
   }
 
   ngOnDestroy(): void {

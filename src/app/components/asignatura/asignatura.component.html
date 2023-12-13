@@ -12,7 +12,8 @@
 <button type="button" class="btn btn-primary" id="modal" (click)="openAddAsignaturaModal()">
     Añadir Asignatura </button>
 <!-- Modal -->
-<div class="modal fade" id="addAsignaturaModal" tabindex="-1" aria-labelledby="addAsignaturaModalLabel" aria-hidden="true">
+<div class="modal fade" id="addAsignaturaModal" tabindex="-1" aria-labelledby="addAsignaturaModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -30,16 +31,21 @@
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label for="nombreAsignatura" class="form-label">Nombre Materia:</label>
-                            <input type="text" class="form-control" id="nombreAsignatura" placeholder="Ingrese nombre de materia"
-                                [(ngModel)]="asignaturaService.selectedAsignatura.nombreMateria" name="nombreAsignatura" required>
+                            <input type="text" class="form-control" id="nombreAsignatura"
+                                placeholder="Ingrese nombre de materia"
+                                [(ngModel)]="asignaturaService.selectedAsignatura.nombreMateria" name="nombreAsignatura"
+                                required>
                         </div>
-                                                 
-                          <div class="col-md-6 mb-3">
+
+                        <div class="col-md-6 mb-3">
                             <label for="estado" class="form-label">Estado:</label>
-                            <input type="text" class="form-control" id="estado" placeholder="Ingresa el estado"
-                              #apellido="ngModel" [(ngModel)]="asignaturaService.selectedAsignatura.estado" name="estado" required>
-                          </div>
-                          
+                            <select class="form-select" aria-label="Selecciona el estado" id="estado" name="estado"
+                                [(ngModel)]="asignaturaService.selectedAsignatura.estado" required>
+                                <option value="A">A</option>
+                                <option value="I">I</option>
+                            </select>
+                        </div>
+
                     </div>
                     <div class="row">
                         <div class="col-md-6 mb-3">
@@ -47,9 +53,9 @@
                             <input type="text" class="form-control" id="grado" placeholder="Ingrese grado"
                                 [(ngModel)]="asignaturaService.selectedAsignatura.idGrado" name="grado" required>
                         </div>
-                                                 
 
-                          
+
+
                     </div>
 
                 </form>
@@ -80,9 +86,9 @@
                 <td>{{asignatura.nombreMateria}}</td>
                 <td>{{asignatura.estado}}</td>
                 <td>{{asignatura.idGrado}}</td>
-               
+
                 <td>
-                    
+
                 </td>
             </tr>
         </tbody>

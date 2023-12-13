@@ -20,7 +20,6 @@
     </button>
 </div>
 <br>
-
 <!-- Modal -->
 <div class="modal fade" id="addEstudianteModal" tabindex="-1" aria-labelledby="addEstudianteModalLabel"
     aria-hidden="true">
@@ -31,7 +30,6 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
                     (click)="closeAddEstudianteModal()"></button>
             </div>
-
             <div class="modal-body">
                 <form *ngIf="myForm" #myForm="ngForm" (ngSubmit)="createEstudiante(myForm)">
                     <div class="input-group">
@@ -41,24 +39,24 @@
 
                     <div class="row">
                         <div class="col-md-6 mb-3">
-                            <label for="nombre"><i class="fas fa-user"></i> Nombre</label>
+                            <label for="nombre" class="form-label">Nombre:</label>
                             <input id="nombre" type="text" class="form-control" name="nombre"
-                                [(ngModel)]="personaService.selectedEstudiante.nombre" required maxlength="100">
-                            <div
-                                *ngIf="myForm.controls['nombre']?.invalid && (myForm.controls['nombre']?.dirty || myForm.controls['nombre']?.touched)">
-                                <small class="text-danger">Ingrese un nombre válido (máximo 100 caracteres)</small>
+                                   [(ngModel)]="personaService.selectedEstudiante.nombre" required maxlength="100">
+                            <div *ngIf="myForm.controls['nombre']?.invalid && (myForm.controls['nombre']?.dirty || myForm.controls['nombre']?.touched)">
+                              <small class="text-danger">Ingrese un nombre válido (máximo 100 caracteres)</small>
                             </div>
-                        </div>
+                          </div>
+                          
 
-                        <div class="col-md-6 mb-3">
+                          <div class="col-md-6 mb-3">
                             <label for="apellido"><i class="fas fa-user"></i> Apellido</label>
                             <input id="apellido" type="text" class="form-control" name="apellido"
-                                [(ngModel)]="personaService.selectedEstudiante.apellido" required maxlength="100">
-                            <div
-                                *ngIf="myForm.controls['apellido']?.invalid && (myForm.controls['apellido']?.dirty || myForm.controls['apellido']?.touched)">
-                                <small class="text-danger">Ingrese un apellido válido (máximo 100 caracteres)</small>
+                                   [(ngModel)]="personaService.selectedEstudiante.apellido" required maxlength="100">
+                            <div *ngIf="myForm.controls['apellido']?.invalid && (myForm.controls['apellido']?.dirty || myForm.controls['apellido']?.touched)">
+                              <small class="text-danger">Ingrese un apellido válido (máximo 100 caracteres)</small>
                             </div>
-                        </div>
+                          </div>
+                          
                     </div>
 
                     <div class="row">
@@ -80,12 +78,31 @@
                         <div class="col-md-6 mb-3">
                             <label for="fechaNacimiento" class="form-label">Fecha de Nacimiento:</label>
                             <input type="date" class="form-control" id="fechaNacimiento" #fechaNacimiento="ngModel"
-                                [(ngModel)]="personaService.selectedEstudiante.fechaNacimiento" name="fechaNacimiento">
-                        </div>
-                        <div
-                            *ngIf="myForm.controls['fechaNacimiento']?.invalid && (myForm.controls['fechaNacimiento']?.dirty || myForm.controls['fechaNacimiento']?.touched)">
-                            <small class="text-danger">Ingrese una fecha de nacimiento válida</small>
-                        </div>
+                                   [(ngModel)]="personaService.selectedEstudiante.fechaNacimiento" name="fechaNacimiento"
+                                   (blur)="validarFechaNacimiento()" required>
+                          
+                            <div *ngIf="fechaNacimiento.invalid && (fechaNacimiento.dirty || fechaNacimiento.touched)">
+                              <div *ngIf="fechaNacimiento.errors?.['invalidFechaActual']">
+                                <small class="text-danger">La fecha de nacimiento no puede ser la fecha actual</small>
+                              </div>
+                              <div *ngIf="fechaNacimiento.errors?.['invalidFechaMinima']">
+                                <small class="text-danger">Ingrese una fecha de nacimiento que permita ingresar menores de 5 años</small>
+                              </div>
+                              <div *ngIf="fechaNacimiento.errors?.['invalidFechaFutura']">
+                                <small class="text-danger">No se permiten fechas de nacimiento futuras</small>
+                              </div>
+                              <div *ngIf="fechaNacimiento.errors?.['required']">
+                                <small class="text-danger">La fecha de nacimiento es obligatoria</small>
+                              </div>
+                            </div>
+                          </div>
+                          
+                          
+                          
+                          
+                          
+                          
+                        
                     </div>
 
 
@@ -94,36 +111,44 @@
                         <div class="col-md-6 mb-3">
                             <label for="direccion"><i class="fas fa-map-marker-alt"></i> Dirección</label>
                             <input id="direccion" type="text" class="form-control" name="direccion"
-                                [(ngModel)]="personaService.selectedEstudiante.direccion" required maxlength="200">
-                            <div
-                                *ngIf="myForm.controls['direccion']?.invalid && (myForm.controls['direccion']?.dirty || myForm.controls['direccion']?.touched)">
-                                <small class="text-danger">Ingrese una dirección válida (máximo 200 caracteres)</small>
+                                   [(ngModel)]="personaService.selectedEstudiante.direccion" required maxlength="200">
+                            <div *ngIf="myForm.controls['direccion']?.invalid && (myForm.controls['direccion']?.dirty || myForm.controls['direccion']?.touched)">
+                              <small class="text-danger">Ingrese una dirección válida (máximo 200 caracteres)</small>
                             </div>
-                        </div>
+                            <div *ngIf="myForm.controls['direccion']?.errors?.['required']">
+                              <small class="text-danger">La dirección es obligatoria</small>
+                            </div>
+                          </div>
+                          
 
 
-                        <div class="col-md-6 mb-3">
+                          <div class="col-md-6 mb-3">
                             <label for="correo"><i class="fas fa-envelope"></i> Correo Electrónico</label>
-                            <input id="correo" type="correo" class="form-control" name="correo"
-                                [(ngModel)]="personaService.selectedEstudiante.correo" required correo>
-                            <div
-                                *ngIf="myForm.controls['correo']?.invalid && (myForm.controls['correo']?.dirty || myForm.controls['correo']?.touched)">
-                                <small class="text-danger">Ingrese un correo electrónico válido</small>
+                            <input id="correo" type="email" class="form-control" name="correo"
+                                   [(ngModel)]="personaService.selectedEstudiante.correo" required email>
+                            <div *ngIf="myForm.controls['correo']?.invalid && (myForm.controls['correo']?.dirty || myForm.controls['correo']?.touched)">
+                              <small class="text-danger">
+                                <ng-container *ngIf="myForm.controls['correo']?.errors?.['required']">Ingrese un correo electrónico</ng-container>
+                                <ng-container *ngIf="myForm.controls['correo']?.errors?.['email']">Ingrese un correo electrónico válido</ng-container>
+                              </small>
                             </div>
-                        </div>
+                          </div>
+                          
 
-                        <div class="col-md-6 mb-3">
+                          <div class="col-md-6 mb-3">
                             <label for="celular"><i class="fas fa-phone"></i> Teléfono</label>
                             <input id="celular" type="text" class="form-control" name="celular"
-                                [(ngModel)]="personaService.selectedEstudiante.celular" required pattern="[0-9]{10}"
-                                (input)="filterNumeric($event)" maxlength="10">
-                            <div
-                                *ngIf="myForm.controls['celular']?.invalid && (myForm.controls['celular']?.dirty || myForm.controls['celular']?.touched)">
-                                <small class="text-danger">Ingrese un número de teléfono válido (10 dígitos)</small>
+                                   [(ngModel)]="personaService.selectedEstudiante.celular" required pattern="09\d{8}" (input)="filterNumeric($event)" maxlength="10">
+                            <div *ngIf="myForm.controls['celular']?.invalid && (myForm.controls['celular']?.dirty || myForm.controls['celular']?.touched)">
+                              <small class="text-danger">
+                                <ng-container *ngIf="myForm.controls['celular']?.errors?.['required']">Ingrese un número de teléfono</ng-container>
+                                <ng-container *ngIf="myForm.controls['celular']?.errors?.['pattern']">Ingrese un número de teléfono válido que comience con "09" (10 dígitos)</ng-container>
+                              </small>
                             </div>
-                        </div>
+                          </div>
+                          
+                          
                     </div>
-
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
                             (click)="closeAddEstudianteModal()">Cerrar</button>
@@ -135,10 +160,7 @@
     </div>
 </div>
 
-
 <div class="container mt-4">
-
-
     <table class="table table-bordered text-center">
         <thead>
             <tr>
@@ -179,34 +201,40 @@
                                 <form #estudianteForm2="ngForm">
                                     <!-- Campo de ID oculto -->
                                     <input type="hidden" [(ngModel)]="personaService.selectedEstudiante.id" name="id" />
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="nombre" class="form-label">Nombre:</label>
+                                            <input type="text" class="form-control" id="nombre"
+                                                [(ngModel)]="personaService.selectedEstudiante.nombre" name="nombre">
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="apellido" class="form-label">Apellido:</label>
+                                            <input type="text" class="form-control" id="apellido"
+                                                [(ngModel)]="personaService.selectedEstudiante.apellido"
+                                                name="apellido">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="direccion" class="form-label">Dirección:</label>
+                                            <input type="text" class="form-control" id="direccionedit"
+                                                [(ngModel)]="personaService.selectedEstudiante.direccion"
+                                                name="direccion">
+                                        </div>
+                                    </div> <br>
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="correo" class="form-label">Correo:</label>
+                                            <input type="text" class="form-control" id="correo"
+                                                [(ngModel)]="personaService.selectedEstudiante.correo" name="correo">
 
-                                    <div class="mb-3">
-                                        <label for="nombre" class="form-label">Nombre:</label>
-                                        <input type="text" class="form-control" id="nombre"
-                                            [(ngModel)]="personaService.selectedEstudiante.nombre" name="nombre">
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="celular" class="form-label">Celular:</label>
+                                            <input type="text" class="form-control" id="celular"
+                                                [(ngModel)]="personaService.selectedEstudiante.celular" name="celular">
+                                        </div>
                                     </div>
-                                    <div class="mb-3">
-                                        <label for="apellido" class="form-label">Apellido:</label>
-                                        <input type="text" class="form-control" id="apellido"
-                                            [(ngModel)]="personaService.selectedEstudiante.apellido" name="apellido">
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="direccion" class="form-label">Dirección:</label>
-                                        <input type="text" class="form-control" id="direccion"
-                                            [(ngModel)]="personaService.selectedEstudiante.direccion" name="direccion">
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="correo" class="form-label">Correo:</label>
-                                        <input type="text" class="form-control" id="correo"
-                                            [(ngModel)]="personaService.selectedEstudiante.correo" name="correo">
-
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="celular" class="form-label">Celular:</label>
-                                        <input type="text" class="form-control" id="celular"
-                                            [(ngModel)]="personaService.selectedEstudiante.celular" name="celular">
-                                    </div>
-
                                     <!-- Botón de guardar en el modal de edición -->
                                     <button type="button" class="btn btn-primary"
                                         (click)="updateEstudiante(estudianteForm2)">Guardar</button>
