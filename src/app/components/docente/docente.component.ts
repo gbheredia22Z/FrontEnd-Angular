@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { NgForm, FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
+import { NgForm, FormBuilder, FormGroup, Validators, FormControl, ValidationErrors } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
 import { PersonaService } from '../../services/persona.service';
@@ -108,10 +108,11 @@ export class DocenteComponent implements OnInit, OnDestroy {
       errors['correo'] = 'Ingrese un correo electrónico válido y con máximo 100 caracteres';
     }
 
-    if (form.celular.length !== 10) {
+    if (!/^09\d{8}$/.test(form.celular)) {
       isValid = false;
-      errors['celular'] = 'El número de teléfono debe tener 10 dígitos';
+      errors['celular'] = 'El número de teléfono debe comenzar con "09" y tener 10 dígitos';
     }
+    
 
     if (form.direccion.length > 100) {
       isValid = false;
@@ -128,23 +129,23 @@ export class DocenteComponent implements OnInit, OnDestroy {
       return false;
     }
 
-    const provincia = Number(cedula.substring(0, 2));
-    if (provincia < 0 || provincia > 24) {
+    const digitoRegion = Number(cedula.substring(0, 2));
+    if (digitoRegion < 1 || digitoRegion > 24) {
       return false;
     }
 
-    const tercerDigito = Number(cedula[2]);
-    if (tercerDigito < 0 || tercerDigito > 5) {
+    const digitoTercer = Number(cedula[2]);
+    if (digitoTercer < 0 || digitoTercer > 5) {
       return false;
     }
 
     // Algoritmo de validación de dígitos verificadores
-    const coeficientes = [2, 1, 2, 1, 2, 1, 2, 1, 2];
+    const coeficientes: number[] = [2, 1, 2, 1, 2, 1, 2, 1, 2];
     let suma = 0;
 
     for (let i = 0; i < 9; i++) {
-      let producto = coeficientes[i] * Number(cedula[i]);
-      suma += (producto > 9) ? producto - 9 : producto;
+      const producto = coeficientes[i] * Number(cedula[i]);
+      suma += producto > 9 ? producto - 9 : producto;
     }
 
     const decenaSuperior = Math.ceil(suma / 10) * 10;
@@ -228,6 +229,48 @@ export class DocenteComponent implements OnInit, OnDestroy {
     if (modal) {
       modal.classList.remove('show'); // Quita la clase 'show' para ocultar el modal
       modal.style.display = 'none'; // Establece el estilo 'display' en 'none'
+    }
+  }
+  
+  validarFechaNacimiento(): void {
+    const fechaNacimientoControl = this.myForm.get('fechaNacimiento');
+    if (fechaNacimientoControl) {
+      const fechaNacimiento = new Date(fechaNacimientoControl.value);
+      const fechaActual = new Date();
+      const fechaMinima = new Date();
+      fechaMinima.setFullYear(fechaMinima.getFullYear() - 5);
+  
+      const errors: ValidationErrors = {};
+  
+      if (fechaNacimientoControl.errors && fechaNacimientoControl.errors['required']) {
+        errors['required'] = true;
+      }
+  
+      if (fechaNacimientoControl.errors && fechaNacimientoControl.errors['min']) {
+        errors['min'] = fechaNacimientoControl.errors['min'];
+      }
+  
+      if (fechaNacimientoControl.errors && fechaNacimientoControl.errors['max']) {
+        errors['max'] = fechaNacimientoControl.errors['max'];
+      }
+  
+      if (fechaNacimientoControl.errors && fechaNacimientoControl.errors['matDatepickerMin']) {
+        errors['matDatepickerMin'] = fechaNacimientoControl.errors['matDatepickerMin'];
+      }
+  
+      if (fechaNacimiento.toDateString() === fechaActual.toDateString()) {
+        errors['invalidFechaActual'] = true;
+      }
+  
+      if (fechaNacimiento < fechaMinima) {
+        errors['invalidFechaMinima'] = true;
+      }
+  
+      if (fechaNacimiento > fechaActual) {
+        errors['invalidFechaFutura'] = true;
+      }
+  
+      fechaNacimientoControl.setErrors(Object.keys(errors).length > 0 ? errors : null);
     }
   }
 }

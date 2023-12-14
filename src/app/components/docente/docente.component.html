@@ -81,11 +81,25 @@
                             <div class="col-md-6 mb-3">
                                 <label for="fechaNacimiento" class="form-label">Fecha de Nacimiento:</label>
                                 <input type="date" class="form-control" id="fechaNacimiento" #fechaNacimiento="ngModel"
-                                    [(ngModel)]="personaService.selectedDocente.fechaNacimiento" name="fechaNacimiento">
-                            </div>
-                            <div
-                                *ngIf="myForm.controls['fechaNacimiento']?.invalid && (myForm.controls['fechaNacimiento']?.dirty || myForm.controls['fechaNacimiento']?.touched)">
-                                <small class="text-danger">Ingrese una fecha de nacimiento válida</small>
+                                    [(ngModel)]="personaService.selectedDocente.fechaNacimiento" name="fechaNacimiento"
+                                    (blur)="validarFechaNacimiento()" required>
+    
+                                <div *ngIf="fechaNacimiento.invalid && (fechaNacimiento.dirty || fechaNacimiento.touched)">
+                                    <div *ngIf="fechaNacimiento.errors?.['invalidFechaActual']">
+                                        <small class="text-danger">La fecha de nacimiento no puede ser la fecha
+                                            actual</small>
+                                    </div>
+                                    <div *ngIf="fechaNacimiento.errors?.['invalidFechaMinima']">
+                                        <small class="text-danger">Ingrese una fecha de nacimiento que permita ingresar
+                                            menores de 5 años</small>
+                                    </div>
+                                    <div *ngIf="fechaNacimiento.errors?.['invalidFechaFutura']">
+                                        <small class="text-danger">No se permiten fechas de nacimiento futuras</small>
+                                    </div>
+                                    <div *ngIf="fechaNacimiento.errors?.['required']">
+                                        <small class="text-danger">La fecha de nacimiento es obligatoria</small>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
@@ -99,27 +113,40 @@
                                     *ngIf="myForm.controls['direccion']?.invalid && (myForm.controls['direccion']?.dirty || myForm.controls['direccion']?.touched)">
                                     <small class="text-danger">Ingrese una dirección válida (máximo 200 caracteres)</small>
                                 </div>
+                                <div *ngIf="myForm.controls['direccion']?.errors?.['required']">
+                                    <small class="text-danger">La dirección es obligatoria</small>
+                                </div>
                             </div>
 
 
                             <div class="col-md-6 mb-3">
                                 <label for="correo"><i class="fas fa-envelope"></i> Correo Electrónico</label>
-                                <input id="correo" type="correo" class="form-control" name="correo"
-                                    [(ngModel)]="personaService.selectedDocente.correo" required correo>
+                                <input id="correo" type="email" class="form-control" name="correo"
+                                    [(ngModel)]="personaService.selectedDocente.correo" required email>
                                 <div
                                     *ngIf="myForm.controls['correo']?.invalid && (myForm.controls['correo']?.dirty || myForm.controls['correo']?.touched)">
-                                    <small class="text-danger">Ingrese un correo electrónico válido</small>
+                                    <small class="text-danger">
+                                        <ng-container *ngIf="myForm.controls['correo']?.errors?.['required']">Ingrese un
+                                            correo electrónico</ng-container>
+                                        <ng-container *ngIf="myForm.controls['correo']?.errors?.['email']">Ingrese un correo
+                                            electrónico válido</ng-container>
+                                    </small>
                                 </div>
                             </div>
 
                             <div class="col-md-6 mb-3">
                                 <label for="celular"><i class="fas fa-phone"></i> Teléfono</label>
                                 <input id="celular" type="text" class="form-control" name="celular"
-                                    [(ngModel)]="personaService.selectedDocente.celular" required pattern="[0-9]{10}"
+                                    [(ngModel)]="personaService.selectedDocente.celular" required pattern="09\d{8}"
                                     (input)="filterNumeric($event)" maxlength="10">
                                 <div
                                     *ngIf="myForm.controls['celular']?.invalid && (myForm.controls['celular']?.dirty || myForm.controls['celular']?.touched)">
-                                    <small class="text-danger">Ingrese un número de teléfono válido (10 dígitos)</small>
+                                    <small class="text-danger">
+                                        <ng-container *ngIf="myForm.controls['celular']?.errors?.['required']">Ingrese un
+                                            número de teléfono</ng-container>
+                                        <ng-container *ngIf="myForm.controls['celular']?.errors?.['pattern']">Ingrese un
+                                            número de teléfono válido que comience con "09" (10 dígitos)</ng-container>
+                                    </small>
                                 </div>
                             </div>
                         </div>

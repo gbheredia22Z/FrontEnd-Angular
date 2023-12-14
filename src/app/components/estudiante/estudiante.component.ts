@@ -1,9 +1,14 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { NgForm, FormBuilder, FormGroup, Validators, FormControl, NgModel, AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
 import { PersonaService } from '../../services/persona.service';
 import { Persona } from '../../models/persona';
+import { DataTableDirective } from 'angular-datatables';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+
+
 
 
 @Component({
@@ -19,6 +24,7 @@ export class EstudianteComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription[] = [];
   isEditModalOpen = false;
 
+
   getEstudiante() {
     this.personaService.getEstudiante().subscribe((res) => {
       this.personaService.estudiantes = res as Persona[];
@@ -27,7 +33,7 @@ export class EstudianteComponent implements OnInit, OnDestroy {
     });
   }
 
- 
+
   validateFieldLength(value: string, maxLength: number, fieldName: string): { isValid: boolean, error?: string } {
     if (value.length > maxLength) {
       return {
@@ -54,10 +60,13 @@ export class EstudianteComponent implements OnInit, OnDestroy {
   }
   ngOnInit(): void {
     this.getEstudiante();
+    
   }
+
 
   ngOnDestroy(): void {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    
   }
 
   onSearch(): void {
@@ -236,6 +245,7 @@ export class EstudianteComponent implements OnInit, OnDestroy {
       modal.style.display = 'none'; // Establece el estilo 'display' en 'none'
     }
   }
+  
   validarFechaNacimiento(): void {
     const fechaNacimientoControl = this.myForm.get('fechaNacimiento');
     if (fechaNacimientoControl) {

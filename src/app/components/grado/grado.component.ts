@@ -12,10 +12,8 @@ import { GradoService } from '../../services/grado.service';
   styleUrl: './grado.component.scss'
 })
 export class GradoComponent implements OnInit, OnDestroy {
-  
+
   myForm: FormGroup;
-  searchQuery: any;
-  onSearch: any;
   private subscriptions: Subscription[] = [];
   isEditModalOpen = false;
   docentes: any[] = [];
@@ -24,26 +22,20 @@ export class GradoComponent implements OnInit, OnDestroy {
     this.gradoService.getGrado().subscribe((res) => {
       this.gradoService.grados = res as Grado[];
       console.log(res);
-
     });
   }
-  constructor(public gradoService: GradoService, private fb: FormBuilder) {    
+
+  constructor(public gradoService: GradoService, private fb: FormBuilder) {
     this.myForm = this.fb.group({
       id: new FormControl('', Validators.required),
-      anioLectivo: ['', Validators.required],
-      estado: ['', Validators.required],
+      nombreGrado: ['', Validators.required],
+      persId: ['', Validators.required],
     });
   }
 
   ngOnInit(): void {
     this.getGrado();
-    this.getDocentes();
-  }
 
-  getDocentes() {
-    this.gradoService.getDocentes().subscribe((res) => {
-      this.docentes = res;
-    });
   }
 
   ngOnDestroy(): void {
@@ -114,7 +106,5 @@ export class GradoComponent implements OnInit, OnDestroy {
   }
 
 }
-
-
 
 declare var $: any;

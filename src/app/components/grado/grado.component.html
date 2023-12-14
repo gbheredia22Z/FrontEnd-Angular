@@ -34,15 +34,12 @@
                                 [(ngModel)]="gradoService.selectedGrado.nombreGrado" name="nombreGrado" required>
                         </div>
                         <div class="col-md-6 mb-3">
-                            <label for="docente" class="form-label">Seleccione Docente:</label>
-                            <select class="form-select" id="docente" [(ngModel)]="gradoService.selectedGrado.persId" name="persId" required>
-                                <option *ngFor="let docente of docentes" [value]="docente.id">{{ docente.nombre }} {{ docente.apellido }}</option>
-                            </select>
+                            <label for="persId" class="form-label">ID Persona:</label>
+                            <input type="text" class="form-control" id="persId"
+                                placeholder="Ingresa el id de la persona" #persId="ngModel"
+                                [(ngModel)]="gradoService.selectedGrado.persId" name="persId" required>
                         </div>
-                        
-
                     </div>
-
                 </form>
             </div>
             <div class="modal-footer">

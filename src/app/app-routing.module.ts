@@ -9,6 +9,7 @@ import { PeriodoComponent } from './components/periodo/periodo.component';
 import { AsignaturaComponent } from './components/asignatura/asignatura.component';
 import { GradoComponent } from './components/grado/grado.component';
 import { MatriculaComponent } from './components/matricula/matricula.component';
+import { LoginComponent } from './components/login/login.component';
 
 const routes: Routes = [
   {
@@ -44,6 +45,10 @@ const routes: Routes = [
     path:'matricula',
     component: MatriculaComponent
   },
+  {
+    path: 'login',
+    component: LoginComponent
+  }
 
 ];
 

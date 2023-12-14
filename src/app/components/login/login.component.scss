@@ -1,0 +1,49 @@
+.rounded-container {
+    display: flex;
+    width: 30%;
+    height: 100vh;
+    background-color: #545454;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid white; /* Añadido para bordes */
+    border-radius: 10px; /* Añadido para bordes redondeados */
+    margin: auto; /* Centrar horizontalmente */
+}
+
+h2{
+    color:white
+}
+.centered-buttons {
+    text-align: center;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    color: white;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.form-control {
+    width: 100%; /* Hacer que el ancho sea del 100% */
+    box-sizing: border-box; /* Incluir el padding en el ancho total */
+    padding: 8px;
+    border: 1px solid white;
+    border-radius: 5px;
+    color: white;
+    background-color: transparent;
+}
+
+.orange-button {
+    background-color: white;
+    color: black;
+    border: 1px solid white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    display: inline-block; /* Para que el ancho se ajuste al contenido */
+    margin-top: 10px; /* Añadido para separación desde arriba */
+}
