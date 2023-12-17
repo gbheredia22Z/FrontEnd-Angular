@@ -2,21 +2,22 @@ export class Grado {
     id: string;
     nombreGrado: string;
     persId: string;
-   constructor(
+
+
+    constructor(
         id: string = '',
         nombreGrado: string = '',
-        persId: string = '',
-
+        persId: string = ''
     ) {
         this.id = id;
         this.nombreGrado = nombreGrado;
         this.persId = persId;
+
     }
 }
 
-export interface Grado {
+export interface Periodo {
     id: string;
     nombreGrado: string;
     persId: string;
-
 }

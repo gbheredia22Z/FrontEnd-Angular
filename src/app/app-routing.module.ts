@@ -46,9 +46,9 @@ const routes: Routes = [
     component: MatriculaComponent
   },
   {
-    path: 'login',
+    path:'login',
     component: LoginComponent
-  }
+  },
 
 ];
 

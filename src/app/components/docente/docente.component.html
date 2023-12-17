@@ -11,10 +11,7 @@
     <p class="est"><b> Docentes </b> </p>
     <br>
     <div class="d-flex align-items-center">
-        <!-- Campo de búsqueda -->
-        <input type="text" class="form-control" id="buscar" placeholder="Buscar por cédula" [(ngModel)]="searchQuery"
-            (input)="onSearch()" maxlength="10">
-
+    
         <!-- Botón "Añadir Docente" -->
         <button type="button" class="btn btn-primary" id="modal" (click)="openAddDocenteModal()">
             Añadir Docente
@@ -162,7 +159,7 @@
     </div>
 
     <div class="container mt-4">
-        <table class="table table-bordered text-center">
+        <table class="table table-bordered text-center" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
             <thead>
                 <tr>
                     <th scope="col">Nombre</th>
@@ -176,7 +173,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let docente of personaService.docentes">
+                <tr *ngFor="let docente of data">
                     <td>{{docente.nombre}}</td>
                     <td>{{docente.apellido}}</td>
                     <td>{{docente.cedula}}</td>

@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { NgForm, FormBuilder, FormGroup, Validators, FormControl, ValidationErrors } from '@angular/forms';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
 import { PersonaService } from '../../services/persona.service';
 import { Persona } from '../../models/persona';
@@ -12,17 +12,30 @@ import { Persona } from '../../models/persona';
   styleUrl: './docente.component.scss'
 })
 export class DocenteComponent implements OnInit, OnDestroy {
+  dtOptions:DataTables.Settings={};
+  data:any=[]; //aqui se alamcena
   myForm: FormGroup;
   searchQuery: any;
   private subscriptions: Subscription[] = [];
   isEditModalOpen = false;
+  dtTrigger:Subject<any> = new Subject<any>();
 
   getDocente() {
-    this.personaService.getDocente().subscribe((res) => {
-      this.personaService.docentes = res as Persona[];
-      console.log(res);
+    // this.personaService.getDocente().subscribe((res) => {
+    //   this.personaService.docentes = res as Persona[];
+    //   console.log(res);
 
-    });
+    // });
+    
+  }
+
+  getDocente2() {
+    this.personaService.getDocente().
+      subscribe((data) => {
+        this.data = data;
+        console.log(data);
+        this.dtTrigger.next(data);
+      });
   }
   validateFieldLength(value: string, maxLength: number, fieldName: string): { isValid: boolean, error?: string } {
     if (value.length > maxLength) {
@@ -49,12 +62,10 @@ export class DocenteComponent implements OnInit, OnDestroy {
     });
   }
   ngOnInit(): void {
-    this.getDocente();
+    this.getDocente2();
   }
 
-  ngOnDestroy(): void {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
-  }
+
 
   onSearch(): void {
     // Lógica para filtrar docentes por cédula
@@ -218,6 +229,7 @@ export class DocenteComponent implements OnInit, OnDestroy {
         timer: 1500,
       });
       this.getDocente();
+      this.closeEditDocenteModal();
 
       // Cierra el modal de edición utilizando $
       $('#editModal').modal('hide');
@@ -231,6 +243,14 @@ export class DocenteComponent implements OnInit, OnDestroy {
       modal.style.display = 'none'; // Establece el estilo 'display' en 'none'
     }
   }
+  ngOnDestroy(): void {
+    //this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.dtTrigger.unsubscribe();
+  }
+  updateTableDynamically() {
+    // Perform dynamic table updates here
+    this.dtTrigger.next(this.data);
+}
   
   validarFechaNacimiento(): void {
     const fechaNacimientoControl = this.myForm.get('fechaNacimiento');

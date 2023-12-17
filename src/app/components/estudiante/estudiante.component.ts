@@ -7,6 +7,7 @@ import { Persona } from '../../models/persona';
 import { DataTableDirective } from 'angular-datatables';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 
 
@@ -19,11 +20,18 @@ import { takeUntil } from 'rxjs/operators';
 })
 
 export class EstudianteComponent implements OnInit, OnDestroy {
+  
+  dtOptions:DataTables.Settings={};
+  data:any=[]; //aqui se alamcena
+  dtTrigger:Subject<any> = new Subject<any>();
   myForm: FormGroup;
   searchQuery: any;
   private subscriptions: Subscription[] = [];
   isEditModalOpen = false;
 
+// Define el rango permitido para la fecha de nacimiento
+minFechaNacimiento: string;
+maxFechaNacimiento: string;
 
   getEstudiante() {
     this.personaService.getEstudiante().subscribe((res) => {
@@ -31,6 +39,37 @@ export class EstudianteComponent implements OnInit, OnDestroy {
       console.log(res);
 
     });
+  }
+
+  private calculateMinFechaNacimiento(): string {
+    const fechaMinima = new Date();
+    fechaMinima.setFullYear(fechaMinima.getFullYear() - 5);  // Restricción de edad (menores de 5 años)
+
+    // Restringe también la fecha mínima al año 2010
+    const fechaMinimaPermitida = new Date('2010-01-01');
+    
+    // Convierte las fechas a valores numéricos y aplica Math.max()
+    const fechaMinimaNumerica = fechaMinima.getTime();
+    const fechaMinimaPermitidaNumerica = fechaMinimaPermitida.getTime();
+    const fechaMinimaFinal = new Date(Math.max(fechaMinimaNumerica, fechaMinimaPermitidaNumerica));
+
+    return this.formatDate(fechaMinimaFinal);
+  }
+
+  private formatDate(date: Date): string {
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
+
+  getEstudiantes2(){
+    this.personaService.getEstudiante().
+      subscribe((data) => {
+        this.data = data;
+        console.log(data);
+        this.dtTrigger.next(data);
+      });
   }
 
 
@@ -45,7 +84,7 @@ export class EstudianteComponent implements OnInit, OnDestroy {
     return { isValid: true };
   }
 
-  constructor(public personaService: PersonaService, private fb: FormBuilder) {
+  constructor(public personaService: PersonaService, private fb: FormBuilder, private router:Router) {
     this.myForm = this.fb.group({
       id: new FormControl('', Validators.required),
       nombre: ['', Validators.required],
@@ -59,13 +98,17 @@ export class EstudianteComponent implements OnInit, OnDestroy {
     });
   }
   ngOnInit(): void {
-    this.getEstudiante();
-    
+    this.getEstudiantes2();
+     // Calcula el rango permitido (puedes ajustar los valores según tus necesidades)
+     const fechaActual = new Date();
+     this.minFechaNacimiento = '2010-01-01';
+     this.maxFechaNacimiento = '2017-12-31';
   }
 
 
   ngOnDestroy(): void {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    //this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.dtTrigger.unsubscribe();
     
   }
 
@@ -136,8 +179,6 @@ export class EstudianteComponent implements OnInit, OnDestroy {
     return { isValid, errors };
   }
   
-  
-
   validarCedulaEcuatoriana(cedula: string): boolean {
     const cedulaRegExp = /^[0-9]{10}$/;
 
@@ -183,10 +224,11 @@ export class EstudianteComponent implements OnInit, OnDestroy {
           icon: 'success',
           title: 'Nuevo estudiante agregado',
           showConfirmButton: false,
-          timer: 1500,
+          timer: 3000,
         });
-        this.getEstudiante();
+       
         this.closeAddEstudianteModal();
+        this.irListaEstudiantes();
       },
       (error) => {
         console.error('Error al crear estudiante:', error);
@@ -231,11 +273,17 @@ export class EstudianteComponent implements OnInit, OnDestroy {
         showConfirmButton: false,
         timer: 1500,
       });
-      this.getEstudiante();
+      this.irListaEstudiantes();
+      this.closeEditEstudianteModal();
 
       // Cierra el modal de edición utilizando $
       $('#editModal').modal('hide');
     });
+  }
+
+  irListaEstudiantes(){
+    //this.router.navigate(["/estudiante"])
+    window.location.reload()
   }
 
   closeEditEstudianteModal(): void {
@@ -274,6 +322,14 @@ export class EstudianteComponent implements OnInit, OnDestroy {
   
       if (fechaNacimiento.toDateString() === fechaActual.toDateString()) {
         errors['invalidFechaActual'] = true;
+  
+        // Nueva validación para estudiantes menores de 5 años
+        const fechaMaxima = new Date();
+        fechaMaxima.setFullYear(fechaMaxima.getFullYear() - 5);
+  
+        if (fechaNacimiento > fechaMaxima) {
+          errors['invalidEdadEstudiante'] = true;
+        }
       }
   
       if (fechaNacimiento < fechaMinima) {
@@ -284,9 +340,20 @@ export class EstudianteComponent implements OnInit, OnDestroy {
         errors['invalidFechaFutura'] = true;
       }
   
+      // Restricciones adicionales para estudiantes
+      const anioMinimoEstudiante = 2010;
+      const anioMaximoEstudiante = 2018;
+  
+      const anioNacimiento = fechaNacimiento.getFullYear();
+  
+      if (anioNacimiento < anioMinimoEstudiante || anioNacimiento > anioMaximoEstudiante) {
+        errors['invalidRangoEstudiante'] = true;
+      }
+  
       fechaNacimientoControl.setErrors(Object.keys(errors).length > 0 ? errors : null);
     }
   }
+  
 }
 
 declare var $: any;

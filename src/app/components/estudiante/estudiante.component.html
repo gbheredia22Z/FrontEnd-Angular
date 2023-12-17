@@ -10,9 +10,7 @@
 <p class="est"><b> Estudiantes </b> </p>
 <br>
 <div class="d-flex align-items-center">
-    <!-- Campo de búsqueda -->
-    <input type="text" class="form-control" id="buscar" placeholder="Buscar por cédula" [(ngModel)]="searchQuery"
-        (input)="onSearch()" maxlength="10">
+
 
     <!-- Botón "Añadir Estudiante" -->
     <button type="button" class="btn btn-primary" id="modal" (click)="openAddEstudianteModal()">
@@ -79,9 +77,21 @@
 
                         <div class="col-md-6 mb-3">
                             <label for="fechaNacimiento" class="form-label">Fecha de Nacimiento:</label>
-                            <input type="date" class="form-control" id="fechaNacimiento" #fechaNacimiento="ngModel"
-                                [(ngModel)]="personaService.selectedEstudiante.fechaNacimiento" name="fechaNacimiento"
-                                (blur)="validarFechaNacimiento()" required>
+                            
+
+
+                                <input type="date"
+                                class="form-control"
+                                id="fechaNacimiento"
+                                #fechaNacimiento="ngModel"
+                                [(ngModel)]="personaService.selectedEstudiante.fechaNacimiento"
+                                name="fechaNacimiento"
+                                (blur)="validarFechaNacimiento()"
+                                required
+                                [min]="minFechaNacimiento"
+                                [max]="maxFechaNacimiento">
+                         
+
 
                             <div *ngIf="fechaNacimiento.invalid && (fechaNacimiento.dirty || fechaNacimiento.touched)">
                                 <div *ngIf="fechaNacimiento.errors?.['invalidFechaActual']">
@@ -98,6 +108,13 @@
                                 <div *ngIf="fechaNacimiento.errors?.['required']">
                                     <small class="text-danger">La fecha de nacimiento es obligatoria</small>
                                 </div>
+                                <div *ngIf="fechaNacimiento.errors?.['invalidEdadEstudiante']">
+                                    <small class="text-danger">La fecha de nacimiento debe ser para estudiantes menores de 5 años</small>
+                                  </div>
+                                  <div *ngIf="fechaNacimiento.errors?.['invalidRangoEstudiante']">
+                                    <small class="text-danger">La fecha de nacimiento no cumple con el rango permitido para estudiantes</small>
+                                  </div>
+
                             </div>
                         </div>
 
@@ -165,7 +182,7 @@
 </div>
 
 <div class="container mt-4">
-    <table class="table table-bordered text-center">
+    <table class="table table-bordered text-center" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" >
         <thead>
             <tr>
                 <th scope="col">Nombre</th>
@@ -179,7 +196,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let estudiante of personaService.estudiantes">
+            <tr *ngFor="let estudiante of data">
                 <td>{{estudiante.nombre}}</td>
                 <td>{{estudiante.apellido}}</td>
                 <td>{{estudiante.cedula}}</td>
