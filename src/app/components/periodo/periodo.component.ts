@@ -26,7 +26,8 @@ export class PeriodoComponent implements OnInit, OnDestroy {
 
     });
   }
-  constructor(public periodoService: PeriodoService, private fb: FormBuilder) {
+  constructor(public periodoService: PeriodoService, private fb: FormBuilder) 
+  {
     this.myForm = this.fb.group({
       id: new FormControl('', Validators.required),
       anioLectivo: ['', Validators.required],

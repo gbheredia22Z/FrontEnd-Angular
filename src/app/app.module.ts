@@ -14,6 +14,8 @@ import { MatriculaComponent } from './components/matricula/matricula.component';
 import { DataTablesModule } from "angular-datatables";
 import { LoginComponent } from './components/login/login.component';
 import { RouterModule } from '@angular/router';
+import { ActividadesComponent } from './components/actividades/actividades.component';
+import { PerCalificacionesComponent } from './components/per-calificaciones/per-calificaciones.component';
 
 @NgModule({
     declarations: [
@@ -25,7 +27,9 @@ import { RouterModule } from '@angular/router';
         AsignaturaComponent,
         GradoComponent,
         MatriculaComponent,
-        LoginComponent
+        LoginComponent,
+        ActividadesComponent,
+        PerCalificacionesComponent
     ],
     imports: [
         BrowserModule,

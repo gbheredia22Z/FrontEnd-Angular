@@ -4,6 +4,8 @@ import { Asignatura } from '../../models/asignatura';
 import { Subscription } from 'rxjs/internal/Subscription';
 import Swal from 'sweetalert2';
 import { AsignaturaService } from '../../services/asignatura.service';
+import { Asigngrados } from './asigngrados';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-asignatura',
@@ -11,17 +13,45 @@ import { AsignaturaService } from '../../services/asignatura.service';
   styleUrl: './asignatura.component.scss'
 })
 export class AsignaturaComponent implements OnInit, OnDestroy {
+
+  dtOptions:DataTables.Settings={};
+  data:any=[]; //aqui se alamcena
+  dtTrigger:Subject<any> = new Subject<any>();
   myForm: FormGroup;
   searchQuery: any;
   onSearch: any;
   private subscriptions: Subscription[] = [];
   isEditModalOpen = false;
+  asignatura :any;
+  gradosasig:any;
+  grados: any[] = [];
 
   getAsignatura() {
     this.asignaturaService.getAsignatura().subscribe((res) => {
       this.asignaturaService.asignaturas = res as Asignatura[];
       console.log(res);
 
+    });
+  }
+
+  getAsignatura2(){
+    this.asignaturaService.getasignaturaWithGrado().subscribe((datos)=>{
+      this.asignatura = datos;
+      console.log(datos)
+    })
+  }
+  getAsignatura3(){
+    this.asignaturaService.getasignaturaWithGrado().subscribe((datos)=>{
+      this.gradosasig = datos;
+      console.log(datos)
+    })
+  }
+  getAsignatura4(){
+    this.asignaturaService.getasignaturaWithGrado().
+    subscribe((data) => {
+      this.gradosasig = data;
+      console.log(data);
+      this.dtTrigger.next(this.dtOptions);
     });
   }
   constructor(public asignaturaService: AsignaturaService, private fb: FormBuilder) {
@@ -33,12 +63,29 @@ export class AsignaturaComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.dtOptions = {
+      language: {
+        url: "/assets/Spanish.json"
+      },
+    };
     this.getAsignatura();
+    //this.getAsignatura3();
+    this.getAsignatura4();
+    // Retrasa la ejecución hasta que se complete la llamada asíncrona
+   this.getGrado();
   }
+
+  getGrado(){
+    this.asignaturaService.getGrados().subscribe((res)=>{
+      this.grados = res;
+    })
+  }
+
 
   ngOnDestroy(): void {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
+
 
   openAddAsignaturaModal() {
     // Resetea el formulario antes de abrir el modal para un nuevo estudiante
@@ -102,6 +149,8 @@ export class AsignaturaComponent implements OnInit, OnDestroy {
       modal.style.display = 'none'; // Establece el estilo 'display' en 'none'
     }
   }
+
+
 
 }
 

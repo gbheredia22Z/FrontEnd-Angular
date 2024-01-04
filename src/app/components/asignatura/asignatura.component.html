@@ -9,8 +9,8 @@
 
 <p class="est"><b> Asignatura </b> </p>
 
-<button type="button" class="btn btn-primary" id="modal" (click)="openAddAsignaturaModal()">
-    Añadir Asignatura </button>
+    <button type="button" class="btn btn-primary" id="modal" (click)="openAddAsignaturaModal()">
+        Añadir Asignatura </button>
 <!-- Modal -->
 <div class="modal fade" id="addAsignaturaModal" tabindex="-1" aria-labelledby="addAsignaturaModalLabel"
     aria-hidden="true">
@@ -41,17 +41,19 @@
                             <label for="estado" class="form-label">Estado:</label>
                             <select class="form-select" aria-label="Selecciona el estado" id="estado" name="estado"
                                 [(ngModel)]="asignaturaService.selectedAsignatura.estado" required>
-                                <option value="A">A</option>
-                                <option value="I">I</option>
+                                <option value="A">Activo</option>
+                                <option value="I">Inactivo</option>
                             </select>
                         </div>
 
                     </div>
                     <div class="row">
+                      
                         <div class="col-md-6 mb-3">
-                            <label for="idGrado" class="form-label"> Grado:</label>
-                            <input type="text" class="form-control" id="idGrado" placeholder="Ingrese grado"
-                                [(ngModel)]="asignaturaService.selectedAsignatura.idGrado" name="idGrado" required>
+                            <label for="docente" class="form-label">Seleccione Grado:</label>
+                            <select class="form-select" id="idGrado" [(ngModel)]="asignaturaService.selectedAsignatura.idGrado" name="idGrado" required>
+                                <option *ngFor="let grado of grados" [value]="grado.id">{{ grado.nombreGrado }} </option>
+                            </select>
                         </div>
 
 
@@ -72,7 +74,7 @@
 <div class="container mt-4">
 
 
-    <table class="table table-bordered">
+    <table class="table table-bordered" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
         <thead>
             <tr>
                 <th scope="col">Nombre Asignatura </th>
@@ -82,10 +84,12 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let asignatura of asignaturaService.asignaturas">
+            <tr *ngFor="let asignatura of gradosasig">
                 <td>{{asignatura.nombreMateria}}</td>
-                <td>{{asignatura.estado}}</td>
-                <td>{{asignatura.idGrado}}</td>
+                <td>{{ asignatura.estadoMateria === 'A' ? 'Activo' : 'Inactivo' }}</td>
+
+                <td>{{asignatura.nombreGrado}}</td>
+                
 
                 <td>
 

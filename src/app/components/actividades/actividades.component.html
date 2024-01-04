@@ -1,0 +1,97 @@
+
+<nav>
+    <ul class="nav justify-content-center">
+        <li class="nav-item">
+            <a class="nav-link active" routerLink="/admin" routerLinkActive="active">Inicio</a>
+        </li>
+
+    </ul>
+</nav>
+
+<p class="est"><b> Actividades </b> </p>
+
+<button type="button" class="btn btn-primary" id="modal" (click)="openAddActividadModal()">
+    Añadir Actividades </button>
+<!-- Modal -->
+<div class="modal fade" id="addActividadModal" tabindex="-1" aria-labelledby="addPeriodoModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel"> Nombre Periodo</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                    (click)="closeAddAvtividadModal()"></button>
+            </div>
+            <div class="modal-body">
+                <form #periodoForm="ngForm">
+                    <div class="input-group">
+                        <input name="code" class="form-control" type="hidden" name="id_periodo" #id="ngModel"
+                            [(ngModel)]="tipoService.selectedActividad.id" />
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="nombreActividad" class="form-label">Año Lectivo:</label>
+                            <input type="text" class="form-control" id="nombreActividad" placeholder="Ingrese el tipo de actividad"
+                                [(ngModel)]="tipoService.selectedActividad.nombreActividad" name="nombreActividad" required>
+                        </div>
+                    </div>
+                   
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="btn-g"
+                    (click)="createPeriodo(periodoForm)">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container mt-4">
+    <table class="table table-bordered text-center">
+        <thead>
+            <tr>
+                <th scope="col">Nombre Actividad</th>
+                <th scope="col">Acción</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let periodo of tipoService.tiposactividades">
+                <td>{{periodo.nombreActividad}}</td>
+                <td>
+                    <button type="button" class="btn btn-primary" id="btn-g"
+                        (click)="editTipoActividad(periodo)">Editar</button>
+                </td>
+                <!-- Modal de Edición -->
+                <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="exampleModalLabel">Editar Actividad</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                                    (click)="closeEditActividadModal()"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form #periodoForm2="ngForm">
+                                    <!-- Campo de ID oculto -->
+                                    <input type="hidden" [(ngModel)]="tipoService.selectedActividad.id" name="id" />
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="nombreActividad" class="form-label">Nombre:</label>
+                                            <input type="text" class="form-control" id="nombreActividad"
+                                                [(ngModel)]="tipoService.selectedActividad.nombreActividad"
+                                                name="nombreActividad">
+                                        </div>
+                                       
+                                    </div>
+                                    <!-- Botón de guardar en el modal de edición -->
+                                    <button type="button" class="btn btn-primary"
+                                        (click)="updateTipoActividad(periodoForm2)">Guardar</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </tr>
+        </tbody>
+    </table>
+</div>

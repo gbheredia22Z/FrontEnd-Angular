@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
 
 
 
+
 @Component({
   selector: 'app-estudiante',
   templateUrl: './estudiante.component.html',
@@ -20,6 +21,9 @@ import { Router } from '@angular/router';
 })
 
 export class EstudianteComponent implements OnInit, OnDestroy {
+
+ 
+  
   
   dtOptions:DataTables.Settings={};
   data:any=[]; //aqui se alamcena
@@ -68,7 +72,7 @@ maxFechaNacimiento: string;
       subscribe((data) => {
         this.data = data;
         console.log(data);
-        this.dtTrigger.next(data);
+        this.dtTrigger.next(this.dtOptions);
       });
   }
 
@@ -98,6 +102,12 @@ maxFechaNacimiento: string;
     });
   }
   ngOnInit(): void {
+    this.dtOptions = {
+      language: {
+        url: "/assets/Spanish.json"
+      },
+    };
+ 
     this.getEstudiantes2();
      // Calcula el rango permitido (puedes ajustar los valores según tus necesidades)
      const fechaActual = new Date();
@@ -146,40 +156,26 @@ maxFechaNacimiento: string;
     inputElement.value = inputElement.value.replace(/[^0-9]/g, '');
   }
 
-  validateForm(form: any): { isValid: boolean, errors: { [key: string]: string } } {
+  validateForm(form: any, isSubmitAttempted: boolean): { isValid: boolean, errors: { [key: string]: string } } {
     const errors: { [key: string]: string } = {};
     let isValid = true;
-
-    if (form.nombre.length > 100) {
+  
+    // Validación de campo vacío para el nombre solo si se intenta enviar el formulario
+    if (isSubmitAttempted && !form.nombre.trim()) {
       isValid = false;
-      errors['nombre'] = 'El nombre debe tener máximo 100 caracteres';
-    }
-
-    if (form.apellido.length > 100) {
+      errors['nombre'] = 'El nombre es obligatorio';
+    } else if (form.nombre.length > 100 || /\d/.test(form.nombre)) {
       isValid = false;
-      errors['apellido'] = 'El apellido debe tener máximo 100 caracteres';
+      errors['nombre'] = 'El nombre debe tener máximo 100 caracteres y no debe contener números';
     }
-
-    if (!form.correo.includes('@') || form.correo.length > 100) {
-      isValid = false;
-      errors['correo'] = 'Ingrese un correo electrónico válido y con máximo 100 caracteres';
-    }
-
-    if (!/^09\d{8}$/.test(form.celular)) {
-      isValid = false;
-      errors['celular'] = 'El número de teléfono debe comenzar con "09" y tener 10 dígitos';
-    }
-    
-
-    if (form.direccion.length > 100) {
-      isValid = false;
-      errors['direccion'] = 'La dirección debe tener máximo 100 caracteres';
-    }
-
+  
+    // Resto de las validaciones...
+  
     return { isValid, errors };
   }
   
-  validarCedulaEcuatoriana(cedula: string): boolean {
+  
+   validarCedulaEcuatoriana(cedula: string): boolean {
     const cedulaRegExp = /^[0-9]{10}$/;
 
     if (!cedulaRegExp.test(cedula)) {
@@ -214,34 +210,198 @@ maxFechaNacimiento: string;
 
     return true;
   }
+  
+  
 
   createEstudiante(form: NgForm): void {
-    this.personaService.postEstudiante(form.value).subscribe(
-      (res) => {
-        form.reset();
-        Swal.fire({
-          position: 'top',
-          icon: 'success',
-          title: 'Nuevo estudiante agregado',
-          showConfirmButton: false,
-          timer: 3000,
-        });
-       
-        this.closeAddEstudianteModal();
-        this.irListaEstudiantes();
+    // Validación de formulario totalmente vacío
+    const isFormEmpty = Object.values(form.value).every(value => !value);
+    if (isFormEmpty) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error en el formulario',
+        text: 'El formulario está vacío. Por favor, completa los campos antes de guardar.'
+      });
+      return;
+    }
+  
+    // Validación de nombre (solo texto, no números)
+    if (!/^[A-Za-z\s]+$/.test(form.value.nombre)) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error en el nombre',
+        text: 'El nombre solo puede contener letras y espacios.'
+      });
+      return;
+    }
+  
+    // Validación de cédula (solo números y máximo 10 dígitos)
+    const cedulaValue = form.value.cedula;
+    if (!this.validarCedulaEcuatoriana(cedulaValue)) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error en la cédula',
+        text: 'La cédula no es válida. Asegúrate de ingresar una cédula ecuatoriana válida.'
+      });
+      return;
+    }
+    if (!/^\d{10}$/.test(cedulaValue)) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error en la cédula',
+        text: 'La cédula debe contener solo números y tener 10 dígitos.'
+      });
+      return;
+    }
+  
+    // Validación de dirección (solo texto)
+    if (!/^[A-Za-z0-9\s]+$/.test(form.value.direccion)) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error en la dirección',
+        text: 'La dirección solo puede contener letras, números y espacios.'
+      });
+      return;
+    }
+  
+    // Validación de correo electrónico
+    const correoValue = form.value.correo;
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correoValue)) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error en el correo electrónico',
+        text: 'Ingrese un correo electrónico válido.'
+      });
+      return;
+    }
+  
+    // Validación de teléfono (solo números y máximo 10 dígitos)
+    const telefonoValue = form.value.celular;
+    if (!/^\d{10}$/.test(telefonoValue)) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error en el teléfono',
+        text: 'El teléfono debe contener solo números y tener 10 dígitos.'
+      });
+      return;
+    }
+  
+    // Validación de fecha (rango permitido)
+    const fechaNacimientoValue = form.value.fechaNacimiento;
+    // Verifica si la fecha de nacimiento está vacía
+    if (!fechaNacimientoValue) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error en la fecha de nacimiento',
+        text: 'La fecha de nacimiento es obligatoria.'
+      });
+      return;
+    }
+    const fechaNacimiento = new Date(fechaNacimientoValue);
+  
+    // Verifica que la fecha esté dentro del rango permitido
+    if (fechaNacimiento.getFullYear() < 2010 || fechaNacimiento.getFullYear() > 2017) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error en la fecha de nacimiento',
+        text: 'La fecha de nacimiento debe estar entre 2010 y 2017.'
+      });
+      return;
+    }
+  
+    // Validación de cédula duplicada
+    this.personaService.getEstudianteByCi(cedulaValue).subscribe(
+      (existingStudent) => {
+        if (existingStudent.length > 0) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error en la cédula',
+            text: 'Ya existe un estudiante con esta cédula. Ingresa una cédula diferente.'
+          });
+        } else {
+          // Validación de correo electrónico duplicado
+          this.personaService.getEstudianteByCorreo(correoValue).subscribe(
+            (existingStudentByCorreo) => {
+              if (existingStudentByCorreo.length > 0) {
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Error en el correo electrónico',
+                  text: 'Ya existe un estudiante con este correo electrónico. Ingresa un correo diferente.'
+                });
+              } else {
+                // Validación de teléfono duplicado
+                this.personaService.getEstudianteByCelular(telefonoValue).subscribe(
+                  (existingStudentByCelular) => {
+                    if (existingStudentByCelular.length > 0) {
+                      Swal.fire({
+                        icon: 'error',
+                        title: 'Error en el número de teléfono',
+                        text: 'Ya existe un estudiante con este número de teléfono. Ingresa un número diferente.'
+                      });
+                    } else {
+                      // Si la cédula, el correo y el teléfono no están duplicados, continuar con la creación del estudiante
+                      this.personaService.postEstudiante(form.value).subscribe(
+                        (res) => {
+                          form.reset();
+                          Swal.fire({
+                            position: 'top',
+                            icon: 'success',
+                            title: 'Nuevo estudiante agregado',
+                            showConfirmButton: false,
+                            timer: 3000,
+                          });
+  
+                          this.closeAddEstudianteModal();
+                          this.irListaEstudiantes();
+                        },
+                        (error) => {
+                          console.error('Error al crear estudiante:', error);
+                          Swal.fire({
+                            position: 'top',
+                            icon: 'error',
+                            title: 'Error al crear estudiante',
+                            showConfirmButton: false,
+                            timer: 1500,
+                          });
+                        }
+                      );
+                    }
+                  },
+                  (error) => {
+                    console.error('Error al verificar número de teléfono:', error);
+                    Swal.fire({
+                      icon: 'error',
+                      title: 'Error al verificar número de teléfono',
+                      text: 'Hubo un error al verificar el número de teléfono. Por favor, inténtalo nuevamente.'
+                    });
+                  }
+                );
+              }
+            },
+            (error) => {
+              console.error('Error al verificar correo electrónico:', error);
+              Swal.fire({
+                icon: 'error',
+                title: 'Error al verificar correo electrónico',
+                text: 'Hubo un error al verificar el correo electrónico. Por favor, inténtalo nuevamente.'
+              });
+            }
+          );
+        }
       },
       (error) => {
-        console.error('Error al crear estudiante:', error);
+        console.error('Error al verificar cédula:', error);
         Swal.fire({
-          position: 'top',
           icon: 'error',
-          title: 'Error al crear estudiante',
-          showConfirmButton: false,
-          timer: 1500,
+          title: 'Error al verificar cédula',
+          text: 'Hubo un error al verificar la cédula. Por favor, inténtalo nuevamente.'
         });
       }
     );
   }
+  
+  
+  
 
   // Agregar un método para cerrar el modal de añadir estudiante
   closeAddEstudianteModal(): void {

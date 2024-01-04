@@ -12,12 +12,14 @@ export class GradoService {
   [x: string]: any;
   selectedGrado: Grado;
   grados!: Grado[];
+  selectedDocentes:any;
   
   URL_API = "http://127.0.0.1:3000/api/grado/";
 
   constructor(private http: HttpClient) {
     this.selectedGrado = new Grado();
     this.selectedGrado = new Grado();
+    this.selectedDocentes = null;
   }
 
   getGrado() {

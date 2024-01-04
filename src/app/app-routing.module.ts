@@ -10,6 +10,8 @@ import { AsignaturaComponent } from './components/asignatura/asignatura.componen
 import { GradoComponent } from './components/grado/grado.component';
 import { MatriculaComponent } from './components/matricula/matricula.component';
 import { LoginComponent } from './components/login/login.component';
+import { ActividadesComponent } from './components/actividades/actividades.component';
+import { PerCalificacionesComponent } from './components/per-calificaciones/per-calificaciones.component';
 
 const routes: Routes = [
   {
@@ -49,6 +51,14 @@ const routes: Routes = [
     path:'login',
     component: LoginComponent
   },
+  {
+    path:'actividades',
+    component:ActividadesComponent
+  },
+  {
+    path:'periodo-calificaciones',
+    component:PerCalificacionesComponent
+  }
 
 ];
 

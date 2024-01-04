@@ -1,3 +1,4 @@
+
 <nav>
     <ul class="nav justify-content-center">
         <li class="nav-item">
@@ -7,41 +8,42 @@
     </ul>
 </nav>
 
-<p class="est"><b> Periodo </b> </p>
+<p class="est"><b> Periodo Calificación </b> </p>
 
-<button type="button" class="btn btn-primary" id="modal" (click)="openAddPeriodoModal()">
-    Añadir Periodo </button>
+<button type="button" class="btn btn-primary" id="modal" (click)="openAddActividadModal()">
+    Añadir Periodos de Calificación </button>
 <!-- Modal -->
-<div class="modal fade" id="addPeriodoModal" tabindex="-1" aria-labelledby="addPeriodoModalLabel" aria-hidden="true">
+<div class="modal fade" id="addActividadModal" tabindex="-1" aria-labelledby="addPeriodoModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel"> Añadir Periodo</h1>
+                <h1 class="modal-title fs-5" id="exampleModalLabel"> Nombre Periodo</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
-                    (click)="closeAddPeriodoModal()"></button>
+                    (click)="closeAddAvtividadModal()"></button>
             </div>
             <div class="modal-body">
                 <form #periodoForm="ngForm">
                     <div class="input-group">
                         <input name="code" class="form-control" type="hidden" name="id_periodo" #id="ngModel"
-                            [(ngModel)]="periodoService.selectedPeriodo.id" />
+                            [(ngModel)]="perService.selectPerCalificaciones.id" />
                     </div>
                     <div class="row">
                         <div class="col-md-6 mb-3">
-                            <label for="anioLectivo" class="form-label">Año Lectivo:</label>
-                            <input type="text" class="form-control" id="anioLectivo" placeholder="Ingrese año lectivo"
-                                [(ngModel)]="periodoService.selectedPeriodo.anioLectivo" name="anioLectivo" required>
-                        </div>
-
-                        <div class="col-md-6 mb-3">
-                            <label for="estado" class="form-label">Estado:</label>
-                            <select class="form-select" aria-label="Selecciona el estado" id="estado" name="estado"
-                                [(ngModel)]="periodoService.selectedPeriodo.estado" required>
-                                <option value="A">Activo</option>
-                                <option value="I">Inactivo</option>
-                            </select>
+                            <label for="nombrePeriodo" class="form-label">Nombre Periodo:</label>
+                            <input type="text" class="form-control" id="nombrePeriodo" placeholder="Ingrese el nombre del periodo"
+                                [(ngModel)]="perService.selectPerCalificaciones.nombrePeriodo" name="nombrePeriodo" required>
                         </div>
                     </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="estado" class="form-label">Estado:</label>
+                        <select class="form-select" aria-label="Selecciona el estado" id="estado" name="estado"
+                            [(ngModel)]="perService.selectPerCalificaciones.estado" required>
+                            <option value="A">Activo</option>
+                            <option value="I">Inactivo</option>
+                        </select>
+                    </div>
+                    
+                   
                 </form>
             </div>
             <div class="modal-footer">
@@ -56,18 +58,18 @@
     <table class="table table-bordered text-center">
         <thead>
             <tr>
-                <th scope="col">Año Lectivo</th>
+                <th scope="col">Nombre Periodo</th>
                 <th scope="col">Estado</th>
                 <th scope="col">Acción</th>
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let periodo of periodoService.periodos">
-                <td>{{periodo.anioLectivo}}</td>
+            <tr *ngFor="let periodo of perService.tiposPerCalificaciones">
+                <td>{{periodo.nombrePeriodo}}</td>
                 <td>{{periodo.estado === 'A' ? 'Activo' : 'Inactivo'}}</td>
                 <td>
                     <button type="button" class="btn btn-primary" id="btn-g"
-                        (click)="editPeriodo(periodo)">Editar</button>
+                        (click)="editTipoActividad(periodo)">Editar</button>
                 </td>
                 <!-- Modal de Edición -->
                 <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="exampleModalLabel"
@@ -75,34 +77,35 @@
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h1 class="modal-title fs-5" id="exampleModalLabel">Editar Periodo</h1>
+                                <h1 class="modal-title fs-5" id="exampleModalLabel">Editar Periodo Calificacion</h1>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
-                                    (click)="closeEditPeriodoModal()"></button>
+                                    (click)="closeEditActividadModal()"></button>
                             </div>
                             <div class="modal-body">
                                 <form #periodoForm2="ngForm">
                                     <!-- Campo de ID oculto -->
-                                    <input type="hidden" [(ngModel)]="periodoService.selectedPeriodo.id" name="id" />
+                                    <input type="hidden" [(ngModel)]="perService.selectPerCalificaciones" name="id" />
                                     <div class="row">
                                         <div class="col-md-6 mb-3">
-                                            <label for="anioLectivo" class="form-label">Año Lectivo:</label>
-                                            <input type="text" class="form-control" id="anioLectivo"
-                                                [(ngModel)]="periodoService.selectedPeriodo.anioLectivo"
-                                                name="anioLectivo">
+                                            <label for="nombreActividad" class="form-label">Nombre:</label>
+                                            <input type="text" class="form-control" id="nombreActividad"
+                                                [(ngModel)]="perService.selectPerCalificaciones.nombrePeriodo"
+                                                name="nombreActividad">
                                         </div>
                                         <div class="col-md-6 mb-3">
                                             <label for="estado" class="form-label">Estado:</label>
                                             <select class="form-select" aria-label="Selecciona el estado" id="estado"
-                                                name="estado" [(ngModel)]="periodoService.selectedPeriodo.estado"
+                                                name="estado" [(ngModel)]="perService.selectPerCalificaciones.estado"
                                                 required>
                                                 <option value="A">Activo</option>
                                                 <option value="I">Inactivo</option>
                                             </select>
                                         </div>
+                                       
                                     </div>
                                     <!-- Botón de guardar en el modal de edición -->
                                     <button type="button" class="btn btn-primary"
-                                        (click)="updatePeriodo(periodoForm2)">Guardar</button>
+                                        (click)="updateTipoActividad(periodoForm2)">Guardar</button>
                                 </form>
                             </div>
                         </div>

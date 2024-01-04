@@ -33,15 +33,33 @@
                                 placeholder="Ingrese nombre de grado"
                                 [(ngModel)]="gradoService.selectedGrado.nombreGrado" name="nombreGrado" required>
                         </div>
-                        <div class="col-md-6 mb-3">
+                        <!-- <div class="col-md-6 mb-3">
                             <label for="docente" class="form-label">Seleccione Docente:</label>
                             <select class="form-select" id="docente" [(ngModel)]="gradoService.selectedGrado.persId" name="persId" required>
                                 <option *ngFor="let docente of docentes" [value]="docente.id">{{ docente.nombre }} {{ docente.apellido }}</option>
                             </select>
-                        </div>
+                        </div> -->
                         
 
                     </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                          <label for="cedulaDocente" class="form-label">Cédula del Docente:</label>
+                          <input id="cedulaDocente" class="form-control" type="text" name="cedulaDocente" [(ngModel)]="searchQuery" (input)="onCedulaInput()">
+                          <a [routerLink]="[('/docente')]">Lista Docente</a>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                          <label for="persId"class="form-label">Nombre del Docente:</label>
+                          <input id="persId" class="form-control" type="text" name="persId"  [ngModel]="gradoService.selectedDocentes?.nombre" disabled="true">
+                        </div>
+                      </div>
+                      
+                      <div class="row">
+                        <div class="col-md-6 mb-3">
+                          <button type="button" class="btn btn-primary" (click)="buscarEstudiante()">Buscar</button>
+                        </div>
+                      </div>
 
                 </form>
             </div>
@@ -57,22 +75,23 @@
 <div class="container mt-4">
 
 
-    <table class="table table-bordered">
+    <table class="table table-bordered" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
         <thead>
             <tr>
                 <th scope="col">Nombre Grado </th>
-                <th scope="col">ID Persona</th>
+                <th scope="col">Nombre Persona</th>
+                <th scope="col">Apellido Persona</th>
                 <th scope="col"> Acción </th>
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let grado of gradoService.grados">
+            <tr *ngFor="let grado of data">
                 <td>{{grado.nombreGrado}}</td>
-                <td>{{grado.persId}}</td>
-                <td>
-
-                </td>
-            </tr>
+                <td>{{grado.persona.nombre}}</td>
+                <td>{{grado.persona.apellido}}</td>
+                <td scope="col"> Acción </td>
+              </tr>
+              
         </tbody>
     </table>
 </div>
