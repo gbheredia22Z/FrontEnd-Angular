@@ -16,6 +16,8 @@ import { LoginComponent } from './components/login/login.component';
 import { RouterModule } from '@angular/router';
 import { ActividadesComponent } from './components/actividades/actividades.component';
 import { PerCalificacionesComponent } from './components/per-calificaciones/per-calificaciones.component';
+import { EducativaActividadesComponent } from './components/educativa-actividades/educativa-actividades.component';
+import { NotasComponent } from './components/notas/notas.component';
 
 @NgModule({
     declarations: [
@@ -29,7 +31,9 @@ import { PerCalificacionesComponent } from './components/per-calificaciones/per-
         MatriculaComponent,
         LoginComponent,
         ActividadesComponent,
-        PerCalificacionesComponent
+        PerCalificacionesComponent,
+        EducativaActividadesComponent,
+        NotasComponent
     ],
     imports: [
         BrowserModule,

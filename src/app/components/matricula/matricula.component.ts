@@ -4,6 +4,7 @@ import { Subject, Subscription } from 'rxjs';
 import { MatriculaService } from '../../services/matricula.service';
 import { Matricula } from '../../models/matricula';
 import Swal from 'sweetalert2';
+import { ImpresionService } from '../../services/impresion.service';
 
 @Component({
   selector: 'app-matricula',
@@ -14,82 +15,48 @@ import Swal from 'sweetalert2';
 
 export class MatriculaComponent implements OnInit, OnDestroy {
 
-  dtOptions:DataTables.Settings={};
-  data:any=[]; //aqui se alamcena
-  dtTrigger:Subject<any> = new Subject<any>();
+  dtOptions: DataTables.Settings = {};
+  data: any = []; //aqui se alamcena
+  dtTrigger: Subject<any> = new Subject<any>();
   myForm: FormGroup;
   searchQuery: any;
   searchResults: any[] = [];
   selectedEstudiante: any = null;
+  formData: any = {};
 
+  // Objeto para el estudiante seleccionado
 
   private subscriptions: Subscription[] = [];
   isEditModalOpen = false;
   grados: any[] = [];
-  periodos : any[] = [];
-  estudiantes : any[] = [];
-  matriculaLista:any;
-  constructor(public matriculaServices: MatriculaService, private fb: FormBuilder) {
+  periodos: any[] = [];
+  estudiantes: any[] = [];
+  matriculaLista: any;
+  constructor(public matriculaServices: MatriculaService, private fb: FormBuilder, private srvImpresion:ImpresionService) {
     this.myForm = this.fb.group({
       id: new FormControl('', Validators.required),
       estado: ['', Validators.required],
+      nombreEstudiante: [''],
     });
   }
 
   searchEstudiante() {
     this.selectedEstudiante = this.estudiantes.find(estudiante => estudiante.cedula === this.searchQuery);
   }
-  
+
   updateSelectedEstudianteName(newValue: string) {
+      //actualiza el nombre del estudiante en el formulari
+      this.myForm.patchValue({
+        idPersona : this.selectedEstudiante?.id,
+        nombreEstudiante :newValue,
+      });
     if (this.selectedEstudiante) {
       this.selectedEstudiante = { ...this.selectedEstudiante, nombre: newValue };
     } else {
       this.selectedEstudiante = { nombre: newValue };
     }
   }
-  // En tu componente
 
-  // buscarEstudiante() {
-  //   this.matriculaServices.getEstudiantes().subscribe((estudiantes) => {
-  //     this.selectedEstudiante = estudiantes.find(estudiante => estudiante.cedula === this.searchQuery) || { nombre: null };
-  //   });
-  // }
-  buscarEstudiante() {
-    if (!this.searchQuery) {
-      // Muestra una alerta si el campo de búsqueda está vacío
-      Swal.fire({
-        icon: 'error',
-        title: 'Campo vacío',
-        text: 'Por favor, ingrese la cédula del estudiante.',
-      });
-      return;
-    }
-
-    // Utiliza la lista de estudiantes que ya has obtenido
-    const estudianteEncontrado = this.estudiantes.find(estudiante => estudiante.cedula === this.searchQuery);
-
-    if (!estudianteEncontrado) {
-      // Muestra una alerta si no se encuentra el estudiante con la cédula proporcionada
-      Swal.fire({
-        icon: 'error',
-        title: 'Estudiante no encontrado',
-        text: 'No se encontró ningún estudiante con la cédula proporcionada.',
-      });
-      // Limpia el valor de selectedEstudiante si no se encontró ningún estudiante
-      this.matriculaServices.selectedEstudiante = null;
-    } else {
-      // Asigna el estudiante encontrado a selectedEstudiante
-      this.matriculaServices.selectedEstudiante = estudianteEncontrado;
-
-      // Muestra una alerta informando que el estudiante fue encontrado
-      Swal.fire({
-        icon: 'success',
-        title: 'Estudiante encontrado',
-        text: `Estudiante ${estudianteEncontrado.nombre} ${estudianteEncontrado.apellido} encontrado.`,
-      });
-    }
-  }
-  
   previousCedulaValue: string = ''; // Agrega esta línea
   onCedulaInput() {
     // Limpia el nombre del estudiante si se borra la cédula
@@ -111,36 +78,49 @@ export class MatriculaComponent implements OnInit, OnDestroy {
   }
 
   //obtener los grados
-  getGrado(){
-    this.matriculaServices.getGrados().subscribe((res)=>{
+  getGrado() {
+    this.matriculaServices.getGrados().subscribe((res) => {
       this.grados = res;
     })
   }
-  getPeriodos(){
-    this.matriculaServices.getPeriodo().subscribe((res)=>{
+  getPeriodos() {
+    this.matriculaServices.getPeriodo().subscribe((res) => {
       this.periodos = res;
     })
   }
-  getEstudiantes(){
-    this.matriculaServices.getEstudiantes().subscribe((res)=>{
-      this.estudiantes = res;
-      console.log(res);
+  // getEstudiantes(){
+  //   this.matriculaServices.getEstudiantes().subscribe((res)=>{
+  //     this.estudiantes = res;
+  //     console.log(res);
+  //   })
+  // }
+
+  getEstudiantes() {
+    this.matriculaServices.getEstudiantes().subscribe((res) => {
+      this.estudiantes = res.filter(estudiante => !this.isEstudianteAsignadoToMatricula(estudiante.id));
     })
   }
 
-  getMatricula() {
-    this.matriculaServices.getMatricula().subscribe((res) => {
-      this.matriculaServices.matriculas = res as Matricula[];
-      console.log(res);
-    });
+
+  isEstudianteAsignadoToMatricula(estudianteId: String): boolean {
+    return this.matriculaServices.matriculas?.some(matricula => matricula.idPersona === estudianteId) || false;
   }
-  getMatricula2(){
+
+
+
+  // getMatricula() {
+  //   this.matriculaServices.getMatricula().subscribe((res) => {
+  //     this.matriculaServices.matriculas = res as Matricula[];
+  //     console.log(res);
+  //   });
+  // }
+  getMatricula2() {
     this.matriculaServices.getMatricula().
-    subscribe((data) => {
-      this.matriculaLista = data;
-      console.log(data);
-      this.dtTrigger.next(this.dtOptions);
-    });
+      subscribe((data) => {
+        this.matriculaLista = data;
+        console.log(data);
+        this.dtTrigger.next(this.dtOptions);
+      });
   }
 
   ngOnInit(): void {
@@ -150,7 +130,7 @@ export class MatriculaComponent implements OnInit, OnDestroy {
       },
     };
     //funcion para traer matriuclas
-    this.getMatricula();
+    //this.getMatricula();
     this.getMatricula2();
     this.getEstudiantes();
     this.getGrado();
@@ -185,51 +165,39 @@ export class MatriculaComponent implements OnInit, OnDestroy {
 
 
   createAsignatura(form: NgForm): void {
-    if (!form.value.id) {
-      if (!form.valid) {
-        // Formulario vacío
+    // Verifica si ya hay un estudiante asignado a alguna asignatura
+    if (this.selectedEstudiante && this.selectedEstudiante.id) {
+      // Realiza una verificación adicional antes de permitir la matriculación
+      if (this.isEstudianteAssignedToMatricula(this.selectedEstudiante.id)) {
         Swal.fire({
           position: 'top',
           icon: 'error',
-          title: 'Llene todos los campos',
+          title: 'El estudiante ya está asignado a otra matrícula',
           showConfirmButton: false,
           timer: 1500,
         });
         return;
       }
+    }
   
-      // Validar si no se encuentra un estudiante con la cédula proporcionada
-      if (!this.matriculaServices.selectedEstudiante) {
-        Swal.fire({
-          position: 'top',
-          icon: 'error',
-          title: 'No se encuentra un estudiante con ese número de cédula',
-          showConfirmButton: false,
-          timer: 1500,
-        });
-        return;
-      }
-  
-      // Asigna la información del estudiante seleccionado a la matrícula
-      form.value.idPersona = this.matriculaServices.selectedEstudiante.id;
-      form.value.persona = {
-        nombre: this.matriculaServices.selectedEstudiante.nombre,
-        apellido: this.matriculaServices.selectedEstudiante.apellido
-      };
-  
-      this.matriculaServices.postMaticula(form.value).subscribe((res) => {
-        form.reset();
-        Swal.fire({
-          position: 'top',
-          icon: 'success',
-          title: 'Nuevo registro agregado',
-          showConfirmButton: false,
-          timer: 1500,
-        });
-        this.closeAddAsignaturaModal();
+    // Verifica si la asignatura ya existe
+    if (this.isAsignaturaAlreadyExists(form.value.nombreAsignatura)) {
+      Swal.fire({
+        position: 'top',
+        icon: 'error',
+        title: 'La asignatura ya existe',
+        showConfirmButton: false,
+        timer: 1500,
       });
-    } else {
-      this.matriculaServices.putMatricula(form.value).subscribe((res) => {
+      return;
+    }
+  
+    // Utiliza directamente this.matriculaServices.selectedMatricula.id para la lógica de actualización
+    if (this.matriculaServices.selectedMatricula.id) {
+      // Asigna la información del estudiante seleccionado a la matrícula
+      // Asigna la información del estudiante seleccionado a la matrícula
+      form.value.idPersona = this.selectedEstudiante?.id;
+      this.matriculaServices.putMatricula(this.matriculaServices.selectedMatricula).subscribe((res) => {
         Swal.fire({
           position: 'top',
           icon: 'success',
@@ -239,28 +207,219 @@ export class MatriculaComponent implements OnInit, OnDestroy {
         });
         this.closeAddAsignaturaModal();
       });
+    } else {
+      // Lógica para la inserción, similar a tu código actual...
+  
+      if (form.valid) {
+        // Asigna la información del estudiante seleccionado a la matrícula
+        form.value.idPersona = this.selectedEstudiante?.id;
+  
+        this.matriculaServices.postMaticula(form.value).subscribe((res) => {
+          form.reset();
+          Swal.fire({
+            position: 'top',
+            icon: 'success',
+            title: 'Nuevo registro agregado',
+            showConfirmButton: false,
+            timer: 1500,
+          });
+          //this.getMatricula();
+          this.closeAddAsignaturaModal();
+          this.irPagina();
+        });
+      } else {
+        Swal.fire({
+          position: 'top',
+          icon: 'error',
+          title: 'Llene todos los campos',
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      }
     }
   }
   
   
-
   
+
+  isEstudianteAssignedToMatricula(matriculaId: string): boolean {
+    return this.matriculaServices.matriculas?.some(matricula => matricula.idPersona === matriculaId) || false;
+  }
+  isAsignaturaAlreadyExists(nombreAsignatura: string): boolean {
+    return this.matriculaServices.matriculas.some(matricula => matricula.grado && matricula.grado.nombreGrado === nombreAsignatura);
+  }
+  
+  
+
+
   ngOnDestroy(): void {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
- 
+
   filterByNameOrCedula(estudiantes: any[], searchQuery: string): any[] {
     if (!searchQuery) {
-        return estudiantes; // Si no hay consulta de búsqueda, devuelve la lista completa
+      return estudiantes; // Si no hay consulta de búsqueda, devuelve la lista completa
     }
 
     const query = searchQuery.toLowerCase();
-    return estudiantes.filter(estudiante => 
-        estudiante.nombre.toLowerCase().includes(query) ||
-        estudiante.cedula.toLowerCase().includes(query)
+    return estudiantes.filter(estudiante =>
+      estudiante.nombre.toLowerCase().includes(query) ||
+      estudiante.cedula.toLowerCase().includes(query)
     );
-}
+  }
+
+  openEstudianteListaModal(){
+    //filtra los estudiantes que no estan asignados a ninguna matrcula
+    const estudiantesNoAsignados = this.estudiantes.filter(estudiante => !this.isEstudianteAsignadoToMatricula(estudiante.id));
+
+    //asigna los estudiantes no asignaod s la lista
+    this.searchResults = estudiantesNoAsignados;
+
+    //abrir el nuevo modal
+    const studenListaModal = document.getElementById('estudianteListModal');
+    if(studenListaModal){
+      studenListaModal.classList.add('show');
+      studenListaModal.style.display = 'block';
+    }
+  }
+  openEstudianteListaModal2(){
+    //filtra los estudiantes que no estan asignados a ninguna matrcula
+    const estudiantesNoAsignados = this.estudiantes.filter(estudiante => !this.isEstudianteAsignadoToMatricula(estudiante.id));
+
+    //asigna los estudiantes no asignaod s la lista
+    this.searchResults = estudiantesNoAsignados;
+
+    //abrir el nuevo modal
+    const studenListaModal = document.getElementById('estudianteListModal2');
+    if(studenListaModal){
+      studenListaModal.classList.add('show');
+      studenListaModal.style.display = 'block';
+    }
+  }
+
+  closeDocenteListModal(): void {
+
+    const studenListaModal = document.getElementById('estudianteListModal');
+    if (studenListaModal) {
+      studenListaModal.classList.remove('show');
+      studenListaModal.style.display = 'none';
+    }
+  }
+  closeDocenteListModal2(): void {
+
+    const studenListaModal = document.getElementById('estudianteListModal2');
+    if (studenListaModal) {
+      studenListaModal.classList.remove('show');
+      studenListaModal.style.display = 'none';
+    }
+  }
+
+  cargarStudiante(estudiante:any){
+    this.selectedEstudiante = estudiante;
+    this.updateSelectedEstudianteName(estudiante.nombre);
+
+    //cierra el modal
+    this.closeDocenteListModal();
+  }
+  irPagina(){
+    window.location.reload();
+  }
+
+  //editar matricula
+  editMatricula(matricula: Matricula): void {
+    // Clona la matrícula para evitar cambios directos
+    this.matriculaServices.selectedMatricula = { ...matricula };
+  
+    // Agrega un console.log para imprimir el id seleccionado
+    console.log('ID del registro seleccionado:', matricula.id);
+  
+    // Abre el modal de edición
+    const modal = document.getElementById('editModal');
+    if (modal) {
+      modal.classList.add('show'); // Agrega la clase 'show' para mostrar el modal
+      modal.style.display = 'block'; // Establece el estilo 'display' en 'block'
+    }
+  }
+
+  //update 
+  updateMatricula(form: NgForm) {
+    this.matriculaServices.putMatricula(this.matriculaServices.selectedMatricula).subscribe((res) => {
+      Swal.fire({
+        position: 'top',
+        icon: 'success',
+        title: 'Registro actualizado',
+        showConfirmButton: false,
+        timer: 1500,
+      });
+      
+      this.closeEditMatriculaModal();
+
+      // Cierra el modal de edición utilizando $
+      $('#editModal').modal('hide');
+    });
+  }
+  
+
+
+
+  closeEditMatriculaModal(): void {
+    const modal = document.getElementById('editModal');
+    if (modal) {
+      modal.classList.remove('show'); // Quita la clase 'show' para ocultar el modal
+      modal.style.display = 'none'; // Establece el estilo 'display' en 'none'
+    }
+  }
+  cargarStudiante2(estudiante:any){
+    this.selectedEstudiante = estudiante;
+    this.updateSelectedEstudianteName(estudiante.nombre);
+
+    //cierra el modal
+    this.closeDocenteListModal2();
+  }
+  onImprimir() {
+    if (this.matriculaLista.length > 0) {
+      const encabezado = ["Estado", "Nombre", "Apellido","Grado","Año Electivo"];
+      const cuerpo = this.matriculaLista.map((matricula: Matricula) => [
+        matricula.estado,
+        matricula.persona.nombre,
+        matricula.persona.apellido,
+        matricula.grado.nombreGrado,
+        matricula.periodo.anioLectivo,
+      ]);
+
+      this.srvImpresion.imprimir(encabezado, cuerpo, "Listado de Matrícula", true);
+    } else {
+      // Muestra un mensaje de alerta si no hay datos para imprimir
+      Swal.fire({
+        icon: 'warning',
+        title: 'Sin datos',
+        text: 'No hay datos para generar el informe PDF.',
+      });
+    }
+  }
+  imprimirExcel(){
+    if (this.matriculaLista.length > 0) {
+      const encabezado = ["Estado", "Nombre", "Apellido","Grado","Año Electivo"];
+      const cuerpo = this.matriculaLista.map((matricula: Matricula) => [
+        matricula.estado,
+        matricula.persona.nombre,
+        matricula.persona.apellido,
+        matricula.grado.nombreGrado,
+        matricula.periodo.anioLectivo,
+      ]);
+
+      this.srvImpresion.imprimirExcel(encabezado, cuerpo, "Listado de Matrícula", true);
+    } else {
+      // Muestra un mensaje de alerta si no hay datos para imprimir
+      Swal.fire({
+        icon: 'warning',
+        title: 'Sin datos',
+        text: 'No hay datos para generar el informe PDF.',
+      });
+    }
+  }
+
 
 }
 declare var $: any;

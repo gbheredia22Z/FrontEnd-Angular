@@ -4,6 +4,7 @@ import { Subject, Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
 import { PersonaService } from '../../services/persona.service';
 import { Persona } from '../../models/persona';
+import { ImpresionService } from '../../services/impresion.service';
 
 
 @Component({
@@ -54,7 +55,7 @@ export class DocenteComponent implements OnInit, OnDestroy {
     return { isValid: true };
   }
 
-  constructor(public personaService: PersonaService, private fb: FormBuilder) {
+  constructor(public personaService: PersonaService, private fb: FormBuilder, private srvImpresion:ImpresionService) {
     this.myForm = this.fb.group({
       id: new FormControl('', Validators.required),
       nombre: ['', Validators.required],
@@ -75,8 +76,8 @@ export class DocenteComponent implements OnInit, OnDestroy {
     };
     this.getDocente2();
 
-    this.minFechaNacimiento = '1989-01-01';
-     this.maxFechaNacimiento = '2000-12-31';
+    this.minFechaNacimiento = '1950-01-01';
+     this.maxFechaNacimiento = '2006-12-31';
   }
 
 
@@ -404,6 +405,7 @@ createDocente(form: NgForm): void {
         timer: 1500,
       });
       this.getDocente();
+      this.irListaDocentes();
       this.closeEditDocenteModal();
 
       // Cierra el modal de edición utilizando $
@@ -473,6 +475,52 @@ createDocente(form: NgForm): void {
       fechaNacimientoControl.setErrors(Object.keys(errors).length > 0 ? errors : null);
     }
   }
+
+  onImprimir() {
+    if (this.data.length > 0) {
+      const encabezado = ["Nombre", "Apellido", "Cedula", "Correo", "Celular"];
+      const cuerpo = this.data.map((docente: Persona) => [
+        docente.nombre,
+        docente.apellido,
+        docente.cedula,
+        docente.correo,
+        docente.celular
+      ]);
+  
+      this.srvImpresion.imprimir(encabezado, cuerpo, "Listado de Docentes", true);
+    } else {
+      // Muestra un mensaje de alerta si no hay datos para imprimir
+      Swal.fire({
+        icon: 'warning',
+        title: 'Sin datos',
+        text: 'No hay datos para generar el informe PDF.',
+      });
+    }
+  }
+
+  imprimirExcel(){
+    if (this.data.length > 0) {
+      const encabezado = ["Nombre", "Apellido", "Cedula", "Correo", "Celular"];
+      const cuerpo = this.data.map((docente: Persona) => [
+        docente.nombre,
+        docente.apellido,
+        docente.cedula,
+        docente.correo,
+        docente.celular
+      ]);
+  
+      this.srvImpresion.imprimirExcel(encabezado, cuerpo, "Listado de Docentes", true);
+    } else {
+      // Muestra un mensaje de alerta si no hay datos para imprimir
+      Swal.fire({
+        icon: 'warning',
+        title: 'Sin datos',
+        text: 'No hay datos para generar el informe PDF.',
+      });
+    }
+  }
+
+
 }
 
 declare var $: any;

@@ -6,6 +6,7 @@ import Swal from 'sweetalert2';
 import { AsignaturaService } from '../../services/asignatura.service';
 import { Asigngrados } from './asigngrados';
 import { Subject } from 'rxjs';
+import { ImpresionService } from '../../services/impresion.service';
 
 @Component({
   selector: 'app-asignatura',
@@ -25,6 +26,8 @@ export class AsignaturaComponent implements OnInit, OnDestroy {
   asignatura :any;
   gradosasig:any;
   grados: any[] = [];
+  searchResults: any[] = [];
+  selectedGrados: any = null;
 
   getAsignatura() {
     this.asignaturaService.getAsignatura().subscribe((res) => {
@@ -49,16 +52,17 @@ export class AsignaturaComponent implements OnInit, OnDestroy {
   getAsignatura4(){
     this.asignaturaService.getasignaturaWithGrado().
     subscribe((data) => {
-      this.gradosasig = data;
+      this.data = data;
       console.log(data);
       this.dtTrigger.next(this.dtOptions);
     });
   }
-  constructor(public asignaturaService: AsignaturaService, private fb: FormBuilder) {
+  constructor(public asignaturaService: AsignaturaService, private fb: FormBuilder, private srvImpresion: ImpresionService) {
     this.myForm = this.fb.group({
       id: new FormControl('', Validators.required),
       anioLectivo: ['', Validators.required],
       estado: ['', Validators.required],
+      nombreGrado: [''],
     });
   }
 
@@ -75,11 +79,73 @@ export class AsignaturaComponent implements OnInit, OnDestroy {
    this.getGrado();
   }
 
-  getGrado(){
-    this.asignaturaService.getGrados().subscribe((res)=>{
-      this.grados = res;
-    })
+  // getGrado(){
+  //   this.asignaturaService.getGrados().subscribe((res)=>{
+  //     this.grados = res;
+  //   })
+  // }
+getGrado() {
+  this.asignaturaService.getGrados().subscribe((res)=>{
+     // Filtra los docentes que no están asignados a ningún grado
+     this.grados = res.filter(grado => !this.esGradoAsignadoAMateria(grado.id));
+  })
+}
+
+  esGradoAsignadoAMateria(gradoId: string): boolean {
+    // Verifica si algún grado tiene el mismo idGrado que ya está asignado en alguna materia
+    return this.asignaturaService.asignaturas?.some(asignatura => asignatura.id === gradoId);
   }
+
+  openGradosListaModal(){
+    // Filtra los docentes que no están asignados a ningún grado
+    //const docentesNoAsignados = this.docentes.filter(docente => !this.isDocenteAssignedToGrado(docente.id));
+
+    const gradosNoAsignados = this.grados.filter(grado => !this.esGradoAsignadoAMateria(grado.id));
+     // Asigna los docentes no asignados a la lista que se mostrará en el modal
+     this.searchResults = gradosNoAsignados;
+     // Abre el nuevo modal de la lista de docentes
+    const docenteListModal = document.getElementById('gradoListModal');
+    if (docenteListModal) {
+      docenteListModal.classList.add('show');
+      docenteListModal.style.display = 'block';
+    }
+  }
+  closeGradoListModal(): void {
+
+    const docenteListModal = document.getElementById('gradoListModal');
+    if (docenteListModal) {
+      docenteListModal.classList.remove('show');
+      docenteListModal.style.display = 'none';
+    }
+  }
+  updateSelectedEstudianteName(newValue: string) {
+    // Actualiza el nombre del docente en el formulario
+    this.myForm.patchValue({
+      persId: this.selectedGrados?.id, // Asigna el ID del docente
+      // Asegúrate de que el siguiente nombre de campo coincida con el campo real en tu formulario
+      // Si el nombre del campo es diferente, ajústalo en consecuencia
+      nombreGrado: newValue, // Asigna el nombre del docente
+    });
+  
+    // Actualiza el nombre del docente en el objeto selectedDocentes
+    if (this.selectedGrados) {
+      this.selectedGrados = { ...this.selectedGrados, nombreGrado: newValue };
+    } else {
+      this.selectedGrados = { nombreGrado: newValue };
+    }
+  }
+
+  cargarGrado(grado: any) {
+    this.selectedGrados = grado;
+    this.updateSelectedEstudianteName(grado.nombreGrado);
+  
+    // Cierra el modal de la lista de docentes
+    this.closeGradoListModal();
+  }
+ 
+  
+  
+  
 
 
   ngOnDestroy(): void {
@@ -118,6 +184,8 @@ export class AsignaturaComponent implements OnInit, OnDestroy {
       });
     } else {
       if (form.valid) {
+        // Asigna la información del estudiante seleccionado a la matrícula
+        form.value.idGrado = this.selectedGrados?.id;
         this.asignaturaService.postAsignatura(form.value).subscribe((res) => {
           form.reset();
           Swal.fire({
@@ -129,6 +197,7 @@ export class AsignaturaComponent implements OnInit, OnDestroy {
           });
           this.getAsignatura();
           this.closeAddAsignaturaModal();
+          
         });
       } else {
         Swal.fire({
@@ -147,6 +216,47 @@ export class AsignaturaComponent implements OnInit, OnDestroy {
     if (modal) {
       modal.classList.remove('show'); // Quita la clase 'show' para ocultar el modal
       modal.style.display = 'none'; // Establece el estilo 'display' en 'none'
+    }
+  }
+  onImprimir() {
+    if (this.data.length > 0) {
+      const encabezado = ["Asignatura", "Estado"];
+      const cuerpo = this.data.map((grado: Asignatura) => [
+        grado.nombreMateria,
+        grado.estado  === 'A' ? 'Activo' : 'Inactivo'
+      
+       
+      ]);
+
+      this.srvImpresion.imprimir(encabezado, cuerpo, "Listado de Asignaturas", true);
+    } else {
+      // Muestra un mensaje de alerta si no hay datos para imprimir
+      Swal.fire({
+        icon: 'warning',
+        title: 'Sin datos',
+        text: 'No hay datos para generar el informe PDF.',
+      });
+    }
+  }
+
+  imprimirExcel(){
+    if (this.gradosasig.length > 0) {
+      const encabezado = ["Asignatura", "Estado"];
+      const cuerpo = this.gradosasig.map((grado: Asignatura) => [
+        grado.nombreMateria,
+        grado.estado  === 'A' ? 'Activo' : 'Inactivo'
+      
+       
+      ]);
+
+      this.srvImpresion.imprimirExcel(encabezado, cuerpo, "Listado de Asignaturas", true);
+    } else {
+      // Muestra un mensaje de alerta si no hay datos para imprimir
+      Swal.fire({
+        icon: 'warning',
+        title: 'Sin datos',
+        text: 'No hay datos para generar el informe PDF.',
+      });
     }
   }
 

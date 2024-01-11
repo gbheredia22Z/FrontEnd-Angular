@@ -46,7 +46,7 @@
 #btn-g {
     background-color: #545454;
     border-color: #545454;
-    margin-right: 42%;
+    margin-right: 60%;
 }
 
 .form-control {
@@ -68,4 +68,23 @@
 #exampleModal .modal input {
     width: 105%;
     
+}
+
+.btn-primary2{
+    background-color: rgb(255, 255, 255);
+    border-color: black;
+    color: #F2F3F7;
+}
+
+.btn-primary2:hover{
+    background-color: rgb(248, 244, 244);
+    border-color: black;
+    color: #F2F3F7;
+}
+
+.bi-filetype-pdf{
+    color: red;
+}
+.bi-file-earmark-excel-fill{
+    color: green;
 }

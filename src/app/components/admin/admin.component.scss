@@ -30,12 +30,29 @@
     background-color: #545454;
     padding: 15px;
     border-radius: 20px;
+    margin-bottom: 70px;
 }
 
 /* Estilos para las cards */
 .card {
-    margin-bottom: 20px;
-    /* Espaciado entre las cards */
+    width: 15rem; /* Ajusta el ancho según tus necesidades */
+    
+    margin: 0 10px; /* Espaciado entre las cards */
+    text-align: center;
+    background-color: #fff; /* Cambia el color de fondo si es necesario */
+    color: #545454;
+    border: none;
+    padding: 15px;
+    border-radius: 30px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Agrega una sombra suave */
+}
+/* Estilos para las imágenes dentro de las cards */
+.card-img-top {
+    
+    height: 100px;
+    width: 100px;
+    margin-left: 25px;
+   
 }
 
 /* Estilos para centrar los botones */
@@ -43,20 +60,19 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 10%;
-    /* O ajusta la altura según tus necesidades */
+    flex-wrap: wrap; /* Permite que los elementos se envuelvan si no caben en una fila */
 }
 
 .orange-button {
-    background-color: white;
-    color: #545454;
+    background-color: #F57037; /* Cambia el color de fondo del botón si es necesario */
+    color: #fff;
     border: none;
-    padding: 10px 10px;
+    padding: 10px 20px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
     font-size: 16px;
-    margin: 4px 2px;
+    margin: 10px;
     cursor: pointer;
     border-radius: 5px;
 }

@@ -1,10 +1,21 @@
 <nav>
+    <div style="background-color: #F57037; display: flex; align-items: center;">
+        <a class="navbar-brand text-white d-flex align-items-center" href="">
+            <img src="assets/brain_blanco.png" alt="Logo" width="40" height="40"
+                class="d-inline-block align-text-top">
+            <span class="ml-2" style="color: white;">Brain Mentor</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
     <ul class="nav justify-content-center">
         <li class="nav-item">
             <a class="nav-link active" routerLink="/admin" routerLinkActive="active">Inicio</a>
         </li>
 
     </ul>
+</div>
 </nav>
 
 <p class="est"><b> Periodo </b> </p>
@@ -53,7 +64,14 @@
 </div>
 
 <div class="container mt-4">
-    <table class="table table-bordered text-center">
+    <div class="container mt-4">
+        <button type="button" class="btn btn-primary2 m-3" (click)="onImprimir()">
+            <i class="bi bi-filetype-pdf"></i>
+    </button>
+    <button type="button" class="btn btn-primary2 m-3" (click)="imprimirExcel()">
+        <i class="bi bi-file-earmark-excel-fill"></i>
+    </button>
+    <table class="table table-bordered text-center" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" >
         <thead>
             <tr>
                 <th scope="col">Año Lectivo</th>
@@ -62,7 +80,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let periodo of periodoService.periodos">
+            <tr *ngFor="let periodo of data">
                 <td>{{periodo.anioLectivo}}</td>
                 <td>{{periodo.estado === 'A' ? 'Activo' : 'Inactivo'}}</td>
                 <td>

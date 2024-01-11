@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { PerCalificaciones } from '../models/per-calificaciones';
 import { HttpClient } from '@angular/common/http';
-import { catchError } from 'rxjs';
+import { Observable, catchError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -40,4 +40,12 @@ export class PerCalificacionesService {
       })
     );
    }
+
+   getPeriodoCalificacionByNombre(nombrePeriodo: string): Observable<PerCalificaciones> {
+    const url = `${this.URL_API}/nombre?nombrePeriodo=${nombrePeriodo}`;
+    return this.http.get<PerCalificaciones>(url);
+  }
+  
+  
+  
 }

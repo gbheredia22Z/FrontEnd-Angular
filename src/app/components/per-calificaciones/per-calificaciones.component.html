@@ -55,7 +55,13 @@
 </div>
 
 <div class="container mt-4">
-    <table class="table table-bordered text-center">
+    <button type="button" class="btn btn-primary2" (click)="onImprimir()">
+        <i class="bi bi-filetype-pdf"></i>
+      </button>
+      <button type="button" class="btn btn-primary2" (click)="imprimirExcel()">
+        <i class="bi bi-file-earmark-excel-fill"></i>
+      </button>
+    <table class="table table-bordered text-center" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
         <thead>
             <tr>
                 <th scope="col">Nombre Periodo</th>
@@ -64,7 +70,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let periodo of perService.tiposPerCalificaciones">
+            <tr *ngFor="let periodo of data">
                 <td>{{periodo.nombrePeriodo}}</td>
                 <td>{{periodo.estado === 'A' ? 'Activo' : 'Inactivo'}}</td>
                 <td>
@@ -105,7 +111,7 @@
                                     </div>
                                     <!-- Botón de guardar en el modal de edición -->
                                     <button type="button" class="btn btn-primary"
-                                        (click)="updateTipoActividad(periodoForm2)">Guardar</button>
+                                        (click)="updatePeriodo(periodoForm2)">Guardar</button>
                                 </form>
                             </div>
                         </div>

@@ -1,97 +1,219 @@
 <nav>
-    <ul class="nav justify-content-center">
-        <li class="nav-item">
-            <a class="nav-link active" routerLink="/admin" routerLinkActive="active">Inicio</a>
-        </li>
+  <ul class="nav justify-content-center">
+    <li class="nav-item">
+      <a class="nav-link active" routerLink="/admin" routerLinkActive="active">Inicio</a>
+    </li>
 
-    </ul>
+  </ul>
 </nav>
 
 <p class="est"><b> Grado </b> </p>
 <button type="button" class="btn btn-primary" id="modal" (click)="openAddGradoModal()">
-    Añadir Grado </button>
+  Añadir Grado </button>
 <!-- Modal -->
 <div class="modal fade" id="addGradoModal" tabindex="-1" aria-labelledby="addGradoModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel"> Añadir Grado</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
-                    (click)="closeAddGradoModal()"></button>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel"> Añadir Grado</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+          (click)="closeAddGradoModal()"></button>
+      </div>
+      <div class="modal-body">
+        <form #gradoForm="ngForm">
+          <div class="input-group">
+            <input name="code" class="form-control" type="hidden" name="id_grado" #id="ngModel"
+              [(ngModel)]="gradoService.selectedGrado.id" />
+          </div>
+
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="nombreGrado" class="form-label">Nombre Grado:</label>
+              <input type="text" class="form-control" id="nombreGrado" placeholder="Ingrese nombre de grado"
+                [(ngModel)]="gradoService.selectedGrado.nombreGrado" name="nombreGrado" required>
             </div>
-            <div class="modal-body">
-                <form #gradoForm="ngForm">
-                    <div class="input-group">
-                        <input name="code" class="form-control" type="hidden" name="id_grado" #id="ngModel"
-                            [(ngModel)]="gradoService.selectedGrado.id" />
-                    </div>
 
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label for="nombreGrado" class="form-label">Nombre Grado:</label>
-                            <input type="text" class="form-control" id="nombreGrado"
-                                placeholder="Ingrese nombre de grado"
-                                [(ngModel)]="gradoService.selectedGrado.nombreGrado" name="nombreGrado" required>
-                        </div>
-                        <!-- <div class="col-md-6 mb-3">
-                            <label for="docente" class="form-label">Seleccione Docente:</label>
-                            <select class="form-select" id="docente" [(ngModel)]="gradoService.selectedGrado.persId" name="persId" required>
-                                <option *ngFor="let docente of docentes" [value]="docente.id">{{ docente.nombre }} {{ docente.apellido }}</option>
-                            </select>
-                        </div> -->
-                        
 
-                    </div>
+            <!-- <div class="col-md-6 mb-3">
+                          <label for="docente" class="form-label">Seleccione Docente:</label>
+                          <select class="form-select" id="docente" [(ngModel)]="gradoService.selectedGrado.persId" name="persId" required>
+                              <option *ngFor="let docente of docentes" [value]="docente.id">{{ docente.nombre }} {{ docente.apellido }}</option>
+                          </select>
+                      </div> -->
 
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                          <label for="cedulaDocente" class="form-label">Cédula del Docente:</label>
-                          <input id="cedulaDocente" class="form-control" type="text" name="cedulaDocente" [(ngModel)]="searchQuery" (input)="onCedulaInput()">
-                          <a [routerLink]="[('/docente')]">Lista Docente</a>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                          <label for="persId"class="form-label">Nombre del Docente:</label>
-                          <input id="persId" class="form-control" type="text" name="persId"  [ngModel]="gradoService.selectedDocentes?.nombre" disabled="true">
-                        </div>
-                      </div>
-                      
-                      <div class="row">
-                        <div class="col-md-6 mb-3">
-                          <button type="button" class="btn btn-primary" (click)="buscarEstudiante()">Buscar</button>
-                        </div>
-                      </div>
-
-                </form>
+            <div class="col-md-6 mb-3">
+              <label for="persId" class="form-label">Nombre del Docente:</label>
+              <input id="persId" class="form-control" type="text" formControlName="nombreDocente"
+                [value]="myForm.get('nombreDocente')?.value" [attr.disabled]="true"
+                [ngModel]="gradoService.selectedDocentes?.nombre">
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="btn-g"
-                    (click)="createGrado(gradoForm)">Guardar</button>
+
+          </div>
+
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <!-- <label for="cedulaDocente" class="form-label">Cédula del Docente:</label>
+              <input id="cedulaDocente" class="form-control" type="text" name="cedulaDocente" [(ngModel)]="searchQuery"
+                (input)="onCedulaInput()"> -->
+
+              <a class="btn btn-primary m-2" id="btn-g2" (click)="openDocenteListModal()">Seleccionar Docente</a>
             </div>
-        </div>
+
+
+          </div>
+
+
+
+
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" id="btn-g" (click)="createGrado(gradoForm)">Guardar</button>
+      </div>
     </div>
+  </div>
+</div>
+<!-- Nuevo Modal para la Lista de Docentes -->
+<div class="modal fade" id="docenteListModal" tabindex="-1" aria-labelledby="docenteListModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="docenteListModalLabel">Lista de Docentes</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+          (click)="closeDocenteListModal()"></button>
+      </div>
+      <!-- En el cuerpo del modal de la lista de docentes -->
+      <div class="modal-body">
+        <!-- Utiliza ngFor para iterar sobre la lista de docentes no asignados -->
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Cédula</th>
+              <th>Nombre</th>
+              <th>Apellido</th>
+              <th>Acciones</th>
+              <!-- Puedes agregar más columnas según tus necesidades -->
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let docente of searchResults">
+              <td>{{ docente.nombreGrado }}</td>
+              <td>{{ docente.nombre }}</td>
+              <td>{{ docente.apellido }}</td>
+              <!-- Puedes agregar más columnas según tus necesidades -->
+              <td>
+                <button type="button" class="btn btn-primary" (click)="cargarDocente(docente)">Cargar Docente</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Puedes agregar más secciones (body, footer, etc.) según tus necesidades -->
+
+    </div>
+  </div>
 </div>
 
 
 <div class="container mt-4">
 
+  <button type="button" class="btn btn-primary2" (click)="onImprimir()">
+    <i class="bi bi-filetype-pdf"></i>
+  </button>
+  <button type="button" class="btn btn-primary2" (click)="imprimirExcel()">
+    <i class="bi bi-file-earmark-excel-fill"></i>
+  </button>
+  <table class="table table-bordered" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
+    <thead>
+      <tr>
+        <th scope="col">Nombre Grado </th>
+        <th scope="col">Nombre Persona</th>
+        <th scope="col">Apellido Persona</th>
+        <th scope="col">Acciones</th>
 
-    <table class="table table-bordered" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
-        <thead>
-            <tr>
-                <th scope="col">Nombre Grado </th>
-                <th scope="col">Nombre Persona</th>
-                <th scope="col">Apellido Persona</th>
-                <th scope="col"> Acción </th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let grado of data">
-                <td>{{grado.nombreGrado}}</td>
-                <td>{{grado.persona.nombre}}</td>
-                <td>{{grado.persona.apellido}}</td>
-                <td scope="col"> Acción </td>
-              </tr>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let grado of data">
+        <td style="font-size: 12px;">{{grado.nombreGrado}}</td>
+        <td style="font-size: 12px;">{{grado.persona.nombre}}</td>
+        <td style="font-size: 12px;">{{grado.persona.apellido}}</td>
+        <td>
+          <button type="button" class="btn btn-primary" id="btn-g" (click)="editGrado(grado)">Editar</button>
+        </td>
+        <!-- Modal de Edición -->
+        <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Editar Grado</h1>
+                
+                
+
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                  (click)="closeEditPeriodoModal()"></button>
+              </div>
+              <div class="modal-body">
+                <form #gradoForm="ngForm">
+                  <!-- Campo de ID oculto -->
+                  <input type="hidden" [(ngModel)]="gradoService.selectedGrado.id" name="id" />
+
+                  <div class="row">
+                    <div class="col-md-6 mb-3">
+                      <label for="nombreGrado" class="form-label">Nombre Grado:</label>
+                      <input type="text" class="form-control" id="nombreGrado" placeholder="Ingrese nombre de grado"
+                        [(ngModel)]="gradoService.selectedGrado.nombreGrado" name="nombreGrado" required>
+                    </div>
               
-        </tbody>
-    </table>
+
+                    <!-- <div class="col-md-6 mb-3">
+                          <label for="docente" class="form-label">Seleccione Docente:</label>
+                          <select class="form-select" id="docente" [(ngModel)]="gradoService.selectedGrado.persId" name="persId" required>
+                              <option *ngFor="let docente of docentes" [value]="docente.id">{{ docente.nombre }} {{ docente.apellido }}</option>
+                          </select>
+                      </div> -->
+
+                    <div class="col-md-6 mb-3">
+                      <label for="persId" class="form-label">Nombre del Docente:</label>
+                      <input id="persId" class="form-control" type="text" formControlName="nombreDocente"
+                        [value]="myForm.get('nombreDocente')?.value" [attr.disabled]="true"
+                        [ngModel]="gradoService.selectedDocentes?.nombre">
+                    </div>
+                    
+
+
+
+
+
+
+                  </div>
+
+                  <div class="row">
+                    <div class="col-md-6 mb-3">
+                      <!-- <label for="cedulaDocente" class="form-label">Cédula del Docente:</label>
+              <input id="cedulaDocente" class="form-control" type="text" name="cedulaDocente" [(ngModel)]="searchQuery"
+                (input)="onCedulaInput()"> -->
+
+                      <a class="btn btn-primary m-2" id="btn-g2" (click)="openDocenteListModal()">Seleccionar
+                        Docente</a>
+                    </div>
+
+
+                  </div>
+                  <!-- Botón de guardar en el modal de edición -->
+                  <button type="button" class="btn btn-primary" (click)="createGrado(gradoForm)">Actualizar</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </tr>
+    </tbody>
+    
+  </table>
+
+
+
+
 </div>

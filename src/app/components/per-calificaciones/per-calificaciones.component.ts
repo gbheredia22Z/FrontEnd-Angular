@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
-import { Subscription } from 'rxjs';
+import { Observable, Subject, Subscription, catchError, map, of } from 'rxjs';
 import { PerCalificacionesService } from '../../services/per-calificaciones.service';
 import { PerCalificaciones } from '../../models/per-calificaciones';
 import { NgFor } from '@angular/common';
 import Swal from 'sweetalert2';
+import { ImpresionService } from '../../services/impresion.service';
 
 @Component({
   selector: 'app-per-calificaciones',
@@ -18,9 +19,13 @@ export class PerCalificacionesComponent {
   onSearch: any;
   private subscriptions: Subscription[] = [];
   isEditModalOpen = false;
+  periodosCalificaciones: PerCalificaciones[] = []; // Agrega esta línea
+  dtOptions: DataTables.Settings = {};
+  data: any = []; //aqui se alamcena
+  dtTrigger: Subject<any> = new Subject<any>();
 
   constructor(public perService:PerCalificacionesService,
-    private fb:FormBuilder){
+    private fb:FormBuilder, private srvImpresion: ImpresionService){
       this.myForm = this.fb.group({
         id: new FormControl('',Validators.required),
         nombrePeriodo :['', Validators.required],
@@ -36,8 +41,25 @@ export class PerCalificacionesComponent {
       })
     }
 
+    getPeriodosCalificacion2(){
+      this.perService.getPeriodoCalificaciones().
+      subscribe((data) => {
+        this.data = data;
+        console.log(data);
+        this.dtTrigger.next(this.dtOptions);
+      });
+    }
+
+
+
     ngOnInit():void{
+      this.dtOptions = {
+        language: {
+          url: "/assets/Spanish.json"
+        },
+      };
       this.getPeriodoCalificaciones();
+      this.getPeriodosCalificacion2();
     }
 
     ngOnDestroy(): void {
@@ -79,23 +101,37 @@ export class PerCalificacionesComponent {
       }
     }
 
-    updateTipoActividad(form:NgForm){
-      this.perService.putPerCalificacion(
-        this.perService.selectPerCalificaciones
-      ).subscribe((res)=>{
+    updatePeriodo(form: NgForm): void {
+      const nombreActividad = form.value.nombreActividad;
+    
+      // Verifica si el periodo ya existe en la lista de periodos, excluyendo el periodo que se está editando
+      const periodoExistente = this.perService.tiposPerCalificaciones.find(periodo => periodo.nombrePeriodo === nombreActividad && periodo.id !== this.perService.selectPerCalificaciones.id);
+    
+      if (periodoExistente) {
+        // Muestra un mensaje de error indicando que el periodo ya existe
         Swal.fire({
           position: 'top',
-        icon: 'success',
-        title: 'Registro actualizado',
-        showConfirmButton: false,
-        timer: 1500,
+          icon: 'error',
+          title: 'El periodo ya existe para otro registro',
+          showConfirmButton: false,
+          timer: 1500,
         });
-        this.getPeriodoCalificaciones();
-
-        //cieera
-        $('#editModal').modal('hide');
-
-      });
+      } else {
+        // Continúa con la lógica original para la actualización del periodo
+        this.perService.putPerCalificacion(this.perService.selectPerCalificaciones).subscribe((res) => {
+          Swal.fire({
+            position: 'top',
+            icon: 'success',
+            title: 'Registro actualizado',
+            showConfirmButton: false,
+            timer: 1500,
+          });
+          this.getPeriodoCalificaciones();
+    
+          // Cierra el modal de edición utilizando $
+          $('#editModal').modal('hide');
+        });
+      }
     }
     closeEditActividadModal():void{
       const modal = document.getElementById('editModal');
@@ -106,26 +142,28 @@ export class PerCalificacionesComponent {
     }
   }
   createPeriodo(form: NgForm): void {
-    if (form.value.id) {
-      this.perService.putPerCalificacion(form.value).subscribe((res) => {
-        Swal.fire({
-          position: 'top',
-          icon: 'success',
-          title: 'Registro actualizado',
-          showConfirmButton: false,
-          timer: 1500,
-        });
-        this.getPeriodoCalificaciones();
-        this.closeAddAvtividadModal();
+    const nombrePeriodo = form.value.nombrePeriodo;
+  
+    // Verifica si el periodo ya existe en la lista de periodos
+    const periodoExistente = this.perService.tiposPerCalificaciones.find(periodo => periodo.nombrePeriodo === nombrePeriodo);
+  
+    if (periodoExistente) {
+      // Muestra un mensaje de error indicando que el periodo ya existe
+      Swal.fire({
+        position: 'top',
+        icon: 'error',
+        title: 'El periodo ya existe',
+        showConfirmButton: false,
+        timer: 1500,
       });
     } else {
-      if (form.valid) {
-        this.perService.postPeriodoCalificacines(form.value).subscribe((res) => {
-          form.reset();
+      // Continúa con la lógica original para agregar o actualizar el periodo
+      if (form.value.id) {
+        this.perService.putPerCalificacion(form.value).subscribe((res) => {
           Swal.fire({
             position: 'top',
             icon: 'success',
-            title: 'Nuevo registro agregado',
+            title: 'Registro actualizado',
             showConfirmButton: false,
             timer: 1500,
           });
@@ -133,17 +171,72 @@ export class PerCalificacionesComponent {
           this.closeAddAvtividadModal();
         });
       } else {
-        Swal.fire({
-          position: 'top',
-          icon: 'error',
-          title: 'Llene todos todos los campos',
-          showConfirmButton: false,
-          timer: 1500,
-        });
+        if (form.valid) {
+          this.perService.postPeriodoCalificacines(form.value).subscribe((res) => {
+            form.reset();
+            Swal.fire({
+              position: 'top',
+              icon: 'success',
+              title: 'Nuevo registro agregado',
+              showConfirmButton: false,
+              timer: 1500,
+            });
+            this.getPeriodoCalificaciones();
+            this.closeAddAvtividadModal();
+          });
+        } else {
+          Swal.fire({
+            position: 'top',
+            icon: 'error',
+            title: 'Llene todos todos los campos',
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        }
       }
     }
   }
-   
+
+  onImprimir() {
+    if (this.data.length > 0) {
+      const encabezado = ["Periodo Calificacion", "Estado"];
+      const cuerpo = this.data.map((grado: PerCalificaciones) => [
+        grado.nombrePeriodo,
+        grado.estado,
+        
+      ]);
+  
+      this.srvImpresion.imprimir(encabezado, cuerpo, "Periodo de Calificaciones", true);
+    } else {
+      // Muestra un mensaje de alerta si no hay datos para imprimir
+      Swal.fire({
+        icon: 'warning',
+        title: 'Sin datos',
+        text: 'No hay datos para generar el informe PDF.',
+      });
+    }
+  }
+
+  imprimirExcel(){
+    if (this.data.length > 0) {
+      const encabezado = ["Periodo Calificacion", "Estado"];
+      const cuerpo = this.data.map((grado: PerCalificaciones) => [
+        grado.nombrePeriodo,
+        grado.estado,
+        
+      ]);
+  
+      this.srvImpresion.imprimirExcel(encabezado, cuerpo, "Periodo de Calificaciones", true);
+    } else {
+      // Muestra un mensaje de alerta si no hay datos para imprimir
+      Swal.fire({
+        icon: 'warning',
+        title: 'Sin datos',
+        text: 'No hay datos para generar el informe PDF.',
+      });
+    }
+  }
+
 
 
 

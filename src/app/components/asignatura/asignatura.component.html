@@ -9,8 +9,8 @@
 
 <p class="est"><b> Asignatura </b> </p>
 
-    <button type="button" class="btn btn-primary" id="modal" (click)="openAddAsignaturaModal()">
-        Añadir Asignatura </button>
+<button type="button" class="btn btn-primary" id="modal" (click)="openAddAsignaturaModal()">
+    Añadir Asignatura </button>
 <!-- Modal -->
 <div class="modal fade" id="addAsignaturaModal" tabindex="-1" aria-labelledby="addAsignaturaModalLabel"
     aria-hidden="true">
@@ -48,13 +48,52 @@
 
                     </div>
                     <div class="row">
-                      
-                        <div class="col-md-6 mb-3">
+
+                        <!-- <div class="col-md-6 mb-3">
                             <label for="docente" class="form-label">Seleccione Grado:</label>
-                            <select class="form-select" id="idGrado" [(ngModel)]="asignaturaService.selectedAsignatura.idGrado" name="idGrado" required>
-                                <option *ngFor="let grado of grados" [value]="grado.id">{{ grado.nombreGrado }} </option>
+                            <select class="form-select" id="idGrado"
+                                [(ngModel)]="asignaturaService.selectedAsignatura.idGrado" name="idGrado" required>
+                                <option *ngFor="let grado of searchResults" [value]="grado.id">{{ grado.nombreGrado }}
+                                </option>
                             </select>
-                        </div>
+                        </div> -->
+                        
+                            <!-- <label for="docente" class="form-label">Seleccione Grado:</label>
+                            <select class="form-select" id="idGrado" [(ngModel)]="asignaturaService.selectedAsignatura.idGrado" name="idGrado" required>
+                              <option *ngFor="let grado of searchResults || []" [value]="grado.id">
+                                {{ grado.id }} - {{ grado.nombreGrado }}
+                              </option>
+                            </select> -->
+                          
+                          <div class="col-md-6 mb-3">
+                            <label for="idGrado" class="form-label">Nombre del Grado:</label>
+                            <input id="idGrado" class="form-control" type="text" formControlName="nombreGrado"
+                              [value]="myForm.get('nombreGrado')?.value" [attr.disabled]="true"
+                              [ngModel]="asignaturaService.selectedGrado?.nombreGrado">
+                          </div>
+              
+
+
+
+                          <div class="row">
+                            <div class="col-md-6 mb-3">
+                              <!-- <label for="cedulaDocente" class="form-label">Cédula del Docente:</label>
+                              <input id="cedulaDocente" class="form-control" type="text" name="cedulaDocente" [(ngModel)]="searchQuery"
+                                (input)="onCedulaInput()"> -->
+                
+                              <a class="btn btn-primary m-2" id="btn-g2" (click)="openGradosListaModal()">Seleccionar Grado</a>
+                            </div>
+                
+                
+                          </div>
+                          
+                          
+                          
+
+
+
+
+
 
 
 
@@ -69,10 +108,53 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="gradoListModal" tabindex="-1" aria-labelledby="gradoListModal" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="docenteListModalLabel">Lista de Docentes</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+            (click)="closeGradoListModal()"></button>
+        </div>
+        <!-- En el cuerpo del modal de la lista de docentes -->
+        <div class="modal-body">
+          <!-- Utiliza ngFor para iterar sobre la lista de docentes no asignados -->
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Grado</th>
+                
+                <th>Acciones</th>
+                <!-- Puedes agregar más columnas según tus necesidades -->
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let grado of searchResults">
+                <td>{{ grado.nombreGrado }}</td>
+               
+                <!-- Puedes agregar más columnas según tus necesidades -->
+                <td>
+                  <button type="button" class="btn btn-primary" (click)="cargarGrado(grado)">Seleccionar</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+  
+        <!-- Puedes agregar más secciones (body, footer, etc.) según tus necesidades -->
+  
+      </div>
+    </div>
+  </div>
 
 
 <div class="container mt-4">
-
+  <button type="button" class="btn btn-primary2" (click)="onImprimir()">
+    <i class="bi bi-filetype-pdf"></i>
+  </button>
+  <button type="button" class="btn btn-primary2" (click)="imprimirExcel()">
+    <i class="bi bi-file-earmark-excel-fill"></i>
+  </button>
 
     <table class="table table-bordered" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
         <thead>
@@ -84,15 +166,15 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let asignatura of gradosasig">
+            <tr *ngFor="let asignatura of data">
                 <td>{{asignatura.nombreMateria}}</td>
-                <td>{{ asignatura.estadoMateria === 'A' ? 'Activo' : 'Inactivo' }}</td>
+                <td>{{ asignatura.estado === 'A' ? 'Activo' : 'Inactivo' }}</td>
 
                 <td>{{asignatura.nombreGrado}}</td>
-                
+
 
                 <td>
-
+                    <button class="btn btn-info">Editar</button>
                 </td>
             </tr>
         </tbody>

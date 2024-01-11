@@ -1,0 +1,55 @@
+<!-- Ajusta los ngModel y las propiedades en el *ngFor según el modelo Notas -->
+<!-- <select class="form-select" id="asignaturaId" [(ngModel)]="asignaturaId" name="asignaturaId"  (change)="onAsignaturaSelected()" required>
+  <option *ngFor="let asignatura of asignatura" [value]="asignatura.id">{{ asignatura.nombreMateria }} </option>
+</select>
+
+<select class="form-select" id="actividadId" [(ngModel)]="tipoActId" name="actividadId" (change)="onAsignaturaActividadSelected()" required>
+  <option *ngFor="let actividad of actividadesEducativas" [value]="actividad.id">{{ actividad.titulo }} </option>
+</select> -->
+
+
+<hr>
+<!-- Ajusta el código del HTML para utilizar correctamente las opciones -->
+<div class="col-md-6 mb-3">
+  <label for="periodo" class="form-label">Asignatura</label>
+  <select class="form-select" id="asignaturaId" [(ngModel)]="selectedAsignaturaId" name="asignaturaId" (change)="onAsignaturaSelected()" required>
+    <option *ngFor="let asignatura of asignaturas" [value]="asignatura.id">{{ asignatura.nombreMateria }} </option>
+  </select>
+</div>
+
+<div class="col-md-6 mb-3">
+  <label for="periodo" class="form-label">Actividad</label>
+  <select class="form-select" id="actividadId" [(ngModel)]="selectedActividadId" name="actividadId" (change)="onActividadSelected()" required>
+    <option *ngFor="let actividad of actividades" [value]="actividad.id">{{ actividad.titulo }} </option>
+  </select>
+</div>
+
+<!-- Agrega esto donde quieras mostrar los resultados -->
+<table class="table" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
+  <thead>
+    <tr>
+      <th>personaID</th>
+      <th>IdActividad</th>
+      <th>idAsignatura</th>
+      <th>actividadEducativaTitulo</th>
+      <th>Nota</th> 
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let result of data">
+      <td>{{ result.personaID }}</td>
+      <td>{{ result.IdActividad }}</td>
+      <td>{{ result.idAsignatura }}</td>
+      <td>{{ result.actividadEducativaTitulo }}</td>
+      <td>
+        <select [(ngModel)]="result.nota">
+          <option *ngFor="let i of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]" [value]="i">{{ i }}</option>
+        </select>
+    </tr>
+  </tbody>
+</table>
+
+<button class="btn btn-info m-5">Enviar Notas</button>
+
+
+

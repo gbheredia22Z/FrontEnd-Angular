@@ -12,6 +12,8 @@ import { MatriculaComponent } from './components/matricula/matricula.component';
 import { LoginComponent } from './components/login/login.component';
 import { ActividadesComponent } from './components/actividades/actividades.component';
 import { PerCalificacionesComponent } from './components/per-calificaciones/per-calificaciones.component';
+import { EducativaActividadesComponent } from './components/educativa-actividades/educativa-actividades.component';
+import { NotasComponent } from './components/notas/notas.component';
 
 const routes: Routes = [
   {
@@ -58,6 +60,14 @@ const routes: Routes = [
   {
     path:'periodo-calificaciones',
     component:PerCalificacionesComponent
+  },
+  {
+    path:'actividades-educativas',
+    component:EducativaActividadesComponent
+  },
+  {
+    path:'nota/:asignaturaId',
+    component:NotasComponent
   }
 
 ];

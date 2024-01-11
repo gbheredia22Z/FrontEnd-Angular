@@ -18,6 +18,7 @@ export class PeriodoService {
   constructor(private http: HttpClient) {
     this.selectedPeriodo = new Periodo();
     this.selectedPeriodo = new Periodo();
+    this.periodos=[];
   }
 
   getPeriodo() {

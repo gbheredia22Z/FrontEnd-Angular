@@ -5,6 +5,9 @@ import { Subscription } from 'rxjs/internal/Subscription';
 import Swal from 'sweetalert2';
 import { GradoService } from '../../services/grado.service';
 import { Subject } from 'rxjs';
+import jsPDF from 'jspdf';
+import { ImpresionService } from '../../services/impresion.service';
+
 
 
 @Component({
@@ -13,9 +16,9 @@ import { Subject } from 'rxjs';
   styleUrl: './grado.component.scss'
 })
 export class GradoComponent implements OnInit, OnDestroy {
-  dtOptions:DataTables.Settings={};
-  data:any=[]; //aqui se alamcena
-  dtTrigger:Subject<any> = new Subject<any>();
+  dtOptions: DataTables.Settings = {};
+  data: any = []; //aqui se alamcena
+  dtTrigger: Subject<any> = new Subject<any>();
   myForm: FormGroup;
   searchQuery: any;
   onSearch: any;
@@ -24,6 +27,7 @@ export class GradoComponent implements OnInit, OnDestroy {
   docentes: any[] = [];
   searchResults: any[] = [];
   selectedDocentes: any = null;
+
 
 
   getGrado() {
@@ -35,20 +39,22 @@ export class GradoComponent implements OnInit, OnDestroy {
     });
   }
 
-  getGrado2(){
+  getGrado2() {
     this.gradoService.getGrado().
-    subscribe((data) => {
-      this.data = data;
-      console.log(data);
-      this.dtTrigger.next(this.dtOptions);
-    });
+      subscribe((data) => {
+        this.data = data;
+        console.log(data);
+        this.dtTrigger.next(this.dtOptions);
+      });
   }
-  constructor(public gradoService: GradoService, private fb: FormBuilder) {    
+  constructor(public gradoService: GradoService, private fb: FormBuilder, private srvImpresion: ImpresionService) {
     this.myForm = this.fb.group({
       id: new FormControl('', Validators.required),
       anioLectivo: ['', Validators.required],
       estado: ['', Validators.required],
+      nombreDocente: [''],
     });
+
   }
 
   ngOnInit(): void {
@@ -64,14 +70,21 @@ export class GradoComponent implements OnInit, OnDestroy {
 
   getDocentes() {
     this.gradoService.getDocentes().subscribe((res) => {
-      this.docentes = res;
+      // Filtra los docentes que no están asignados a ningún grado
+      this.docentes = res.filter(docente => !this.isDocenteAssignedToGrado(docente.id));
     });
   }
+  // getDocentes() {
+  //   this.gradoService.getDocentes().subscribe((res) => {
+  //     this.docentes = res;
+  //   });
+  // }
+
 
   ngOnDestroy(): void {
     //this.subscriptions.forEach(subscription => subscription.unsubscribe());
     this.dtTrigger.unsubscribe();
-    
+
   }
 
   openAddGradoModal() {
@@ -93,19 +106,29 @@ export class GradoComponent implements OnInit, OnDestroy {
     this.selectedDocentes = this.docentes.find(docente => docente.cedula === this.searchQuery);
   }
   updateSelectedEstudianteName(newValue: string) {
+    // Actualiza el nombre del docente en el formulario
+    this.myForm.patchValue({
+      persId: this.selectedDocentes?.id, // Asigna el ID del docente
+      // Asegúrate de que el siguiente nombre de campo coincida con el campo real en tu formulario
+      // Si el nombre del campo es diferente, ajústalo en consecuencia
+      nombreDocente: newValue, // Asigna el nombre del docente
+    });
+  
+    // Actualiza el nombre del docente en el objeto selectedDocentes
     if (this.selectedDocentes) {
       this.selectedDocentes = { ...this.selectedDocentes, nombre: newValue };
     } else {
       this.selectedDocentes = { nombre: newValue };
     }
   }
+  
   buscarEstudiante() {
     if (!this.searchQuery) {
       // Muestra una alerta si el campo de búsqueda está vacío
       Swal.fire({
         icon: 'error',
         title: 'Campo vacío',
-        text: 'Por favor, ingrese la cédula del estudiante.',
+        text: 'Por favor, ingrese la cédula del profesor.',
       });
       return;
     }
@@ -134,9 +157,80 @@ export class GradoComponent implements OnInit, OnDestroy {
       });
     }
   }
+
+  editGrado(grado:Grado){
+    //clonar grado para evitar cambios direcots
+    //this.periodoService.selectedPeriodo = { ...periodo };
+    this.gradoService.selectedGrado = { ...grado};
+    // Abre el modal de edición
+    const modal = document.getElementById('editModal');
+    if (modal) {
+      modal.classList.add('show'); // Agrega la clase 'show' para mostrar el modal
+      modal.style.display = 'block'; // Establece el estilo 'display' en 'block'
+    }
+  }
+  updateGrado(form: NgForm) {
+    this.gradoService.putGrado(this.gradoService.selectedGrado).subscribe((res) => {
+      // Buscar el índice del grado actualizado en la lista de grados
+      const index = this.gradoService.grados.findIndex(grado => grado.id === this.gradoService.selectedGrado.id);
   
+      if (index !== -1) {
+        // Actualizar el nombre del docente en la lista de grados
+        this.gradoService.grados[index].persona.nombre = this.gradoService.selectedGrado.persona.nombre;
+      }
+  
+      Swal.fire({
+        position: 'top',
+        icon: 'success',
+        title: 'Registro actualizado',
+        showConfirmButton: false,
+        timer: 1500,
+      });
+      this.getGrado();
+      this.closeEditPeriodoModal();
+      // Cierra el modal de edición utilizando $
+      $('#editModal').modal('hide');
+    })
+  }
+  
+  
+  closeEditPeriodoModal(): void {
+    const modal = document.getElementById('editModal');
+    if (modal) {
+      modal.classList.remove('show'); // Quita la clase 'show' para ocultar el modal
+      modal.style.display = 'none'; // Establece el estilo 'display' en 'none'
+    }
+  }
+
   createGrado(form: NgForm): void {
+    // Verifica si ya hay un docente asignado a algún grado
+    if (this.gradoService.selectedDocentes && this.gradoService.selectedDocentes.id) {
+      // Realiza una verificación adicional antes de permitir la matriculación
+      if (this.isDocenteAssignedToGrado(this.gradoService.selectedDocentes.id)) {
+        Swal.fire({
+          position: 'top',
+          icon: 'error',
+          title: 'El docente ya está asignado a otro grado',
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        return;
+      }
+    }
+    // Verifica si el grado ya existe
+    if (this.isGradoAlreadyExists(form.value.nombreGrado)) {
+      Swal.fire({
+        position: 'top',
+        icon: 'error',
+        title: 'El grado ya existe',
+        showConfirmButton: false,
+        timer: 1500,
+      });
+      return;
+    }
     if (form.value.id) {
+      // Asigna la información del estudiante seleccionado a la matrícula
+      form.value.persId = this.selectedDocentes?.id;
       this.gradoService.putGrado(form.value).subscribe((res) => {
         Swal.fire({
           position: 'top',
@@ -147,16 +241,21 @@ export class GradoComponent implements OnInit, OnDestroy {
         });
         this.getGrado();
         this.closeAddGradoModal();
+        this.closeEditPeriodoModal();
       });
     } else {
       if (form.valid) {
         // Asigna la información del estudiante seleccionado a la matrícula
-      form.value.persId = this.gradoService.selectedDocentes.id;
-      form.value.persona = {
-        nombre: this.gradoService.selectedDocentes.nombre,
-        apellido: this.gradoService.selectedDocentes.apellido
-      };
-      this.gradoService.postGrado(form.value).subscribe((res) => {
+        // form.value.persId = this.gradoService.selectedDocentes.id;
+        // form.value.persona = {
+        //   nombre: this.gradoService.selectedDocentes.nombre,
+        //   apellido: this.gradoService.selectedDocentes.apellido
+        // };
+         // Asigna la información del estudiante seleccionado a la matrícula
+         form.value.persId = this.selectedDocentes?.id;
+
+
+        this.gradoService.postGrado(form.value).subscribe((res) => {
           form.reset();
           Swal.fire({
             position: 'top',
@@ -167,12 +266,13 @@ export class GradoComponent implements OnInit, OnDestroy {
           });
           this.getGrado();
           this.closeAddGradoModal();
+          this.getPagina();
         });
       } else {
         Swal.fire({
           position: 'top',
           icon: 'error',
-          title: 'Llene todos todos los campos',
+          title: 'Llene todos los campos',
           showConfirmButton: false,
           timer: 1500,
         });
@@ -180,6 +280,14 @@ export class GradoComponent implements OnInit, OnDestroy {
     }
   }
 
+
+  isDocenteAssignedToGrado(docenteId: string): boolean {
+    return this.gradoService.grados?.some(grado => grado.persId === docenteId) || false;
+  }
+  
+  isGradoAlreadyExists(nombreGrado: string): boolean {
+    return this.gradoService.grados.some(grado => grado.nombreGrado === nombreGrado);
+  }
   closeAddGradoModal(): void {
     const modal = document.getElementById('addGradoModal');
     if (modal) {
@@ -189,25 +297,116 @@ export class GradoComponent implements OnInit, OnDestroy {
   }
 
 
- 
-  
   onCedulaInput() {
     // Limpia el nombre del estudiante si se borra la cédula
     if (!this.searchQuery) {
       this.gradoService.selectedDocentes = null;
     }
   }
+  updateSelectedDocenteName(newValue: string) {
+    if (this.gradoService.selectedDocentes) {
+      this.gradoService.selectedDocentes.nombre = newValue;
+    }
+  }
+  
+  
   filterByNameOrCedula(docentes: any[], searchQuery: string): any[] {
     if (!searchQuery) {
-        return docentes; // Si no hay consulta de búsqueda, devuelve la lista completa
+      return docentes; // Si no hay consulta de búsqueda, devuelve la lista completa
     }
 
     const query = searchQuery.toLowerCase();
-    return docentes.filter(docentes => 
+    return docentes.filter(docentes =>
       docentes.nombre.toLowerCase().includes(query) ||
       docentes.cedula.toLowerCase().includes(query)
     );
+  }
+  openDocenteListModal() {
+    // Filtra los docentes que no están asignados a ningún grado
+    const docentesNoAsignados = this.docentes.filter(docente => !this.isDocenteAssignedToGrado(docente.id));
+
+    // Asigna los docentes no asignados a la lista que se mostrará en el modal
+    this.searchResults = docentesNoAsignados;
+
+    // Abre el nuevo modal de la lista de docentes
+    const docenteListModal = document.getElementById('docenteListModal');
+    if (docenteListModal) {
+      docenteListModal.classList.add('show');
+      docenteListModal.style.display = 'block';
+    }
+  }
+
+  closeDocenteListModal(): void {
+
+    const docenteListModal = document.getElementById('docenteListModal');
+    if (docenteListModal) {
+      docenteListModal.classList.remove('show');
+      docenteListModal.style.display = 'none';
+    }
+  }
+
+  getPagina() {
+    window.location.reload();
+  }
+
+  onImprimir() {
+    if (this.data.length > 0) {
+      const encabezado = ["Grado", "Nombre", "Apellido"];
+      const cuerpo = this.data.map((grado: Grado) => [
+        grado.nombreGrado,
+        grado.persona.nombre,
+        grado.persona.apellido
+      ]);
+
+      this.srvImpresion.imprimir(encabezado, cuerpo, "Listado de Grado", true);
+    } else {
+      // Muestra un mensaje de alerta si no hay datos para imprimir
+      Swal.fire({
+        icon: 'warning',
+        title: 'Sin datos',
+        text: 'No hay datos para generar el informe PDF.',
+      });
+    }
+  }
+  imprimirExcel(){
+    if (this.data.length > 0) {
+      const encabezado = ["Grado", "Nombre", "Apellido"];
+      const cuerpo = this.data.map((grado: Grado) => [
+        grado.nombreGrado,
+        grado.persona.nombre,
+        grado.persona.apellido
+      ]);
+
+      this.srvImpresion.imprimir(encabezado, cuerpo, "Listado de Grado", true);
+    } else {
+      // Muestra un mensaje de alerta si no hay datos para imprimir
+      Swal.fire({
+        icon: 'warning',
+        title: 'Sin datos',
+        text: 'No hay datos para generar el informe PDF.',
+      });
+    }
+  }
+
+ 
+
+
+// ... Otro código ...
+
+cargarDocente(docente: any) {
+  this.selectedDocentes = docente;
+  this.updateSelectedEstudianteName(docente.nombre);
+
+  // Cierra el modal de la lista de docentes
+  this.closeDocenteListModal();
 }
+
+
+// ... Otro código ...
+
+
+
+
 
 }
 

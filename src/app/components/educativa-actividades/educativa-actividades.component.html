@@ -1,0 +1,158 @@
+<body>
+    <nav>
+        <ul class="nav justify-content-center">
+            <li class="nav-item">
+                <a class="nav-link active" routerLink="/admin" routerLinkActive="active">Inicio</a>
+            </li>
+
+        </ul>
+    </nav>
+
+    <p class="est"><b> Actividades Educativas </b> </p>
+    <br>
+    <div class="d-flex align-items-center">
+    
+        <!-- Botón "Añadir Docente" -->
+        <button type="button" class="btn btn-primary" id="modal" (click)="openAddEducativaModal()">
+            Añadir Actividad Educativa
+        </button>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="addEducativaModal" tabindex="-1" aria-labelledby="addEducativaModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel"> Añadir Actividad</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                        (click)="closeAddEducativaModal()"></button>
+                </div>
+
+                <div class="modal-body">
+                    <form *ngIf="myForm" #myForm="ngForm" (ngSubmit)="createActividadesEducativas(myForm)">
+                        <div class="input-group">
+                            <input name="code" class="form-control" type="hidden" name="id" #id="ngModel"
+                                [(ngModel)]="educativaService.selectedActividades.id" />
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="titulo"><i class="fas fa-user"></i> Titulo </label>
+                                <input id="titulo" type="text" class="form-control" name="titulo"
+                                    [(ngModel)]="educativaService.selectedActividades.titulo" required maxlength="100">
+                    
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label for="detalleActividad"><i class="fas fa-user"></i> Detalle Actividad</label>
+                                <input id="detalleActividad" type="text" class="form-control" name="detalleActividad"
+                                    [(ngModel)]="educativaService.selectedActividades.detalleActividad" required maxlength="100">
+                              
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="fechaInicio"><i class="fas fa-id-card"></i> Fecha Inicio</label>
+                                <input id="fechaInicio" type="date" class="form-control" name="fechaInicio"
+                                    [(ngModel)]="educativaService.selectedActividades.fechaInicio"
+                                    >
+                                
+                               
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="fechaFin"><i class="fas fa-id-card"></i> Fecha Fin</label>
+                                <input id="fechaFin" type="date" class="form-control" name="fechaFin"
+                                    [(ngModel)]="educativaService.selectedActividades.fechaFin"
+                                    >
+                                
+                               
+                            </div>
+
+                        
+                        
+                        </div>
+
+                        <div class="row">
+
+                            <div class="col-md-6 mb-3">
+                                <label for="actividad" class="form-label">Tipo Actividad:</label>
+                                <select class="form-select" id="tipoActId" [(ngModel)]="educativaService.selectedActividades.tipoActId" name="tipoActId" required>
+                                    <option *ngFor="let tipActividad of actividad" [value]="tipActividad.id">{{ tipActividad.nombreActividad }} </option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="periodo" class="form-label">Periodo Calificacion:</label>
+                                <select class="form-select" id="perCalId" [(ngModel)]="educativaService.selectedActividades.perCalId" name="perCalId" required>
+                                    <option *ngFor="let periodo of periodoCalificacion" [value]="periodo.id">{{ periodo.nombrePeriodo }} </option>
+                                </select>
+                           
+                            </div>
+
+
+                          
+
+                            <div class="col-md-6 mb-3">
+                                <label for="periodo" class="form-label">Asignatura</label>
+                                <select class="form-select" id="asignaturaId" [(ngModel)]="educativaService.selectedActividades.asignaturaId" name="asignaturaId" required>
+                                    <option *ngFor="let asignaturas of asignatura" [value]="asignaturas.id">{{ asignaturas.nombreMateria }} </option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="estado" class="form-label">Estado:</label>
+                                <select class="form-select" aria-label="Selecciona el estado" id="estado" name="estado"
+                                    [(ngModel)]="educativaService.selectedActividades.estado" required>
+                                    <option value="A">Activo</option>
+                                    <option value="I">Inactivo</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                                (click)="closeAddEducativaModal()">Cerrar</button>
+                            <button type="submit" class="btn btn-primary">Guardar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container mt-4">
+        <button type="button" class="btn btn-primary2" (click)="onImprimir()">
+            <i class="bi bi-filetype-pdf"></i>
+          </button>
+          <button type="button" class="btn btn-primary2" (click)="imprimirExcel()">
+            <i class="bi bi-file-earmark-excel-fill"></i>
+          </button>
+    
+        <table class="table table-bordered" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
+            <thead>
+                <tr>
+                    <th scope="col">Titulo</th>
+                    <th scope="col">Detalle</th>
+                    <th scope="col">Estado</th>
+                    <th scope="col">Fecha Inicio </th>
+                    <th scope="col"> Fecha Fin </th>
+                    <th scope="col"> Periodo Calificacion </th>
+                    <th scope="col"> Tipo Actividad </th>
+                    <th scope="col"> Asignatura </th>
+                    
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let educativasAc of actividadesEducativas">
+                    <td>{{educativasAc.titulo}}</td>
+                    <td>{{educativasAc.detalleActividad}}</td>
+                    <td>{{educativasAc.estado  === 'A' ? 'Activo' : 'Inactivo'}}</td>
+                    <td>{{educativasAc.fechaFin | date: 'dd/MM/yyyy'}}</td>
+                    <td>{{educativasAc.fechaInicio | date: 'dd/MM/yyyy'}}</td>
+                    <td>{{educativasAc.periodoCalificaciones.nombrePeriodo}}</td>
+                    <td>{{educativasAc.tipoActividad.nombreActividad}}</td>
+                    <td>{{educativasAc.asignatura.nombreMateria}}</td>
+                    
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>

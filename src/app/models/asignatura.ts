@@ -28,3 +28,4 @@ export interface Asignatura {
     estado: string;
     idGrado: string;
 }
+

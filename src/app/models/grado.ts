@@ -3,6 +3,7 @@ export class Grado {
     nombreGrado: string;
     persId: string;
     persona: {
+        id:string;
         nombre: string;
         apellido: string;
       };
@@ -12,7 +13,7 @@ export class Grado {
         id: string = '',
         nombreGrado: string = '',
        
-        persona: { nombre: string; apellido: string } = { nombre: '', apellido: '' }
+        persona: { id: string; nombre: string; apellido: string } = { id: '', nombre: '', apellido: '' }
     ) {
         this.id = id;
         this.nombreGrado = nombreGrado;

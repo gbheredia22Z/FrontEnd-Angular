@@ -8,6 +8,7 @@ import { DataTableDirective } from 'angular-datatables';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { ImpresionService } from '../../services/impresion.service';
 
 
 
@@ -88,7 +89,7 @@ maxFechaNacimiento: string;
     return { isValid: true };
   }
 
-  constructor(public personaService: PersonaService, private fb: FormBuilder, private router:Router) {
+  constructor(public personaService: PersonaService, private fb: FormBuilder, private router:Router, private srvImpresion:ImpresionService) {
     this.myForm = this.fb.group({
       id: new FormControl('', Validators.required),
       nombre: ['', Validators.required],
@@ -511,6 +512,50 @@ maxFechaNacimiento: string;
       }
   
       fechaNacimientoControl.setErrors(Object.keys(errors).length > 0 ? errors : null);
+    }
+  }
+
+  
+  onImprimir() {
+    if (this.data.length > 0) {
+      const encabezado = ["Nombre", "Apellido", "Cedula", "Correo", "Celular"];
+      const cuerpo = this.data.map((estudiante: Persona) => [
+        estudiante.nombre,
+        estudiante.apellido,
+        estudiante.cedula,
+        estudiante.correo,
+        estudiante.celular
+      ]);
+  
+      this.srvImpresion.imprimir(encabezado, cuerpo, "Listado de Estudiantes", true);
+    } else {
+      // Muestra un mensaje de alerta si no hay datos para imprimir
+      Swal.fire({
+        icon: 'warning',
+        title: 'Sin datos',
+        text: 'No hay datos para generar el informe PDF.',
+      });
+    }
+  }
+  imprimirExcel(){
+    if (this.data.length > 0) {
+      const encabezado = ["Nombre", "Apellido", "Cedula", "Correo", "Celular"];
+      const cuerpo = this.data.map((estudiante: Persona) => [
+        estudiante.nombre,
+        estudiante.apellido,
+        estudiante.cedula,
+        estudiante.correo,
+        estudiante.celular
+      ]);
+  
+      this.srvImpresion.imprimirExcel(encabezado, cuerpo, "Listado de Estudiantes", true);
+    } else {
+      // Muestra un mensaje de alerta si no hay datos para imprimir
+      Swal.fire({
+        icon: 'warning',
+        title: 'Sin datos',
+        text: 'No hay datos para generar el informe PDF.',
+      });
     }
   }
   
