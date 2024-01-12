@@ -13,12 +13,13 @@ export class PeriodoService {
   selectedPeriodo: Periodo;
   periodos!: Periodo[];
   
+  
   URL_API = "http://127.0.0.1:3000/api/periodo/";
 
   constructor(private http: HttpClient) {
     this.selectedPeriodo = new Periodo();
     this.selectedPeriodo = new Periodo();
-    this.periodos=[];
+    this.periodos = [];
   }
 
   getPeriodo() {

@@ -103,7 +103,6 @@ export class PerCalificacionesComponent {
 
     updatePeriodo(form: NgForm): void {
       const nombreActividad = form.value.nombreActividad;
-    
       // Verifica si el periodo ya existe en la lista de periodos, excluyendo el periodo que se está editando
       const periodoExistente = this.perService.tiposPerCalificaciones.find(periodo => periodo.nombrePeriodo === nombreActividad && periodo.id !== this.perService.selectPerCalificaciones.id);
     
@@ -127,6 +126,7 @@ export class PerCalificacionesComponent {
             timer: 1500,
           });
           this.getPeriodoCalificaciones();
+          this.irPagina();
     
           // Cierra el modal de edición utilizando $
           $('#editModal').modal('hide');
@@ -169,6 +169,7 @@ export class PerCalificacionesComponent {
           });
           this.getPeriodoCalificaciones();
           this.closeAddAvtividadModal();
+          this.irPagina();
         });
       } else {
         if (form.valid) {
@@ -183,6 +184,7 @@ export class PerCalificacionesComponent {
             });
             this.getPeriodoCalificaciones();
             this.closeAddAvtividadModal();
+            this.irPagina();
           });
         } else {
           Swal.fire({
@@ -195,6 +197,9 @@ export class PerCalificacionesComponent {
         }
       }
     }
+  }
+  irPagina(){
+    window.location.reload();
   }
 
   onImprimir() {

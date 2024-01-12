@@ -127,6 +127,7 @@ export class ActividadesComponent implements OnInit, OnDestroy {
           timer: 1500,
         });
         this.getTipoService();
+        this.irPagina();
   
         // Cierra el modal de edición utilizando $
         $('#editModal').modal('hide');
@@ -147,9 +148,24 @@ createTipoActividad(form: NgForm): void {
   const nombreActividad = form.value.nombreActividad;
 
   // Verifica si la actividad ya existe en la lista de tipos de actividad
-  const actividadExistente = this.tipoService.tiposactividades.find(actividad => actividad.nombreActividad === nombreActividad);
+  const actividadExistente = this.tipoService.tiposactividades.find(
+    actividad => actividad.nombreActividad === nombreActividad
+  );
 
-  if (actividadExistente) {
+// Expresión regular para validar letras (puede incluir espacios, pero no caracteres especiales)
+const regexSoloLetras = /^[a-zA-Z\s]+$/;
+
+
+  if (!regexSoloLetras.test(nombreActividad)) {
+    // Muestra un mensaje de error indicando que el nombre de la actividad no es válido
+    Swal.fire({
+      position: 'top',
+      icon: 'error',
+      title: 'Ingrese solo letras en el nombre de la actividad',
+      showConfirmButton: false,
+      timer: 1500,
+    });
+  } else if (actividadExistente) {
     // Muestra un mensaje de error indicando que la actividad ya existe
     Swal.fire({
       position: 'top',
@@ -171,6 +187,7 @@ createTipoActividad(form: NgForm): void {
         });
         this.getTipoService();
         this.closeAddAvtividadModal();
+        this.irPagina();
       });
     } else {
       if (form.valid) {
@@ -185,6 +202,7 @@ createTipoActividad(form: NgForm): void {
           });
           this.getTipoService();
           this.closeAddAvtividadModal();
+          this.irPagina();
         });
       } else {
         Swal.fire({
@@ -198,6 +216,7 @@ createTipoActividad(form: NgForm): void {
     }
   }
 }
+
 onImprimir() {
   if (this.data.length > 0) {
     const encabezado = ["Nombre Actividad"];
@@ -233,6 +252,10 @@ imprimirExcel(){
       text: 'No hay datos para generar el informe PDF.',
     });
   }
+}
+
+irPagina(){
+  window.location.reload();
 }
 
 }

@@ -94,34 +94,46 @@ export class MatriculaComponent implements OnInit, OnDestroy {
   //     console.log(res);
   //   })
   // }
-
   getEstudiantes() {
+    console.log("Matriculas:", this.matriculaServices.matriculas);
     this.matriculaServices.getEstudiantes().subscribe((res) => {
-      this.estudiantes = res.filter(estudiante => !this.isEstudianteAsignadoToMatricula(estudiante.id));
-    })
+      console.log("Estudiantes antes del filtro:", res);
+      this.estudiantes = res.filter(estudiante => !this.isEstudianteAssignedToMatricula(estudiante.id));
+      console.log("Estudiantes después del filtro:", this.estudiantes);
+    });
   }
+  
+  
+  
 
 
-  isEstudianteAsignadoToMatricula(estudianteId: String): boolean {
-    return this.matriculaServices.matriculas?.some(matricula => matricula.idPersona === estudianteId) || false;
+  isEstudianteAsignadoToMatricula(estudianteId: string): boolean {
+    return this.matriculaServices.matriculas?.
+    some(matricula => matricula.idPersona === estudianteId) || false;
   }
+  
+  
+
+  
 
 
 
-  // getMatricula() {
-  //   this.matriculaServices.getMatricula().subscribe((res) => {
-  //     this.matriculaServices.matriculas = res as Matricula[];
-  //     console.log(res);
-  //   });
-  // }
+
+  getMatricula() {
+    this.matriculaServices.getMatricula().subscribe((res) => {
+      this.matriculaServices.matriculas = res as Matricula[];
+      console.log(res);
+    });
+  }
   getMatricula2() {
-    this.matriculaServices.getMatricula().
-      subscribe((data) => {
-        this.matriculaLista = data;
-        console.log(data);
-        this.dtTrigger.next(this.dtOptions);
-      });
+    this.matriculaServices.getMatricula().subscribe((data) => {
+      this.matriculaServices.matriculas = data as Matricula[];
+      this.matriculaLista = this.matriculaServices.matriculas;  // Asigna las matrículas al componente
+      console.log(this.matriculaLista);
+      this.dtTrigger.next(this.dtOptions);
+    });
   }
+  
 
   ngOnInit(): void {
     this.dtOptions = {
@@ -130,7 +142,7 @@ export class MatriculaComponent implements OnInit, OnDestroy {
       },
     };
     //funcion para traer matriuclas
-    //this.getMatricula();
+    this.getMatricula();
     this.getMatricula2();
     this.getEstudiantes();
     this.getGrado();
@@ -181,16 +193,7 @@ export class MatriculaComponent implements OnInit, OnDestroy {
     }
   
     // Verifica si la asignatura ya existe
-    if (this.isAsignaturaAlreadyExists(form.value.nombreAsignatura)) {
-      Swal.fire({
-        position: 'top',
-        icon: 'error',
-        title: 'La asignatura ya existe',
-        showConfirmButton: false,
-        timer: 1500,
-      });
-      return;
-    }
+   
   
     // Utiliza directamente this.matriculaServices.selectedMatricula.id para la lógica de actualización
     if (this.matriculaServices.selectedMatricula.id) {
@@ -269,13 +272,15 @@ export class MatriculaComponent implements OnInit, OnDestroy {
     );
   }
 
-  openEstudianteListaModal(){
-    //filtra los estudiantes que no estan asignados a ninguna matrcula
+  openEstudianteListaModal() {
+    console.log("Total de estudiantes:", this.estudiantes.length);
+  
     const estudiantesNoAsignados = this.estudiantes.filter(estudiante => !this.isEstudianteAsignadoToMatricula(estudiante.id));
-
-    //asigna los estudiantes no asignaod s la lista
+    console.log("Estudiantes no asignados:", estudiantesNoAsignados.length);
+  
     this.searchResults = estudiantesNoAsignados;
-
+  
+    // ... Resto del código
     //abrir el nuevo modal
     const studenListaModal = document.getElementById('estudianteListModal');
     if(studenListaModal){
@@ -283,6 +288,8 @@ export class MatriculaComponent implements OnInit, OnDestroy {
       studenListaModal.style.display = 'block';
     }
   }
+  
+  
   openEstudianteListaModal2(){
     //filtra los estudiantes que no estan asignados a ninguna matrcula
     const estudiantesNoAsignados = this.estudiantes.filter(estudiante => !this.isEstudianteAsignadoToMatricula(estudiante.id));

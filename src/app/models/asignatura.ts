@@ -3,16 +3,16 @@ export class Asignatura {
     nombreMateria: string;
     estado: string;
     idGrado: string;
-    grado:{
-        nombreGrado:string;
+    grado: {
+        nombreGrado: string;
     }
-   
+
     constructor(
         id: string = '',
         nombreMateria: string = '',
         estado: string = '',
         idGrado = '',
-        grado: { nombreGrado: string;} = { nombreGrado: ''}
+        grado: { nombreGrado: string; } = { nombreGrado: '' }
     ) {
         this.id = id;
         this.nombreMateria = nombreMateria;
@@ -28,4 +28,3 @@ export interface Asignatura {
     estado: string;
     idGrado: string;
 }
-

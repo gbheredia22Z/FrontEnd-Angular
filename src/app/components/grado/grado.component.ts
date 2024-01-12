@@ -187,10 +187,13 @@ export class GradoComponent implements OnInit, OnDestroy {
         timer: 1500,
       });
       this.getGrado();
-      this.closeEditPeriodoModal();
+      this.irPagina();
       // Cierra el modal de edición utilizando $
       $('#editModal').modal('hide');
     })
+  }
+  irPagina(){
+    window.location.reload();
   }
   
   
@@ -241,7 +244,7 @@ export class GradoComponent implements OnInit, OnDestroy {
         });
         this.getGrado();
         this.closeAddGradoModal();
-        this.closeEditPeriodoModal();
+        this.irPagina();
       });
     } else {
       if (form.valid) {
@@ -324,10 +327,23 @@ export class GradoComponent implements OnInit, OnDestroy {
   openDocenteListModal() {
     // Filtra los docentes que no están asignados a ningún grado
     const docentesNoAsignados = this.docentes.filter(docente => !this.isDocenteAssignedToGrado(docente.id));
-
+  
+    // Verifica si hay docentes disponibles
+    if (docentesNoAsignados.length === 0) {
+      // No hay docentes disponibles, muestra una alerta
+      Swal.fire({
+        position: 'top',
+        icon: 'error',
+        title: 'No hay docentes disponibles',
+        showConfirmButton: false,
+        timer: 1500,
+      });
+      return; // Sale de la función para evitar abrir el modal sin datos
+    }
+  
     // Asigna los docentes no asignados a la lista que se mostrará en el modal
     this.searchResults = docentesNoAsignados;
-
+  
     // Abre el nuevo modal de la lista de docentes
     const docenteListModal = document.getElementById('docenteListModal');
     if (docenteListModal) {
@@ -335,6 +351,7 @@ export class GradoComponent implements OnInit, OnDestroy {
       docenteListModal.style.display = 'block';
     }
   }
+  
 
   closeDocenteListModal(): void {
 

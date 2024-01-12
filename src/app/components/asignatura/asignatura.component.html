@@ -71,32 +71,15 @@
                               [value]="myForm.get('nombreGrado')?.value" [attr.disabled]="true"
                               [ngModel]="asignaturaService.selectedGrado?.nombreGrado">
                           </div>
-              
-
-
 
                           <div class="row">
                             <div class="col-md-6 mb-3">
                               <!-- <label for="cedulaDocente" class="form-label">Cédula del Docente:</label>
                               <input id="cedulaDocente" class="form-control" type="text" name="cedulaDocente" [(ngModel)]="searchQuery"
                                 (input)="onCedulaInput()"> -->
-                
                               <a class="btn btn-primary m-2" id="btn-g2" (click)="openGradosListaModal()">Seleccionar Grado</a>
                             </div>
-                
-                
                           </div>
-                          
-                          
-                          
-
-
-
-
-
-
-
-
                     </div>
 
                 </form>
@@ -159,24 +142,84 @@
     <table class="table table-bordered" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
         <thead>
             <tr>
+             
                 <th scope="col">Nombre Asignatura </th>
                 <th scope="col">Estado</th>
-                <th scope="col">Grado </th>
+                
                 <th scope="col"> Acción </th>
             </tr>
         </thead>
         <tbody>
             <tr *ngFor="let asignatura of data">
+           
                 <td>{{asignatura.nombreMateria}}</td>
                 <td>{{ asignatura.estado === 'A' ? 'Activo' : 'Inactivo' }}</td>
-
-                <td>{{asignatura.nombreGrado}}</td>
-
-
                 <td>
-                    <button class="btn btn-info">Editar</button>
+                  <button type="button" class="btn btn-primary" id="btn-g" (click)="editAsignatura(asignatura)">Editar</button>
                 </td>
             </tr>
         </tbody>
     </table>
+
+    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h1 class="modal-title fs-5" id="exampleModalLabel">Editar Grado</h1>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                      (click)="closeEditAsignaturaModal()"></button>
+              </div>
+              <div class="modal-body">
+                  <form #gradoForm2="ngForm">
+                      <div class="input-group">
+                        <!-- <input name="id_asignatura" class="form-control" type="hidden" #id="ngModel"
+                        [(ngModel)]="asignaturaService.selectedAsignatura.id" /> -->
+                        
+    
+                 
+                      </div>
+    
+                      <div class="row">
+                        <input type="hidden" name="id" [(ngModel)]="asignaturaService.selectedAsignatura.id" />
+
+           
+                          <div class="col-md-6 mb-3">
+                              <label for="nombreMateria" class="form-label">Nombre Materia:</label>
+                              <input type="text" class="form-control" id="nombreMateria"
+                                  placeholder="Ingrese nombre de materia"
+                                  [(ngModel)]="asignaturaService.selectedAsignatura.nombreMateria" name="nombreMateria"
+                                  required>
+                          </div>
+    
+                          <div class="col-md-6 mb-3">
+                              <label for="estado" class="form-label">Estado:</label>
+                              <select class="form-select" aria-label="Selecciona el estado" id="estado" name="estado"
+                                  [(ngModel)]="asignaturaService.selectedAsignatura.estado" required>
+                                  <option value="A">Activo</option>
+                                  <option value="I">Inactivo</option>
+                              </select>
+                          </div>
+                      </div>
+    
+                      <div class="row">
+                          <div class="col-md-6 mb-3">
+                              <label for="idGrado" class="form-label">Nombre del Grado:</label>
+                              <input id="idGrado" class="form-control" type="text" formControlName="nombreGrado"
+                                  [value]="myForm.get('nombreGrado')?.value" [attr.disabled]="true"
+                                  [ngModel]="asignaturaService.selectedGrado?.nombreGrado">
+                          </div>
+    
+                          <div class="col-md-6 mb-3">
+                              <a class="btn btn-primary m-2" id="btn-g2" (click)="openGradosListaModal()">Seleccionar
+                                  Grado</a>
+                          </div>
+                      </div>
+    
+                      <!-- Botón de guardar en el modal de edición -->
+                      <button type="button" class="btn btn-primary" (click)="createAsignatura(gradoForm2)">Actualizar</button>
+                  </form>
+              </div>
+          </div>
+      </div>
+    </div>
 </div>

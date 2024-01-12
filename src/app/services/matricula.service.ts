@@ -19,7 +19,7 @@ export class MatriculaService {
     this.selectedMatricula = new Matricula();
     this.selectedMatricula = new Matricula();
     this.selectedEstudiante = null; // Inicializa selectedEstudiante aquí
-    this.matriculas=[];
+    this.matriculas = [];
    }
 
    getMatricula(){

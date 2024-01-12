@@ -58,6 +58,7 @@ export class PeriodoComponent implements OnInit, OnDestroy {
       },
     };
     this.getPeriodo2();
+    this.getPeriodo();
   }
 
   ngOnDestroy(): void {
@@ -79,13 +80,20 @@ export class PeriodoComponent implements OnInit, OnDestroy {
     }
     $('#addPeriodoModal').modal('hide');
   }
-
+  isGradoAlreadyExists(anioLectivo: string): boolean {
+    return this.periodoService.periodos.some(grado => grado.anioLectivo === anioLectivo);
+  }
+  
   createPeriodo(form: NgForm): void {
     const anioLectivo = form.value.anioLectivo;
+    console.log('Año Lectivo:', anioLectivo);
   
     // Verifica si el año lectivo ya existe en la lista de períodos
+    console.log('Períodos en this.periodoService.periodos:', this.periodoService.periodos);
     const periodoExistente = this.periodoService.periodos.find(periodo => periodo.anioLectivo === anioLectivo);
-  
+    console.log('Período Existente:', periodoExistente);
+    
+    
     if (periodoExistente) {
       // Muestra un mensaje de error indicando que el período ya existe
       Swal.fire({
@@ -122,6 +130,7 @@ export class PeriodoComponent implements OnInit, OnDestroy {
             });
             this.getPeriodo();
             this.closeAddPeriodoModal();
+            this.irPagina();
           });
         } else {
           Swal.fire({
@@ -184,8 +193,7 @@ export class PeriodoComponent implements OnInit, OnDestroy {
           timer: 1500,
         });
         this.getPeriodo();
-        this.closeAddPeriodoModal();
-        this.closeEditPeriodoModal();
+        this.irPagina();
   
         // Cierra el modal de edición utilizando $
         $('#editModal').modal('hide');
@@ -235,6 +243,10 @@ export class PeriodoComponent implements OnInit, OnDestroy {
         text: 'No hay datos para generar el informe PDF.',
       });
     }
+  }
+
+  irPagina(){
+    window.location.reload();
   }
 
 }

@@ -154,10 +154,10 @@
 <div class="container mt-4">
     <button type="button" class="btn btn-primary2" (click)="onImprimir()">
         <i class="bi bi-filetype-pdf"></i>
-      </button>
-      <button type="button" class="btn btn-primary2" (click)="imprimirExcel()">
+    </button>
+    <button type="button" class="btn btn-primary2" (click)="imprimirExcel()">
         <i class="bi bi-file-earmark-excel-fill"></i>
-      </button>
+    </button>
 
     <table class="table table-bordered" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
         <thead>
@@ -167,7 +167,7 @@
                 <th scope="col">Estudiante </th>
                 <th scope="col">Periodo </th>
                 <th scope="col"> Grado </th>
-               
+
             </tr>
         </thead>
         <tbody>
@@ -179,7 +179,7 @@
                 <td>{{matricula.grado.nombreGrado}}</td>
                 <!-- -->
 
-              
+
             </tr>
         </tbody>
     </table>
@@ -190,67 +190,68 @@
     <!-- Después del modal de agregar -->
     <!-- Modal de Edición -->
 
-   <!-- modal edicion -->
-                <!-- Modal de Edición -->
-                <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="exampleModalLabel">Editar Docente</h1>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
-                                (click)="closeEditMatriculaModal()"></button>
+    <!-- modal edicion -->
+    <!-- Modal de Edición -->
+    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Editar Docente</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                        (click)="closeEditMatriculaModal()"></button>
+                </div>
+                <div class="modal-body">
+                    <form #asignaturaForm2="ngForm">
+                        <div class="input-group">
+                            <input name="code" class="form-control" type="hidden" name="id_matricula" #id="ngModel"
+                                [(ngModel)]="matriculaServices.selectedMatricula.id" />
                         </div>
-                        <div class="modal-body">
-                            <form #asignaturaForm2="ngForm">
-                                <div class="input-group">
-                                    <input name="code" class="form-control" type="hidden" name="id_matricula" #id="ngModel"
-                                        [(ngModel)]="matriculaServices.selectedMatricula.id" />
-                                </div>
-            
-                                <div class="row">
-            
-            
-                                    <div class="col-md-6 mb-3">
-                                        <label for="estado" class="form-label">Estado:</label>
-                                        <select class="form-select" aria-label="Selecciona el estado" id="estado" name="estado"
-                                            [(ngModel)]="matriculaServices.selectedMatricula.estado" required>
-                                            <option value="A">Activo</option>
-                                            <option value="I">Inactivo</option>
-                                        </select>
-                                    </div>
-            
-                                    <div class="col-md-6 mb-2">
-                                        <label for="docente" class="form-label">Seleccione Grado:</label>
-                                        <select class="form-select" id="idGrado"
-                                            [(ngModel)]="matriculaServices.selectedMatricula.idGrado" name="idGrado" required>
-                                            <option *ngFor="let grado of grados" [value]="grado.id">{{ grado.nombreGrado }}
-                                            </option>
-                                        </select>
-                                    </div>
-            
-                                </div>
-                                
-            
-                                <div class="row">
-            
-                                    <div class="col-md-6 mb-3">
-                                        <label for="docente" class="form-label">Seleccione Periodo:</label>
-                                        <select class="form-select" id="idPeriodo"
-                                            [(ngModel)]="matriculaServices.selectedMatricula.idPeriodo" name="idPeriodo" required>
-                                            <option *ngFor="let periodo of periodos" [value]="periodo.id">{{ periodo.anioLectivo}}
-                                            </option>
-                                        </select>
-                                    </div>
 
-            
-                                    <button type="button" class="btn btn-primary"
-                                    (click)="updateMatricula(asignaturaForm2)">Guardar</button>
-                                </div>
-                            </form>
+                        <div class="row">
+
+
+                            <div class="col-md-6 mb-3">
+                                <label for="estado" class="form-label">Estado:</label>
+                                <select class="form-select" aria-label="Selecciona el estado" id="estado" name="estado"
+                                    [(ngModel)]="matriculaServices.selectedMatricula.estado" required>
+                                    <option value="A">Activo</option>
+                                    <option value="I">Inactivo</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-6 mb-2">
+                                <label for="docente" class="form-label">Seleccione Grado:</label>
+                                <select class="form-select" id="idGrado"
+                                    [(ngModel)]="matriculaServices.selectedMatricula.idGrado" name="idGrado" required>
+                                    <option *ngFor="let grado of grados" [value]="grado.id">{{ grado.nombreGrado }}
+                                    </option>
+                                </select>
+                            </div>
+
                         </div>
-                    </div>
+
+
+                        <div class="row">
+
+                            <div class="col-md-6 mb-3">
+                                <label for="docente" class="form-label">Seleccione Periodo:</label>
+                                <select class="form-select" id="idPeriodo"
+                                    [(ngModel)]="matriculaServices.selectedMatricula.idPeriodo" name="idPeriodo"
+                                    required>
+                                    <option *ngFor="let periodo of periodos" [value]="periodo.id">{{
+                                        periodo.anioLectivo}}
+                                    </option>
+                                </select>
+                            </div>
+
+
+                            <button type="button" class="btn btn-primary"
+                                (click)="updateMatricula(asignaturaForm2)">Guardar</button>
+                        </div>
+                    </form>
                 </div>
             </div>
+        </div>
+    </div>
 
 </div>

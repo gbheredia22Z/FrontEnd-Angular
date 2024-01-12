@@ -15,48 +15,56 @@ import { ImpresionService } from '../../services/impresion.service';
 })
 export class AsignaturaComponent implements OnInit, OnDestroy {
 
-  dtOptions:DataTables.Settings={};
-  data:any=[]; //aqui se alamcena
-  dtTrigger:Subject<any> = new Subject<any>();
+  dtOptions: DataTables.Settings = {};
+  data: any = []; //aqui se alamcena
+  dtTrigger: Subject<any> = new Subject<any>();
   myForm: FormGroup;
   searchQuery: any;
   onSearch: any;
   private subscriptions: Subscription[] = [];
   isEditModalOpen = false;
-  asignatura :any;
-  gradosasig:any;
+  asignatura: any;
+  gradosasig: any;
   grados: any[] = [];
   searchResults: any[] = [];
   selectedGrados: any = null;
 
-  getAsignatura() {
-    this.asignaturaService.getAsignatura().subscribe((res) => {
-      this.asignaturaService.asignaturas = res as Asignatura[];
-      console.log(res);
 
-    });
-  }
 
-  getAsignatura2(){
-    this.asignaturaService.getasignaturaWithGrado().subscribe((datos)=>{
+  getAsignatura2() {
+    this.asignaturaService.getasignaturaWithGrado().subscribe((datos) => {
       this.asignatura = datos;
       console.log(datos)
     })
   }
-  getAsignatura3(){
-    this.asignaturaService.getasignaturaWithGrado().subscribe((datos)=>{
+  getAsignatura3() {
+    this.asignaturaService.getasignaturaWithGrado().subscribe((datos) => {
       this.gradosasig = datos;
       console.log(datos)
     })
   }
-  getAsignatura4(){
+  getAsignatura4() {
     this.asignaturaService.getasignaturaWithGrado().
-    subscribe((data) => {
-      this.data = data;
-      console.log(data);
-      this.dtTrigger.next(this.dtOptions);
+      subscribe((data) => {
+        this.data = data;
+        console.log(data);
+        this.dtTrigger.next(this.dtOptions);
+      });
+  }
+  getAsignatura() {
+    this.asignaturaService.getAsignatura().subscribe((res) => {
+      this.asignaturaService.asignaturas = res as Asignatura[];
+      console.log('Datos de asignatura cargados:', res);
     });
   }
+  getAsignaturas() {
+    this.asignaturaService.getAsignatura().subscribe((data) => {
+      this.data = data;
+      console.log('Datos de asignatura cargados:', data);
+      this.dtTrigger.next(this.dtOptions);
+    })
+  }
+
   constructor(public asignaturaService: AsignaturaService, private fb: FormBuilder, private srvImpresion: ImpresionService) {
     this.myForm = this.fb.group({
       id: new FormControl('', Validators.required),
@@ -72,11 +80,12 @@ export class AsignaturaComponent implements OnInit, OnDestroy {
         url: "/assets/Spanish.json"
       },
     };
-    this.getAsignatura();
+    this.getAsignaturas();
     //this.getAsignatura3();
-    this.getAsignatura4();
+    //this.getAsignatura4();
     // Retrasa la ejecución hasta que se complete la llamada asíncrona
-   this.getGrado();
+    //this.getGrado();
+    this.getGrados2();
   }
 
   // getGrado(){
@@ -84,26 +93,54 @@ export class AsignaturaComponent implements OnInit, OnDestroy {
   //     this.grados = res;
   //   })
   // }
-getGrado() {
-  this.asignaturaService.getGrados().subscribe((res)=>{
-     // Filtra los docentes que no están asignados a ningún grado
-     this.grados = res.filter(grado => !this.esGradoAsignadoAMateria(grado.id));
-  })
-}
+  // getGrado() {
+  //   this.asignaturaService.getGrados().subscribe((res)=>{
+  //      // Filtra los docentes que no están asignados a ningún grado
+  //      this.grados = res.filter(grado => !this.esGradoAsignadoAMateria(grado.id));
+  //   })
+  // }
 
-  esGradoAsignadoAMateria(gradoId: string): boolean {
-    // Verifica si algún grado tiene el mismo idGrado que ya está asignado en alguna materia
-    return this.asignaturaService.asignaturas?.some(asignatura => asignatura.id === gradoId);
+  getGrados2() {
+    console.log("Asignaturas:", this.asignaturaService.asignaturas);
+  
+    this.asignaturaService.getGrados().subscribe((res) => {
+      console.log("Grados antes del filtro:", res);
+  
+      this.grados = res.filter(grado => !this.isGradoAssignedToAsignatura(grado.id));
+  
+      console.log("Grados después del filtro:", this.grados);
+    });
+  }
+  
+  
+
+  isGradoAssignedToAsignatura(gradoId: string): boolean {
+    return this.asignaturaService.asignaturas?.some(asignatura => asignatura.idGrado === gradoId);
+  }
+  
+  
+
+  isGradoAsignadoToAsignatura(idGrado: string): boolean {
+    return this.asignaturaService.asignaturas?.
+      some(asignatura => asignatura.idGrado === idGrado) || false;
   }
 
-  openGradosListaModal(){
+
+
+
+
+
+  openGradosListaModal() {
+    console.log("Total de grados:", this.grados.length);
     // Filtra los docentes que no están asignados a ningún grado
     //const docentesNoAsignados = this.docentes.filter(docente => !this.isDocenteAssignedToGrado(docente.id));
 
-    const gradosNoAsignados = this.grados.filter(grado => !this.esGradoAsignadoAMateria(grado.id));
-     // Asigna los docentes no asignados a la lista que se mostrará en el modal
-     this.searchResults = gradosNoAsignados;
-     // Abre el nuevo modal de la lista de docentes
+    const gradosNoAsignados = this.grados.filter(grado => !this.isGradoAsignadoToAsignatura(grado.id));
+    console.log("Grados no asignados:", gradosNoAsignados.length);
+
+    this.searchResults = gradosNoAsignados;
+
+    // Abre el nuevo modal de la lista de docentes
     const docenteListModal = document.getElementById('gradoListModal');
     if (docenteListModal) {
       docenteListModal.classList.add('show');
@@ -126,7 +163,7 @@ getGrado() {
       // Si el nombre del campo es diferente, ajústalo en consecuencia
       nombreGrado: newValue, // Asigna el nombre del docente
     });
-  
+
     // Actualiza el nombre del docente en el objeto selectedDocentes
     if (this.selectedGrados) {
       this.selectedGrados = { ...this.selectedGrados, nombreGrado: newValue };
@@ -138,14 +175,14 @@ getGrado() {
   cargarGrado(grado: any) {
     this.selectedGrados = grado;
     this.updateSelectedEstudianteName(grado.nombreGrado);
-  
+
     // Cierra el modal de la lista de docentes
     this.closeGradoListModal();
   }
- 
-  
-  
-  
+
+
+
+
 
 
   ngOnDestroy(): void {
@@ -170,46 +207,108 @@ getGrado() {
   }
 
   createAsignatura(form: NgForm): void {
-    if (form.value.id) {
-      this.asignaturaService.putAsignatura(form.value).subscribe((res) => {
-        Swal.fire({
-          position: 'top',
-          icon: 'success',
-          title: 'Registro actualizado',
-          showConfirmButton: false,
-          timer: 1500,
-        });
-        this.getAsignatura();
-        this.closeAddAsignaturaModal();
-      });
+    if (form.valid) {
+      // Verifica si hay un ID de grado seleccionado
+      if (this.selectedGrados && this.selectedGrados.id) {
+        console.log('ID de grado seleccionado:', this.selectedGrados.id);
+
+        // Actualización o nuevo registro
+        if (form.value.id) {
+          // Actualización
+          form.value.idGrado = this.selectedGrados.id;
+          this.asignaturaService.putAsignatura(form.value).subscribe((res) => {
+            Swal.fire({
+              position: 'top',
+              icon: 'success',
+              title: 'Registro actualizado',
+              showConfirmButton: false,
+              timer: 1500,
+            });
+            this.getAsignatura();
+            this.closeAddAsignaturaModal();
+          });
+        } else {
+          // Nuevo registro
+          form.value.idGrado = this.selectedGrados.id;
+          this.asignaturaService.postAsignatura(form.value).subscribe((res) => {
+            form.reset();
+            Swal.fire({
+              position: 'top',
+              icon: 'success',
+              title: 'Nuevo registro agregado',
+              showConfirmButton: false,
+              timer: 1500,
+            });
+            this.getAsignatura();
+            this.closeAddAsignaturaModal();
+            this.irPagina();
+          });
+        }
+      } else {
+        // Manejo de error si no hay un ID de grado seleccionado o si su propiedad 'id' es undefined
+        console.error('Error: No se ha seleccionado un ID de grado válido.');
+      }
     } else {
-      if (form.valid) {
-        // Asigna la información del estudiante seleccionado a la matrícula
-        form.value.idGrado = this.selectedGrados?.id;
-        this.asignaturaService.postAsignatura(form.value).subscribe((res) => {
-          form.reset();
+      Swal.fire({
+        position: 'top',
+        icon: 'error',
+        title: 'Llene todos todos los campos',
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    }
+  }
+
+  updateAsignatura(form: NgForm): void {
+    console.log('Intentando actualizar asignatura con el formulario:', form.value);
+
+    // Verifica si hay un ID válido para la asignatura
+    const asignaturaId = form.value.id;
+    if (asignaturaId) {
+      console.log('ID de la asignatura válido:', asignaturaId);
+
+      // Verifica si hay un ID de grado seleccionado
+      if (this.selectedGrados && this.selectedGrados.id) {
+        console.log('ID de grado seleccionado:', this.selectedGrados.id);
+
+        // Continúa con el resto del código...
+        this.asignaturaService.putAsignatura(form.value).subscribe((res) => {
           Swal.fire({
             position: 'top',
             icon: 'success',
-            title: 'Nuevo registro agregado',
+            title: 'Registro actualizado',
             showConfirmButton: false,
             timer: 1500,
           });
           this.getAsignatura();
           this.closeAddAsignaturaModal();
-          
+          this.irPagina();
+        
         });
+
       } else {
-        Swal.fire({
-          position: 'top',
-          icon: 'error',
-          title: 'Llene todos todos los campos',
-          showConfirmButton: false,
-          timer: 1500,
-        });
+        // Manejo de error si no hay un ID de grado seleccionado o si su propiedad 'id' es undefined
+        console.error('Error: No se ha seleccionado un ID de grado válido.');
       }
+
+    } else {
+      // Manejo de error si no hay un ID válido para la asignatura
+      console.error('Error: ID de la asignatura no válido para la actualización.');
     }
   }
+
+
+
+
+  irPagina(){
+    window.location.reload();
+  }
+
+
+
+
+
+
 
   closeAddAsignaturaModal(): void {
     const modal = document.getElementById('addAsignaturaModal');
@@ -223,9 +322,9 @@ getGrado() {
       const encabezado = ["Asignatura", "Estado"];
       const cuerpo = this.data.map((grado: Asignatura) => [
         grado.nombreMateria,
-        grado.estado  === 'A' ? 'Activo' : 'Inactivo'
-      
-       
+        grado.estado === 'A' ? 'Activo' : 'Inactivo'
+
+
       ]);
 
       this.srvImpresion.imprimir(encabezado, cuerpo, "Listado de Asignaturas", true);
@@ -239,14 +338,14 @@ getGrado() {
     }
   }
 
-  imprimirExcel(){
+  imprimirExcel() {
     if (this.gradosasig.length > 0) {
       const encabezado = ["Asignatura", "Estado"];
       const cuerpo = this.gradosasig.map((grado: Asignatura) => [
         grado.nombreMateria,
-        grado.estado  === 'A' ? 'Activo' : 'Inactivo'
-      
-       
+        grado.estado === 'A' ? 'Activo' : 'Inactivo'
+
+
       ]);
 
       this.srvImpresion.imprimirExcel(encabezado, cuerpo, "Listado de Asignaturas", true);
@@ -259,6 +358,44 @@ getGrado() {
       });
     }
   }
+
+
+  editAsignatura(asignatura: Asignatura) {
+    // Muestra el ID de la asignatura actual solo si es diferente de '0'
+    if (this.asignaturaService.selectedAsignatura && this.asignaturaService.selectedAsignatura.id !== '0') {
+      console.log('ID de la asignatura (antes de la actualización):', this.asignaturaService.selectedAsignatura.id);
+    }
+
+    // Clonar asignatura para evitar cambios directos
+    this.asignaturaService.selectedAsignatura = { ...asignatura };
+
+    // Muestra el ID de la nueva asignatura después de la actualización
+    console.log('ID de la asignatura (después de la actualización):', this.asignaturaService.selectedAsignatura.id);
+
+    // Abre el modal de edición
+    const modal = document.getElementById('editModal');
+    if (modal) {
+      modal.classList.add('show'); // Agrega la clase 'show' para mostrar el modal
+      modal.style.display = 'block'; // Establece el estilo 'display' en 'block'
+    }
+  }
+
+
+  closeEditAsignaturaModal(): void {
+    const modal = document.getElementById('editModal');
+    if (modal) {
+      modal.classList.remove('show'); // Quita la clase 'show' para ocultar el modal
+      modal.style.display = 'none'; // Establece el estilo 'display' en 'none'
+    }
+  }
+
+
+
+  isAsigaturaAlreadyExists(nombreMateria: string): boolean {
+    return this.asignaturaService.asignaturas.some(grado => grado.nombreMateria === nombreMateria);
+  }
+
+
 
 
 
