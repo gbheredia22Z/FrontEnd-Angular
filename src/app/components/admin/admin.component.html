@@ -1,108 +1,219 @@
-<!DOCTYPE html>
-<html>
+<nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
+    <a class="navbar-brand text-white d-flex align-items-center" href="">
+        <img src="assets/brain_morado.png" alt="Logo" width="150" height="60" class="d-inline-block align-text-top">
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
+        aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Features</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Pricing</a>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
+                    Administrar </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    <a class="dropdown-item" href="#">Docentes</a>
+                    <a class="dropdown-item" href="#"> Estudiantes</a>
+                    <a class="dropdown-item" href="#"> Grado </a>
+                    <a class="dropdown-item" href="#"> Periodo </a>
+                    <a class="dropdown-item" href="#"> Matrícula </a>
+                    <a class="dropdown-item" href="#"> Tipo de Actividad </a>
+                    <a class="dropdown-item" href="#"> Asignatura </a>
+                    <a class="dropdown-item" href="#"> Actividades Educativas </a>
+                    <a class="dropdown-item" href="#"> Periodo de Calificaciones </a>
+                    <a class="dropdown-item" href="#"> Calificaciones </a>
+                </div>
+            </li>
+        </ul>
+    </div>
+</nav>
 
-<head>
-</head>
 
-<body>
-    <nav class="navbar navbar-expand-lg navbar-light">
-        <div style="background-color: #F57037; display: flex; align-items: center;">
-            <a class="navbar-brand text-white d-flex align-items-center" href="">
-                <img src="assets/brain_blanco.png" alt="Logo" width="40" height="40"
-                    class="d-inline-block align-text-top">
-                <span class="ml-2" style="color: white;">Brain Mentor</span>
-            </a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-        </div>
+<br><br><br>
+<h1 class=""> Administrar </h1>
+<br>
 
-    </nav>
-
-    <p class="text"> Administrar </p>
-
-    <div class="rounded-container">
-        <div class="centered-buttons">
-            <div class="card">
+<!--
+    sistema grid
+-->
+<section class="cards">
+    <div class="row">
+        <div class="col">
+            <div class="card" style="width: 18rem;">
                 <img src="../../../assets/aprendiendo.png" class="card-img-top" alt="">
                 <div class="card-body">
-                    <a routerLink="/docente" routerLinkActive="active" class="orange-button">Docente</a>
+                    <h5 class="card-title">Docente</h5>
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+                        card's content.</p>
+                    <a href="/docente" class="btn btn-primary">Administrar</a>
                 </div>
             </div>
-            <div class="card">
+        </div>
+        <div class="col">
+            <div class="card" style="width: 18rem;">
                 <img src="../../../assets/students.png" class="card-img-top" alt="">
                 <div class="card-body">
-                    <a routerLink="/estudiante" routerLinkActive="active" class="orange-button">Estudiante</a>
+                    <h5 class="card-title"> Estudiante </h5>
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+                        card's content.</p>
+                    <a href="/estudiante" class="btn btn-primary"> Administrar </a>
                 </div>
             </div>
-            <div class="card">
+        </div>
+        <div class="col">
+            <div class="card" style="width: 18rem;">
+                <img src="../../../assets/gorro-de-graduacion.png" class="card-img-top" alt="">
+                <div class="card-body">
+                    <h5 class="card-title"> Grado </h5>
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+                        card's content.</p>
+                    <a href="/grado" class="btn btn-primary"> Administrar </a>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card" style="width: 18rem;">
                 <img src="../../../assets/calendario.png" class="card-img-top" alt="">
                 <div class="card-body">
-                    <a routerLink="/periodo" routerLinkActive="active" class="orange-button">Periodo</a>
+                    <h5 class="card-title">Periodo</h5>
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+                        card's content.</p>
+                    <a href="/periodo" class="btn btn-primary"> Administrar </a>
                 </div>
             </div>
-           
-        </div>
-        <br>
-        <div class="centered-buttons">
-            <div class="card">
-                <img src="../../../assets/gorro-de-graduacion.png" class="card-img-top" alt="">
-                <div class="card-body">
-                    <a routerLink="/grado" routerLinkActive="active" class="orange-button">Grado</a>
-                </div>
-            </div>
-            <div class="card">
-                <img src="../../../assets/matricula.png" class="card-img-top" alt="">
-                <div class="card-body">
-                    <a routerLink="/matricula" routerLinkActive="active" class="orange-button">Matricula</a>
-                </div>
-            </div>
-            <div class="card">
-                <img src="../../../assets/estudio.png" class="card-img-top" alt="">
-                <div class="card-body">
-                    <a routerLink="/actividades" routerLinkActive="active" class="orange-button">Actividad</a>
-                </div>
-            </div>
-     
-
-         
-        </div>
-        <br>
-        <div class="centered-buttons">
-            <div class="card">
-                <img src="../../../assets/gorro-de-graduacion.png" class="card-img-top" alt="">
-                <div class="card-body">
-                    <a routerLink="/periodo-calificaciones" routerLinkActive="active" class="orange-button">
-                        Calificacion</a>
-                </div>
-            </div>
-            <div class="card">
-                <img src="../../../assets/gorro-de-graduacion.png" class="card-img-top" alt="">
-                <div class="card-body">
-                    <a routerLink="/actividades-educativas" routerLinkActive="active" class="orange-button">
-                        Educativas</a>
-                </div>
-            </div>
-            <div class="card">
-                <img src="../../../assets/libro.png" class="card-img-top" alt="">
-                <div class="card-body">
-                    <a routerLink="/asignatura" routerLinkActive="active" class="orange-button">
-                        Asignatura</a>
-                </div>
-            </div>
-
         </div>
     </div>
-
-
-
-
-    <footer class="footer">
-        <div class="container2">
-            <p> Brain Mentor - Todos los derechos reservados &copy; 2023</p>
+    <div class="row">
+        <div class="col">
+            <div class="card" style="width: 18rem;">
+                <img src="../../../assets/matricula.png" class="card-img-top" alt="">
+                <div class="card-body">
+                    <h5 class="card-title">Matrícula </h5>
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+                        card's content.</p>
+                    <a href="/matricula" class="btn btn-primary"> Adminsitrar </a>
+                </div>
+            </div>
         </div>
-    </footer>
-</body>
+        <div class="col">
+            <div class="card" style="width: 18rem;">
+                <img src="../../../assets/gorro-de-graduacion.png" class="card-img-top" alt="">
+                <div class="card-body">
+                    <h5 class="card-title"> Tipo Actividad </h5>
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+                        card's content.</p>
+                    <a href="/actividades" class="btn btn-primary"> Adminsitrar </a>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card" style="width: 18rem;">
+                <img src="../../../assets/libro.png" class="card-img-top" alt="">
+                <div class="card-body">
+                    <h5 class="card-title"> Asignatura </h5>
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+                        card's content.</p>
+                    <a href="/asignatura" class="btn btn-primary"> Adminsitrar </a>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card" style="width: 18rem;">
+                <img src="../../../assets/gorro-de-graduacion.png" class="card-img-top" alt="">
+                <div class="card-body">
+                    <h5 class="card-title">Actividades Educativas </h5>
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+                        card's content.</p>
+                    <a href="/actividades-educativas" class="btn btn-primary"> Adminsitrar </a>
+                </div>
+            </div>
+        </div>
 
-</html>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="card" style="width: 18rem;">
+                <img src="../../../assets/gorro-de-graduacion.png" class="card-img-top" alt="">
+                <div class="card-body">
+                    <h5 class="card-title">Perido de Calificaciones </h5>
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+                        card's content.</p>
+                    <a href="/periodo-calificaciones" class="btn btn-primary"> Adminsitrar </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card" style="width: 18rem;">
+                <img src="../../../assets/gorro-de-graduacion.png" class="card-img-top" alt="">
+                <div class="card-body">
+                    <h5 class="card-title"> Calificaciones </h5>
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+                        card's content.</p>
+                    <a href="/notas" class="btn btn-primary"> Adminsitrar </a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+
+<!-- ICONS -->
+<link rel="stylesheet" type="text/css"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+<footer class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="footer-col">
+                <h4>company</h4>
+                <ul>
+                    <li><a href="#">about us</a></li>
+                    <li><a href="#">our services</a></li>
+                    <li><a href="#">privacy policy</a></li>
+                    <li><a href="#">affiliate program</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>get help</h4>
+                <ul>
+                    <li><a href="#">FAQ</a></li>
+                    <li><a href="#">shipping</a></li>
+                    <li><a href="#">returns</a></li>
+                    <li><a href="#">order status</a></li>
+                    <li><a href="#">payment options</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>online shop</h4>
+                <ul>
+                    <li><a href="#">watch</a></li>
+                    <li><a href="#">bag</a></li>
+                    <li><a href="#">shoes</a></li>
+                    <li><a href="#">dress</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>follow us</h4>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+                <img src="assets/brain_blanco.png" alt="Logo" width="80" height="80"
+                    class="d-inline-block align-text-top">
+            </div>
+        </div>
+    </div>
+</footer>
