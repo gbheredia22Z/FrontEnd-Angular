@@ -51,8 +51,8 @@
                 <div class="modal-header">
 
                     <h6 class="" id="exampleModalLabel"> <i class="bi bi-building-fill-up"></i> <br>Añadir Docente </h6>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
-                        (click)="closeAddDocenteModal()"></button>
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal" aria-label="Close"
+                        (click)="closeAddDocenteModal()"><i class="bi bi-x-lg"></i></button>
                 </div>
 
                 <div class="modal-body">
@@ -146,7 +146,7 @@
         </div>
 
 
-        <table class="table table-bordered text-center" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
+        <table class="table table-hover" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
             <thead>
                 <tr>
                     <th scope="col">Nombre</th>
@@ -170,7 +170,7 @@
                     <td>{{docente.celular}}</td>
                     <td>
                         <button type="button" class="btn btn-success" id=""
-                            (click)="editDocente(docente)">Editar</button>
+                            (click)="editDocente(docente)"><i class="bi bi-pencil-square"></i></button>
                     </td>
                     <!-- Modal de Edición -->
                     <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="exampleModalLabel"
@@ -178,8 +178,8 @@
                         <div class="modal-dialog modal-dialog-scrollable">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h6 class="" id="exampleModalLabel"> <i class="bi bi-building-fill-up"></i> <br>
-                                        Editar Docente </h6>
+                                    <h6 class="" id="exampleModalLabel">
+                                        <i class="bi bi-save-fill"></i> <br> Editar Docente </h6>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
                                         (click)="closeEditDocenteModal()"></button>
                                 </div>
@@ -191,12 +191,12 @@
                                             name="id" />
                                         <div class="row">
                                             <div class="mb-3">
-                                                <label for="nombre"><i class="fas fa-user"></i> Nombre </label>
+                                                <label for="nombre" class="form-label"><i class="fas fa-user"></i> Nombre </label>
                                                 <input id="nombre" type="text" class="form-control" name="nombre"
                                                     [(ngModel)]="personaService.selectedDocente.nombre" name="nombre">
                                             </div>
                                             <div class="mb-3">
-                                                <label for="apellido"><i class="fas fa-user"></i> Apellido</label>
+                                                <label for="apellido" class="form-label"><i class="fas fa-user"></i> Apellido</label>
                                                 <input id="apellido" type="text" class="form-control" name="apellido"
                                                     [(ngModel)]="personaService.selectedDocente.apellido"
                                                     name="apellido">

@@ -34,6 +34,12 @@ h6 {
     color: #ffffff;
 }
 
+.form-label {
+    display: inline-block;
+    margin-bottom: .5rem;
+    text-align: left;
+}
+
 
 /*MENU*/
 nav ul li {
@@ -59,9 +65,30 @@ ul{
 /*MODAL*/
 
 .modal-header{
-    background: linear-gradient(#7917CA, #a750ed);
+    background: linear-gradient(#7917CA, #7a22c2, #8646b9,);
 }
 
+.btn-light{
+    background-color: #7917CA;
+    border: 1px solid #7917CA;
+}
+
+.btn-light:hover{
+    background-color: #7f20cd;
+    
+}
+
+
+
+.bi-x-lg{
+   color: white;
+   background-color: none;
+}
+
+.bi-x-lg:hover{
+    color: rgb(211, 211, 211);
+    
+ }
 
 .d-flex {
     margin: 5px;
@@ -74,14 +101,15 @@ ul{
 .btn-primary {
     background-color: #7917CA;
     border: 1px solid #7917CA;
-    border-radius: 20px;
+    border-radius: 25px;
     color: #ffffff;
     height: 50px;
+    width: 150px;
 }
 
 .btn-primary:hover {
     background-color: #f2f2f2;
-    border-radius: 20px;
+    border-radius: 25px;
     border: 1px solid #7917CA;
     color: #7917CA;
     margin: 30px;
@@ -90,17 +118,15 @@ ul{
 .btn-dark {
     background-color: #7917CA;
     border: 1px solid #7917CA;
-    border-radius: 20px;
+    border-radius: 25px;
     color: #ffffff;
-
 }
 
 .btn-dark:hover {
     background-color: #f2f2f2;
-    border-radius: 20px;
+    border-radius: 25px;
     border: 1px solid #7917CA;
     color: #7917CA;
- 
 }
 
 .btn-secondary {
@@ -108,25 +134,31 @@ ul{
     border: 1px solid #8f8f8f;
     border-radius: 20px;
     color: #ffffff;
-
 }
 
 .btn-secondary:hover {
     background-color: #000000;
-    border-radius: 20px;
+    border-radius: 25px;
     border: 1px solid #000000;
     color: #ffffff;
- 
 }
 
 .btn-outline-danger {
     height: 50px;
     width: 150px;
+    border-radius: 25px; 
 }
 
 .btn-outline-success {
     height: 50px;
     width: 150px;
+    border-radius: 25px; 
+}
+
+.btn-success{
+    height: 50px;
+    width: 50px;
+    border-radius: 50px; 
 }
 
 #exampleModal .modal-dialog {
@@ -138,13 +170,29 @@ input:hover {
     border: 1px solid #7917CA;
 }
 
-
 .modal-body {
     background-color: #ffffff;
     margin: 30px
 }
 
+.btn-outline-danger {
+    
+    border-radius: 25px;
+}
 
+div.dataTables_wrapper div.dataTables_filter label {
+    font-weight: normal;
+    white-space: nowrap;
+    text-align: left;
+    background-color: #1c1c1c;
+}
+
+div.dataTables_wrapper div.dataTables_filter input {
+    margin-left: .5em;
+    display: inline-block;
+    width: auto;
+    border: 1px solid #7917CA;
+}
 
 /*FOOTER*/
 .container {
