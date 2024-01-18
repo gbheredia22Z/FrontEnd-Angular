@@ -17,7 +17,7 @@ export class AsignaturaService {
   grados!: Grado[];
   URL_API = "http://127.0.0.1:3000/api/asignatura/";
   URL_API2 = "http://127.0.0.1:3000/api/asignaturaWithGrado";
-  
+  URL_GRADOS_BY_ID="http://localhost:3000/api/grado/traer/";
 
   constructor(private http: HttpClient) {
     this.selectedAsignatura = new Asignatura();
@@ -64,5 +64,10 @@ export class AsignaturaService {
       })
     );
   }
+
+  getGradoById(idGrado: string) {
+    return this.http.get<any>(`${this.URL_GRADOS_BY_ID}${idGrado}`);
+  }
+  
   
 }

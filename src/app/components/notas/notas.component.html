@@ -1,25 +1,17 @@
-<!-- Ajusta los ngModel y las propiedades en el *ngFor según el modelo Notas -->
-<!-- <select class="form-select" id="asignaturaId" [(ngModel)]="asignaturaId" name="asignaturaId"  (change)="onAsignaturaSelected()" required>
-  <option *ngFor="let asignatura of asignatura" [value]="asignatura.id">{{ asignatura.nombreMateria }} </option>
-</select>
-
-<select class="form-select" id="actividadId" [(ngModel)]="tipoActId" name="actividadId" (change)="onAsignaturaActividadSelected()" required>
-  <option *ngFor="let actividad of actividadesEducativas" [value]="actividad.id">{{ actividad.titulo }} </option>
-</select> -->
-
-
 <hr>
 <!-- Ajusta el código del HTML para utilizar correctamente las opciones -->
 <div class="col-md-6 mb-3">
   <label for="periodo" class="form-label">Asignatura</label>
-  <select class="form-select" id="asignaturaId" [(ngModel)]="selectedAsignaturaId" name="asignaturaId" (change)="onAsignaturaSelected()" required>
+  <select class="form-select" id="asignaturaId" [(ngModel)]="selectedAsignaturaId" name="asignaturaId"
+    (change)="onAsignaturaSelected()" required>
     <option *ngFor="let asignatura of asignaturas" [value]="asignatura.id">{{ asignatura.nombreMateria }} </option>
   </select>
 </div>
 
 <div class="col-md-6 mb-3">
   <label for="periodo" class="form-label">Actividad</label>
-  <select class="form-select" id="actividadId" [(ngModel)]="selectedActividadId" name="actividadId" (change)="onActividadSelected()" required>
+  <select class="form-select" id="actividadId" [(ngModel)]="selectedActividadId" name="actividadId"
+    (change)="onActividadSelected()" required>
     <option *ngFor="let actividad of actividades" [value]="actividad.id">{{ actividad.titulo }} </option>
   </select>
 </div>
@@ -29,27 +21,103 @@
   <thead>
     <tr>
       <th>personaID</th>
-      <th>IdActividad</th>
+      <th>Nombre</th>
+      <th>Apellido</th>
+      <th>idActividad</th>
       <th>idAsignatura</th>
-      <th>actividadEducativaTitulo</th>
-      <th>Nota</th> 
+      <th>id_nota</th>
+      <th>Nota</th>
+
+      <th>Nombre asignatura</th>
+
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let result of data">
-      <td>{{ result.personaID }}</td>
-      <td>{{ result.IdActividad }}</td>
+    <tr *ngFor="let result of datosfinales">
+      <td>{{ result.idPersona }}</td>
+      <td>{{ result.nombre }}</td>
+      <td>{{ result.apellido }}</td>
+      <td>{{ result.idActividad }}</td>
       <td>{{ result.idAsignatura }}</td>
-      <td>{{ result.actividadEducativaTitulo }}</td>
+      <td>{{ result.idNota}}</td>
+      <td>{{ result.nota}}</td>
+      <td>{{ result.nombreAsignatura}}</td>
+
       <td>
-        <select [(ngModel)]="result.nota">
-          <option *ngFor="let i of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]" [value]="i">{{ i }}</option>
-        </select>
+        <button type="button" class="btn btn-primary" id="btn-g" (click)="editarNotas(result)">Editar</button>
+      </td>
+
     </tr>
   </tbody>
 </table>
 
-<button class="btn btn-info m-5">Enviar Notas</button>
+<!-- modal para abrir con un input y actualizar la nota -->
+<!-- Modal de Edición -->
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Asignar Nota</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+          (click)="closeEditPeriodoModal()"></button>
+      </div>
+      <div class="modal-body">
+        <form #periodoForm2="ngForm">
+          <!-- Campo de ID oculto -->
+          <input type="hidden" [(ngModel)]="notaService.selectNotas.id" name="id" />
+          <input type="hidden" [(ngModel)]="notaService.selectNotas.personaId" name="id" />
 
 
+          <div class="row">
 
+            <input type="hidden" [(ngModel)]="notaService.selectNotas.personaId" name="id" />
+            <input type="hidden" [(ngModel)]="notaService.selectNotas.id" name="id" />
+            <input type="hidden" [(ngModel)]="notaService.selectDTO.id_nota" name="id" />
+           
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="id" class="form-label">Nombre del Estudiante:</label>
+                <input id="id" class="form-control" type="text" formControlName="nombre"
+                  [value]="formulario.get('nombre')?.value" [attr.disabled]="true">
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="actId" class="form-label">Actividad</label>
+                <input id="actId" class="form-control" type="text" formControlName="titulo"
+                  [value]="formulario.get('actividadEducativaTitulo')?.value" [attr.disabled]="true"
+                  [ngModel]="notaService.selectDTO.IdActividad" name="actId">
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="direccion" class="form-label">Direccion</label>
+                <input id="direccion" class="form-control" type="text" 
+                  [attr.disabled]="true"
+                  [(ngModel)]="notaService.selectDTO.direccion" name="id">
+      
+              </div>
+              
+            <div class="col-md-6 mb-3">
+                <label for="direccion" class="form-label">Nota</label>
+              <input id="valor_nota" type="text" 
+              class="form-control"  [(ngModel)]="notaService.seleccionarDto.nota" name="valor_nota" />
+            </div>
+            </div>
+
+          </div>
+          <!-- Botón de guardar en el modal de edición -->
+          <!-- <button type="button" class="btn btn-primary"
+                      (click)="">Guardar</button> -->
+                      <!-- Ajusta según la ubicación y contexto en tu HTML -->
+<!-- Agrega esto al final de tu formulario dentro del modal -->
+<div class="row">
+  <div class="col-md-12">
+    <button type="button" class="btn btn-primary" (click)="asignarNota(notaService.seleccionarDto.idNota, notaService.seleccionarDto.nota)">
+      Asignar Nota
+    </button>
+  </div>
+</div>
+
+
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

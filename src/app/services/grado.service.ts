@@ -15,7 +15,7 @@ export class GradoService {
   selectedDocentes:any;
   
   URL_API = "http://127.0.0.1:3000/api/grado/";
-
+  URL_DOCENTES_BY_ID = "http://localhost:3000/api/docentes/traer/";
   constructor(private http: HttpClient) {
     this.selectedGrado = new Grado();
     this.selectedGrado = new Grado();
@@ -40,5 +40,10 @@ export class GradoService {
         throw error;
       })
     );
+  }
+
+
+  getDocenteById(idDocente: string) {
+    return this.http.get<any>(`${this.URL_DOCENTES_BY_ID}${idDocente}`);
   }
 }

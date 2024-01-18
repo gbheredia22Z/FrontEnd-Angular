@@ -66,7 +66,7 @@ const routes: Routes = [
     component:EducativaActividadesComponent
   },
   {
-    path:'nota/:asignaturaId',
+    path:'nota',
     component:NotasComponent
   }
 

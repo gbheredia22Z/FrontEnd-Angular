@@ -1,6 +1,6 @@
 export class Notas {
   id: string;
-  personaId: number;
+  personaId: string;
   actId: number;
   valor_nota: number;
   persona: {
@@ -18,7 +18,7 @@ export class Notas {
 
   constructor(
     id: string = '',
-    personaId: number = 0,
+    personaId: string = '',
     actId: number = 0,
     valor_nota: number = 0,
     persona: { nombre: string; apellido: string } = { nombre: '', apellido: '' },
@@ -37,6 +37,5 @@ export class Notas {
     this.valor_nota = valor_nota;
     this.persona = persona;
     this.actividades = actividades;
-    
   }
 }
