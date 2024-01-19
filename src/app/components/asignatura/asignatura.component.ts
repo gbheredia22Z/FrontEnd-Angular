@@ -226,6 +226,7 @@ export class AsignaturaComponent implements OnInit, OnDestroy {
             });
             this.getAsignatura();
             this.closeAddAsignaturaModal();
+            this.irPagina();
           });
         } else {
           // Nuevo registro
@@ -261,41 +262,33 @@ export class AsignaturaComponent implements OnInit, OnDestroy {
 
   updateAsignatura(form: NgForm): void {
     console.log('Intentando actualizar asignatura con el formulario:', form.value);
-
+  
     // Verifica si hay un ID válido para la asignatura
     const asignaturaId = form.value.id;
     if (asignaturaId) {
       console.log('ID de la asignatura válido:', asignaturaId);
-
-      // Verifica si hay un ID de grado seleccionado
-      if (this.selectedGrados && this.selectedGrados.id) {
-        console.log('ID de grado seleccionado:', this.selectedGrados.id);
-
-        // Continúa con el resto del código...
-        this.asignaturaService.putAsignatura(form.value).subscribe((res) => {
-          Swal.fire({
-            position: 'top',
-            icon: 'success',
-            title: 'Registro actualizado',
-            showConfirmButton: false,
-            timer: 1500,
-          });
-          this.getAsignatura();
-          this.closeAddAsignaturaModal();
-          this.irPagina();
-        
+  
+      // Continúa con el resto del código...
+      this.asignaturaService.putAsignatura(form.value).subscribe((res) => {
+        Swal.fire({
+          position: 'top',
+          icon: 'success',
+          title: 'Registro actualizado',
+          showConfirmButton: false,
+          timer: 1500,
         });
-
-      } else {
-        // Manejo de error si no hay un ID de grado seleccionado o si su propiedad 'id' es undefined
-        console.error('Error: No se ha seleccionado un ID de grado válido.');
-      }
-
+        this.getAsignatura();
+        this.closeAddAsignaturaModal();
+        this.irPagina();
+      });
+  
     } else {
       // Manejo de error si no hay un ID válido para la asignatura
       console.error('Error: ID de la asignatura no válido para la actualización.');
     }
   }
+  
+  
 
 
 
@@ -361,24 +354,31 @@ export class AsignaturaComponent implements OnInit, OnDestroy {
 
 
   editAsignatura(asignatura: Asignatura) {
-    // Muestra el ID de la asignatura actual solo si es diferente de '0'
-    if (this.asignaturaService.selectedAsignatura && this.asignaturaService.selectedAsignatura.id !== '0') {
-      console.log('ID de la asignatura (antes de la actualización):', this.asignaturaService.selectedAsignatura.id);
-    }
-
     // Clonar asignatura para evitar cambios directos
     this.asignaturaService.selectedAsignatura = { ...asignatura };
-
-    // Muestra el ID de la nueva asignatura después de la actualización
-    console.log('ID de la asignatura (después de la actualización):', this.asignaturaService.selectedAsignatura.id);
-
-    // Abre el modal de edición
-    const modal = document.getElementById('editModal');
-    if (modal) {
-      modal.classList.add('show'); // Agrega la clase 'show' para mostrar el modal
-      modal.style.display = 'block'; // Establece el estilo 'display' en 'block'
-    }
+  
+    // Obtener el nombre del grado asociado a la asignatura
+    this.asignaturaService.getGradoById(asignatura.idGrado).subscribe((grado: any) => {
+      if (grado) {
+        // Actualizar el nombre del grado directamente en el formulario
+        this.myForm.patchValue({
+          nombreGrado: grado.nombreGrado
+        });
+      }
+  
+      // Establecer this.selectedGrados con los detalles del grado
+      this.selectedGrados = grado || {};
+  
+      // Abre el modal de edición
+      const modal = document.getElementById('editModal');
+      if (modal) {
+        modal.classList.add('show'); // Agrega la clase 'show' para mostrar el modal
+        modal.style.display = 'block'; // Establece el estilo 'display' en 'block'
+      }
+    });
   }
+  
+  
 
 
   closeEditAsignaturaModal(): void {

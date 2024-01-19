@@ -57,6 +57,7 @@
                                 <label for="fechaInicio"><i class="fas fa-id-card"></i> Fecha Inicio</label>
                                 <input id="fechaInicio" type="date" class="form-control" name="fechaInicio"
                                     [(ngModel)]="educativaService.selectedActividades.fechaInicio"
+                                    [min]="minFechaActual()"
                                     >
                                 
                                
@@ -65,6 +66,7 @@
                                 <label for="fechaFin"><i class="fas fa-id-card"></i> Fecha Fin</label>
                                 <input id="fechaFin" type="date" class="form-control" name="fechaFin"
                                     [(ngModel)]="educativaService.selectedActividades.fechaFin"
+                                    [min]="minFechaActual()"
                                     >
                                 
                                

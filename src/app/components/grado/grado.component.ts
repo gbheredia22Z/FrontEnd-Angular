@@ -113,7 +113,7 @@ export class GradoComponent implements OnInit, OnDestroy {
       // Si el nombre del campo es diferente, ajústalo en consecuencia
       nombreDocente: newValue, // Asigna el nombre del docente
     });
-  
+
     // Actualiza el nombre del docente en el objeto selectedDocentes
     if (this.selectedDocentes) {
       this.selectedDocentes = { ...this.selectedDocentes, nombre: newValue };
@@ -121,7 +121,7 @@ export class GradoComponent implements OnInit, OnDestroy {
       this.selectedDocentes = { nombre: newValue };
     }
   }
-  
+
   buscarEstudiante() {
     if (!this.searchQuery) {
       // Muestra una alerta si el campo de búsqueda está vacío
@@ -158,27 +158,38 @@ export class GradoComponent implements OnInit, OnDestroy {
     }
   }
 
-  editGrado(grado:Grado){
-    //clonar grado para evitar cambios direcots
-    //this.periodoService.selectedPeriodo = { ...periodo };
-    this.gradoService.selectedGrado = { ...grado};
-    // Abre el modal de edición
-    const modal = document.getElementById('editModal');
-    if (modal) {
-      modal.classList.add('show'); // Agrega la clase 'show' para mostrar el modal
-      modal.style.display = 'block'; // Establece el estilo 'display' en 'block'
-    }
+  editGrado(grado: Grado) {
+    // Clonar grado para evitar cambios directos
+    this.gradoService.selectedGrado = { ...grado };
+
+    // Obtener el nombre del docente asociado al grado
+    this.gradoService.getDocenteById(grado.persId).subscribe((docente: any) => {
+      if (docente) {
+        // Actualizar el nombre del docente directamente en el formulario
+        this.myForm.patchValue({
+          nombreDocente: `${docente.nombre} ${docente.apellido}`
+        });
+      }
+
+      // Abre el modal de edición
+      const modal = document.getElementById('editModal');
+      if (modal) {
+        modal.classList.add('show'); // Agrega la clase 'show' para mostrar el modal
+        modal.style.display = 'block'; // Establece el estilo 'display' en 'block'
+      }
+    });
   }
+
   updateGrado(form: NgForm) {
     this.gradoService.putGrado(this.gradoService.selectedGrado).subscribe((res) => {
       // Buscar el índice del grado actualizado en la lista de grados
       const index = this.gradoService.grados.findIndex(grado => grado.id === this.gradoService.selectedGrado.id);
-  
+
       if (index !== -1) {
         // Actualizar el nombre del docente en la lista de grados
         this.gradoService.grados[index].persona.nombre = this.gradoService.selectedGrado.persona.nombre;
       }
-  
+
       Swal.fire({
         position: 'top',
         icon: 'success',
@@ -192,11 +203,11 @@ export class GradoComponent implements OnInit, OnDestroy {
       $('#editModal').modal('hide');
     })
   }
-  irPagina(){
+  irPagina() {
     window.location.reload();
   }
-  
-  
+
+
   closeEditPeriodoModal(): void {
     const modal = document.getElementById('editModal');
     if (modal) {
@@ -254,8 +265,8 @@ export class GradoComponent implements OnInit, OnDestroy {
         //   nombre: this.gradoService.selectedDocentes.nombre,
         //   apellido: this.gradoService.selectedDocentes.apellido
         // };
-         // Asigna la información del estudiante seleccionado a la matrícula
-         form.value.persId = this.selectedDocentes?.id;
+        // Asigna la información del estudiante seleccionado a la matrícula
+        form.value.persId = this.selectedDocentes?.id;
 
 
         this.gradoService.postGrado(form.value).subscribe((res) => {
@@ -287,7 +298,7 @@ export class GradoComponent implements OnInit, OnDestroy {
   isDocenteAssignedToGrado(docenteId: string): boolean {
     return this.gradoService.grados?.some(grado => grado.persId === docenteId) || false;
   }
-  
+
   isGradoAlreadyExists(nombreGrado: string): boolean {
     return this.gradoService.grados.some(grado => grado.nombreGrado === nombreGrado);
   }
@@ -311,8 +322,8 @@ export class GradoComponent implements OnInit, OnDestroy {
       this.gradoService.selectedDocentes.nombre = newValue;
     }
   }
-  
-  
+
+
   filterByNameOrCedula(docentes: any[], searchQuery: string): any[] {
     if (!searchQuery) {
       return docentes; // Si no hay consulta de búsqueda, devuelve la lista completa
@@ -327,7 +338,7 @@ export class GradoComponent implements OnInit, OnDestroy {
   openDocenteListModal() {
     // Filtra los docentes que no están asignados a ningún grado
     const docentesNoAsignados = this.docentes.filter(docente => !this.isDocenteAssignedToGrado(docente.id));
-  
+
     // Verifica si hay docentes disponibles
     if (docentesNoAsignados.length === 0) {
       // No hay docentes disponibles, muestra una alerta
@@ -340,10 +351,10 @@ export class GradoComponent implements OnInit, OnDestroy {
       });
       return; // Sale de la función para evitar abrir el modal sin datos
     }
-  
+
     // Asigna los docentes no asignados a la lista que se mostrará en el modal
     this.searchResults = docentesNoAsignados;
-  
+
     // Abre el nuevo modal de la lista de docentes
     const docenteListModal = document.getElementById('docenteListModal');
     if (docenteListModal) {
@@ -351,7 +362,7 @@ export class GradoComponent implements OnInit, OnDestroy {
       docenteListModal.style.display = 'block';
     }
   }
-  
+
 
   closeDocenteListModal(): void {
 
@@ -385,7 +396,7 @@ export class GradoComponent implements OnInit, OnDestroy {
       });
     }
   }
-  imprimirExcel(){
+  imprimirExcel() {
     if (this.data.length > 0) {
       const encabezado = ["Grado", "Nombre", "Apellido"];
       const cuerpo = this.data.map((grado: Grado) => [
@@ -405,21 +416,21 @@ export class GradoComponent implements OnInit, OnDestroy {
     }
   }
 
- 
 
 
-// ... Otro código ...
 
-cargarDocente(docente: any) {
-  this.selectedDocentes = docente;
-  this.updateSelectedEstudianteName(docente.nombre);
+  // ... Otro código ...
 
-  // Cierra el modal de la lista de docentes
-  this.closeDocenteListModal();
-}
+  cargarDocente(docente: any) {
+    this.selectedDocentes = docente;
+    this.updateSelectedEstudianteName(docente.nombre);
+
+    // Cierra el modal de la lista de docentes
+    this.closeDocenteListModal();
+  }
 
 
-// ... Otro código ...
+  // ... Otro código ...
 
 
 

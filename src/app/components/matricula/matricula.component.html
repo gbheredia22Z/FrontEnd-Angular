@@ -9,10 +9,10 @@
     <div class="collapse navbar-collapse" id="navbarNavDropdown">
         <ul class="navbar-nav">
             <li class="nav-item">
-                <a class="nav-link" href="#"> Home <span class="sr-only">(current)</span></a>
+                <a class="nav-link" href="/admin"> Inicio <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="/admin" id="navbarDropdownMenuLink" data-toggle="dropdown"
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
                     aria-haspopup="true" aria-expanded="false">
                     Administrar </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
@@ -25,27 +25,30 @@
                     <a class="dropdown-item" href="/asignatura"> Asignatura </a>
                     <a class="dropdown-item" href="/actividades-educativas"> Actividades Educativas </a>
                     <a class="dropdown-item" href="/periodo-calificaciones"> Periodo de Calificaciones </a>
-                    <a class="dropdown-item" href="7"> Calificaciones </a>
+                    <a class="dropdown-item" href="/nota"> Calificaciones </a>
                 </div>
             </li>
         </ul>
     </div>
-  </nav>
-  
+</nav>
 
 <h1 class=""> Matrícula </h1>
 
+<div class="d-flex align-items-center">
+    <!-- Botón "Añadir Docente" -->
+    <button type="button" class="btn btn-primary" id="modal" (click)="openAddAsignaturaModal()">
+        Añadir Matricula </button>
+</div>
 
-<button type="button" class="btn btn-primary" id="modal" (click)="openAddAsignaturaModal()">
-    Añadir Matricula </button>
 <div class="modal fade" id="addMatriculaModal" tabindex="-1" aria-labelledby="addAsignaturaModalLabel"
     aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel"> Añadir Matricula</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
-                    (click)="closeAddAsignaturaModal()"></button>
+                <h1 class="modal-title fs-5" id="exampleModalLabel"> <i class="bi bi-building-fill-up"></i> <br>Añadir
+                    Matricula</h1>
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal" aria-label="Close"
+                    (click)="closeAddAsignaturaModal()"><i class="bi bi-x-lg"></i></button>
             </div>
             <div class="modal-body">
                 <form #asignaturaForm="ngForm">
@@ -53,11 +56,8 @@
                         <input name="code" class="form-control" type="hidden" name="id_matricula" #id="ngModel"
                             [(ngModel)]="matriculaServices.selectedMatricula.id" />
                     </div>
-
                     <div class="row">
-
-
-                        <div class="col-md-6 mb-3">
+                        <div class="mb-3">
                             <label for="estado" class="form-label">Estado:</label>
                             <select class="form-select" aria-label="Selecciona el estado" id="estado" name="estado"
                                 [(ngModel)]="matriculaServices.selectedMatricula.estado" required>
@@ -66,7 +66,7 @@
                             </select>
                         </div>
 
-                        <div class="col-md-6 mb-2">
+                        <div class="mb-3">
                             <label for="docente" class="form-label">Seleccione Grado:</label>
                             <select class="form-select" id="idGrado"
                                 [(ngModel)]="matriculaServices.selectedMatricula.idGrado" name="idGrado" required>
@@ -76,11 +76,8 @@
                         </div>
 
                     </div>
-
-
                     <div class="row">
-
-                        <div class="col-md-6 mb-3">
+                        <div class=" mb-3">
                             <label for="docente" class="form-label">Seleccione Periodo:</label>
                             <select class="form-select" id="idPeriodo"
                                 [(ngModel)]="matriculaServices.selectedMatricula.idPeriodo" name="idPeriodo" required>
@@ -88,29 +85,13 @@
                                 </option>
                             </select>
                         </div>
-
-                        <div class="col-md-6 mb-3">
+                        <div class="mb-3">
                             <label for="idPersona" class="form-label">Nombre del Estudiante:</label>
                             <input id="idPersona" class="form-control" type="text" formControlName="nombreEstudiante"
                                 [value]="myForm.get('nombreEstudiante')?.value" [attr.disabled]="true"
                                 [ngModel]="matriculaServices.selectedEstudiante?.nombre">
                         </div>
-
                     </div>
-
-                    <div class="row">
-                        <!-- <div class="col-md-6 mb-3">
-                          <label for="cedulaEstudiante" class="form-label">Cédula del Estudiante:</label>
-                          <input id="cedulaEstudiante" class="form-control" type="text" name="cedulaEstudiante" [(ngModel)]="searchQuery" (input)="onCedulaChange($event)">
-                        </div> -->
-                        <!-- <div class="col-md-6 mb-3">
-                          <label for="idPersona" class="form-label">Nombre del Estudiante:</label>
-                          <input id="idPersona" class="form-control" type="text" name="idPersona"  [ngModel]="matriculaServices.selectedEstudiante?.nombre" disabled="true">
-                        </div> -->
-
-                    </div>
-
-
                     <a class="btn btn-primary m-2" id="btn-g2" (click)="openEstudianteListaModal()">Buscar
                         estudiante no matriculado</a>
                     <!-- Nuevo Modal para la Lista de ESTUDIANTES -->
@@ -144,85 +125,64 @@
                                                 <!-- Puedes agregar más columnas según tus necesidades -->
                                                 <td>
                                                     <button type="button" class="btn btn-primary"
-                                                        (click)="cargarStudiante(estudiante)">Matricular</button>
+                                                        (click)="cargarStudiante(estudiante)"> Matricular</button>
                                                 </td>
                                             </tr>
                                         </tbody>
                                     </table>
                                 </div>
-
-                                <!-- Puedes agregar más secciones (body, footer, etc.) según tus necesidades -->
-
                             </div>
                         </div>
                     </div>
-
-                    <!-- <div class="row">
-                        <div class="col-md-6 mb-3">
-                          <button type="button" class="btn btn-primary" (click)="buscarEstudiante()">Buscar</button>
-                        </div>
-                      </div>
-                       -->
-
-
-
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="btn-g"
-                    (click)="createAsignatura(asignaturaForm)">Guardar</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                    (click)="closeAddAsignaturaModal()"> Cerrar</button>
+                <button type="button" class="btn btn-dark" id="btn-g" (click)="createAsignatura(asignaturaForm)">
+                    Guardar</button>
             </div>
         </div>
     </div>
 </div>
 
-<!-- para visualizar -->
 <div class="container mt-4">
-    <button type="button" class="btn btn-primary2" (click)="onImprimir()">
-        <i class="bi bi-filetype-pdf"></i>
-    </button>
-    <button type="button" class="btn btn-primary2" (click)="imprimirExcel()">
-        <i class="bi bi-file-earmark-excel-fill"></i>
-    </button>
+    <div class="d-flex align-items-center">
+        <button type="button" class="btn btn-outline-danger" (click)="onImprimir()"> Descargar
+            <i class="bi bi-file-pdf" id="pdf"></i>
+        </button> <button type="button" class="btn btn-outline-success" (click)="imprimirExcel()">Descargar
+            <i class="bi bi-file-earmark-excel"></i>
+        </button>
+    </div>
 
     <table class="table table-bordered" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
         <thead>
             <tr>
-
-                <th scope="col">Estado</th>
                 <th scope="col">Estudiante </th>
-                <th scope="col">Periodo </th>
                 <th scope="col"> Grado </th>
-
+                <th scope="col">Periodo </th>
+                <th scope="col">Estado</th>
+                <th scope="col">Acción</th>
             </tr>
         </thead>
         <tbody>
             <tr *ngFor="let matricula of matriculaLista">
-
-                <td>{{matricula.estado === 'A' ? 'Activo' : 'Inactivo' }}</td>
-                <td>{{matricula.persona.nombre}}</td>
-                <td>{{matricula.periodo.anioLectivo}}</td>
+                <td>{{ matricula.persona.nombre + ' ' + matricula.persona.apellido }}</td>
                 <td>{{matricula.grado.nombreGrado}}</td>
-                <!-- -->
-
-
+                <td>{{matricula.periodo.anioLectivo}}</td>
+                <td>{{matricula.estado === 'A' ? 'Activo' : 'Inactivo' }}</td>
+                <td>
+                    <button type="button" class="btn btn-success" id=""><i class="bi bi-pencil-square"></i></button>
+                </td>
             </tr>
         </tbody>
     </table>
-
-
-
-    <!-- modal para editar -->
-    <!-- Después del modal de agregar -->
-    <!-- Modal de Edición -->
-
-    <!-- modal edicion -->
     <!-- Modal de Edición -->
     <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Editar Docente</h1>
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Editar Matrícula</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
                         (click)="closeEditMatriculaModal()"></button>
                 </div>
@@ -253,10 +213,7 @@
                                     </option>
                                 </select>
                             </div>
-
                         </div>
-
-
                         <div class="row">
 
                             <div class="col-md-6 mb-3">
@@ -269,17 +226,20 @@
                                     </option>
                                 </select>
                             </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                                    (click)="closeAddAsignaturaModal()">Cerrar</button>
+                                <!-- Botón de guardar en el modal de edición -->
+                                <button type="button" class="btn btn-primary"
+                                    (click)="updateMatricula(asignaturaForm2)">Guardar</button>
+                            </div>
 
-
-                            <button type="button" class="btn btn-primary"
-                                (click)="updateMatricula(asignaturaForm2)">Guardar</button>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
     </div>
-
 </div>
 
 <br> <br><br> <br><br>

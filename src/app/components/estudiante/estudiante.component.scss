@@ -1,11 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;700&display=swap');
+
+/*FUENTES*/
 p {
     font-family: 'Raleway', sans-serif;
 }
-
 a {
     font-family: 'Raleway', sans-serif;
 }
-
 h1 {
     font-family: 'Raleway', sans-serif;
     font-weight: regular;
@@ -14,130 +15,187 @@ h1 {
     padding: 50px;
     text-align: center;
 }
-
 h2 {
     font-family: 'Raleway', sans-serif;
 }
-
 h3 {
     font-family: 'Raleway', sans-serif;
 }
-
 h4 {
     font-family: 'Raleway', sans-serif;
 }
-
 h6 {
     font-family: 'Raleway', sans-serif;
+    font-weight: bold;
+    font-size: 20px;
+    flex: 1;
+    padding: 20px;
+    text-align: center;
+    color: #ffffff;
 }
 
-.d-inline-block {
-    color: white;
-    /* Cambia el color del texto a blanco */
+.form-label {
+    display: inline-block;
+    margin-bottom: .5rem;
+    text-align: left;
 }
+
+
 
 /*MENU*/
 nav ul li {
-    margin: 5px;
-}
-nav ul li:hover {
-    background-color: #7917CA;
-    border-radius: 20px;
-    color: #ffffff;
-}
-nav ul li a {
     margin: 2px;
-    margin-left: 5px;
-    margin-right: 5px;
+    width: 100%;
+}
+
+nav ul li a {
+    border-radius: 20px;
+    margin: 2px;
+    border: 10px;
 }
 nav ul li a:hover {
     color: #ffffff;
+    background-color: #7917CA;
+    border-radius: 20px;
 }
 ul{
     margin: 0 auto;
 }
 
 
+/*MODAL*/
+
+.modal-header{
+    background: linear-gradient(#7917CA, #7a22c2, #8646b9,);
+}
+
+.btn-light{
+    background-color: #7917CA;
+    border: 1px solid #7917CA;
+}
+
+.btn-light:hover{
+    background-color: #7f20cd;
+    
+}
+
+
+
+.bi-x-lg{
+   color: white;
+   background-color: none;
+}
+
+.bi-x-lg:hover{
+    color: rgb(211, 211, 211);
+    
+ }
+
 .d-flex {
-    margin-left: 50px;
+    margin: 5px;
+    margin-bottom: 50px;
+}
+.d-flex button {
+    margin: 0 auto;
 }
 
-#modal {
-    margin-left: 39%;
-    background-color: #545454;
-    border-color: #545454;
+.btn-primary {
+    background-color: #7917CA;
+    border: 1px solid #7917CA;
+    border-radius: 25px;
+    color: #ffffff;
+    height: 50px;
+    width: 150px;
 }
 
-#buscar{
-    margin-left: 8%;
-    border-color: #545454;
-    width: 30%;
+.btn-primary:hover {
+    background-color: #f2f2f2;
+    border-radius: 25px;
+    border: 1px solid #7917CA;
+    color: #7917CA;
+    margin: 30px;
 }
 
-#direccionedit{
-    border-color: #F57037;
-    border-radius: 100px;
-    width: 215%;
-    height: 75%;
-}
-#exampleModalLabel {
-    display: block;
-    margin: auto;
-    margin-left: 39%;
+.btn-dark {
+    background-color: #7917CA;
+    border: 1px solid #7917CA;
+    border-radius: 25px;
+    color: #ffffff;
 }
 
-#btn-g {
-    background-color: #545454;
-    border-color: #545454;
-    margin-right: 60%;
+.btn-dark:hover {
+    background-color: #f2f2f2;
+    border-radius: 25px;
+    border: 1px solid #7917CA;
+    color: #7917CA;
 }
 
-.form-control {
-    border-color: #F57037;
-    border-radius: 100px;
+.btn-secondary {
+    background-color: #8f8f8f;
+    border: 1px solid #8f8f8f;
+    border-radius: 20px;
+    color: #ffffff;
 }
 
-.modal-body {
-    background-color: #F2F3F7;
+.btn-secondary:hover {
+    background-color: #000000;
+    border-radius: 25px;
+    border: 1px solid #000000;
+    color: #ffffff;
 }
 
+.btn-outline-danger {
+    height: 50px;
+    width: 150px;
+    border-radius: 25px; 
+}
 
+.btn-outline-success {
+    height: 50px;
+    width: 150px;
+    border-radius: 25px; 
+}
+
+.btn-success{
+    height: 50px;
+    width: 50px;
+    border-radius: 50px; 
+}
 
 #exampleModal .modal-dialog {
     max-width: 53%;
     margin: 1.75rem auto;
 }
 
-#exampleModal .modal input {
-    width: 105%;
+input:hover {
+    border: 1px solid #7917CA;
+}
+
+.modal-body {
+    background-color: #ffffff;
+    margin: 30px
+}
+
+.btn-outline-danger {
     
+    border-radius: 25px;
 }
 
-.btn-primary2{
-    background-color: rgb(255, 255, 255);
-    border-color: black;
-    color: #F2F3F7;
+div.dataTables_wrapper div.dataTables_filter label {
+    font-weight: normal;
+    white-space: nowrap;
+    text-align: left;
+    background-color: #1c1c1c;
 }
 
-.btn-primary2:hover{
-    background-color: rgb(248, 244, 244);
-    border-color: black;
-    color: #F2F3F7;
-}
-
-.bi-filetype-pdf{
-    color: red;
-}
-.bi-file-earmark-excel-fill{
-    color: green;
+div.dataTables_wrapper div.dataTables_filter input {
+    margin-left: .5em;
+    display: inline-block;
+    width: auto;
+    border: 1px solid #7917CA;
 }
 
 /*FOOTER*/
-
-@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;700&display=swap');
-
-
-
 .container {
     max-width: 1170px;
     margin: auto;
@@ -150,11 +208,9 @@ ul{
 
 ul {
     list-style: none;
-
     font-family: 'Raleway', sans-serif;
-
-
 }
+
 
 .footer {
     background-color: #1c1c1c;

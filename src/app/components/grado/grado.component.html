@@ -1,51 +1,56 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
   <a class="navbar-brand text-white d-flex align-items-center" href="">
-      <img src="assets/brain_morado.png" alt="Logo" width="150" height="60" class="d-inline-block align-text-top">
+    <img src="assets/brain_morado.png" alt="Logo" width="150" height="60" class="d-inline-block align-text-top">
   </a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
-      aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
+    aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse" id="navbarNavDropdown">
-      <ul class="navbar-nav">
-          <li class="nav-item">
-              <a class="nav-link" href="/admin"> Home Admin <span class="sr-only">(current)</span></a>
-          </li>
-          <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="/admin" id="navbarDropdownMenuLink" data-toggle="dropdown"
-                  aria-haspopup="true" aria-expanded="false">
-                  Administrar </a>
-              <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                  <a class="dropdown-item" href="/docente">Docentes</a>
-                  <a class="dropdown-item" href="/estudiante"> Estudiantes</a>
-                  <a class="dropdown-item" href="/grado"> Grado </a>
-                  <a class="dropdown-item" href="/periodo"> Periodo </a>
-                  <a class="dropdown-item" href="/matricula"> Matrícula </a>
-                  <a class="dropdown-item" href="/actividades"> Tipo de Actividad </a>
-                  <a class="dropdown-item" href="/asignatura"> Asignatura </a>
-                  <a class="dropdown-item" href="/actividades-educativas"> Actividades Educativas </a>
-                  <a class="dropdown-item" href="/periodo-calificaciones"> Periodo de Calificaciones </a>
-                  <a class="dropdown-item" href="7"> Calificaciones </a>
-              </div>
-          </li>
-      </ul>
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" href="/admin"> Inicio <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false">
+          Administrar </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+          <a class="dropdown-item" href="/docente">Docentes</a>
+          <a class="dropdown-item" href="/estudiante"> Estudiantes</a>
+          <a class="dropdown-item" href="/grado"> Grado </a>
+          <a class="dropdown-item" href="/periodo"> Periodo </a>
+          <a class="dropdown-item" href="/matricula"> Matrícula </a>
+          <a class="dropdown-item" href="/actividades"> Tipo de Actividad </a>
+          <a class="dropdown-item" href="/asignatura"> Asignatura </a>
+          <a class="dropdown-item" href="/actividades-educativas"> Actividades Educativas </a>
+          <a class="dropdown-item" href="/periodo-calificaciones"> Periodo de Calificaciones </a>
+          <a class="dropdown-item" href="/nota"> Calificaciones </a>
+        </div>
+      </li>
+    </ul>
   </div>
 </nav>
 
 
-<h1 class=""> Grados  </h1>
-    <br>
-<button type="button" class="btn btn-primary" id="modal" (click)="openAddGradoModal()">
-  Añadir Grado </button>
+<h1 class=""> Grado </h1>
+
+<div class="d-flex align-items-center">
+  <button type="button" class="btn btn-primary" id="modal" (click)="openAddGradoModal()">
+    Añadir Grado </button>
+</div>
+
+
 <!-- Modal -->
 <div class="modal fade" id="addGradoModal" tabindex="-1" aria-labelledby="addGradoModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-dialog-scrollable">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel"> Añadir Grado</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
-          (click)="closeAddGradoModal()"></button>
+        <h6 class="" id="exampleModalLabel"> <i class="bi bi-building-fill-up"></i> <br>Añadir Grado </h6>
+        <button type="button" class="btn btn-light" data-bs-dismiss="modal" aria-label="Close"
+          (click)="closeAddGradoModal()"><i class="bi bi-x-lg"></i></button>
       </div>
+
       <div class="modal-body">
         <form #gradoForm="ngForm">
           <div class="input-group">
@@ -54,52 +59,36 @@
           </div>
 
           <div class="row">
-            <div class="col-md-6 mb-3">
+            <div class="mb-3">
               <label for="nombreGrado" class="form-label">Nombre Grado:</label>
               <input type="text" class="form-control" id="nombreGrado" placeholder="Ingrese nombre de grado"
                 [(ngModel)]="gradoService.selectedGrado.nombreGrado" name="nombreGrado" required>
             </div>
 
-
-            <!-- <div class="col-md-6 mb-3">
-                          <label for="docente" class="form-label">Seleccione Docente:</label>
-                          <select class="form-select" id="docente" [(ngModel)]="gradoService.selectedGrado.persId" name="persId" required>
-                              <option *ngFor="let docente of docentes" [value]="docente.id">{{ docente.nombre }} {{ docente.apellido }}</option>
-                          </select>
-                      </div> -->
-
-            <div class="col-md-6 mb-3">
+            <div class="mb-3">
               <label for="persId" class="form-label">Nombre del Docente:</label>
               <input id="persId" class="form-control" type="text" formControlName="nombreDocente"
                 [value]="myForm.get('nombreDocente')?.value" [attr.disabled]="true"
                 [ngModel]="gradoService.selectedDocentes?.nombre">
             </div>
-
           </div>
-
           <div class="row">
-            <div class="col-md-6 mb-3">
-              <!-- <label for="cedulaDocente" class="form-label">Cédula del Docente:</label>
-              <input id="cedulaDocente" class="form-control" type="text" name="cedulaDocente" [(ngModel)]="searchQuery"
-                (input)="onCedulaInput()"> -->
-
+            <div class="mb-3">
               <a class="btn btn-primary m-2" id="btn-g2" (click)="openDocenteListModal()">Seleccionar Docente</a>
             </div>
-
-
           </div>
-
-
-
-
         </form>
       </div>
+
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary" id="btn-g" (click)="createGrado(gradoForm)">Guardar</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+        (click)="closeAddGradoModal()">Cerrar</button>
+        <button type="button" class="btn btn-dark" id="" (click)="createGrado(gradoForm)">Guardar</button>
       </div>
     </div>
   </div>
 </div>
+
 <!-- Nuevo Modal para la Lista de Docentes -->
 <div class="modal fade" id="docenteListModal" tabindex="-1" aria-labelledby="docenteListModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -125,9 +114,8 @@
           <tbody>
             <tr *ngFor="let docente of searchResults">
               <td>{{ docente.cedula }}</td>
-              <td>{{ docente.nombre }}</td>
+              <td>{{ docente.nombre}}</td>
               <td>{{ docente.apellido }}</td>
-              <!-- Puedes agregar más columnas según tus necesidades -->
               <td>
                 <button type="button" class="btn btn-primary" (click)="cargarDocente(docente)">Cargar Docente</button>
               </td>
@@ -135,49 +123,45 @@
           </tbody>
         </table>
       </div>
-
-      <!-- Puedes agregar más secciones (body, footer, etc.) según tus necesidades -->
-
     </div>
   </div>
 </div>
 
 
 <div class="container mt-4">
+  <div class="d-flex align-items-center">
+    <button type="button" class="btn btn-outline-danger" (click)="onImprimir()"> Descargar
+      <i class="bi bi-file-pdf" id="pdf"></i>
+    </button> <button type="button" class="btn btn-outline-success" (click)="imprimirExcel()">Descargar
+      <i class="bi bi-file-earmark-excel"></i>
+    </button>
+  </div>
 
-  <button type="button" class="btn btn-primary2" (click)="onImprimir()">
-    <i class="bi bi-filetype-pdf"></i>
-  </button>
-  <button type="button" class="btn btn-primary2" (click)="imprimirExcel()">
-    <i class="bi bi-file-earmark-excel-fill"></i>
-  </button>
   <table class="table table-bordered" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
     <thead>
       <tr>
         <th scope="col">Nombre Grado </th>
-        <th scope="col">Nombre Persona</th>
-        <th scope="col">Apellido Persona</th>
+        <th scope="col"> Docente Asignado </th>
         <th scope="col">Acciones</th>
 
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let grado of data">
-        <td style="font-size: 12px;">{{grado.nombreGrado}}</td>
-        <td style="font-size: 12px;">{{grado.persona.nombre}}</td>
-        <td style="font-size: 12px;">{{grado.persona.apellido}}</td>
+        <td >{{grado.nombreGrado}}</td>
+        <td >{{grado.persona.nombre + ' ' + grado.persona.apellido }}</td>
         <td>
-          <button type="button" class="btn btn-primary" id="btn-g" (click)="editGrado(grado)">Editar</button>
+          <button type="button" class="btn btn-success" id="btn-g" (click)="editGrado(grado)"><i
+              class="bi bi-pencil-square"></i></button>
         </td>
         <!-- Modal de Edición -->
         <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-          <div class="modal-dialog">
+          <div class="modal-dialog modal-dialog-scrollable">
             <div class="modal-content">
               <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Editar Grado</h1>
-                
-                
-
+                <h6 class="" id="exampleModalLabel">
+                  <i class="bi bi-save-fill"></i> <br> Editar Grado
+                </h6>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
                   (click)="closeEditPeriodoModal()"></button>
               </div>
@@ -185,51 +169,27 @@
                 <form #gradoForm="ngForm">
                   <!-- Campo de ID oculto -->
                   <input type="hidden" [(ngModel)]="gradoService.selectedGrado.id" name="id" />
-
                   <div class="row">
-                    <div class="col-md-6 mb-3">
+                    <div class="mb-3">
                       <label for="nombreGrado" class="form-label">Nombre Grado:</label>
                       <input type="text" class="form-control" id="nombreGrado" placeholder="Ingrese nombre de grado"
                         [(ngModel)]="gradoService.selectedGrado.nombreGrado" name="nombreGrado" required>
                     </div>
-              
 
-                    <!-- <div class="col-md-6 mb-3">
-                          <label for="docente" class="form-label">Seleccione Docente:</label>
-                          <select class="form-select" id="docente" [(ngModel)]="gradoService.selectedGrado.persId" name="persId" required>
-                              <option *ngFor="let docente of docentes" [value]="docente.id">{{ docente.nombre }} {{ docente.apellido }}</option>
-                          </select>
-                      </div> -->
-
-                    <div class="col-md-6 mb-3">
+                    <div class="mb-3">
                       <label for="persId" class="form-label">Nombre del Docente:</label>
                       <input id="persId" class="form-control" type="text" formControlName="nombreDocente"
                         [value]="myForm.get('nombreDocente')?.value" [attr.disabled]="true"
                         [ngModel]="gradoService.selectedDocentes?.nombre">
                     </div>
-                    
-
-
-
-
-
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                      (click)="closeAddGradoModal()"> Cerrar</button>
+                    <!-- Botón de guardar en el modal de edición -->
+                    <button type="button" class="btn btn-dark" (click)="createGrado(gradoForm)"> Guardar</button>
 
                   </div>
-
-                  <div class="row">
-                    <div class="col-md-6 mb-3">
-                      <!-- <label for="cedulaDocente" class="form-label">Cédula del Docente:</label>
-              <input id="cedulaDocente" class="form-control" type="text" name="cedulaDocente" [(ngModel)]="searchQuery"
-                (input)="onCedulaInput()"> -->
-
-                      <a class="btn btn-primary m-2" id="btn-g2" (click)="openDocenteListModal()">Seleccionar
-                        Docente</a>
-                    </div>
-
-
-                  </div>
-                  <!-- Botón de guardar en el modal de edición -->
-                  <button type="button" class="btn btn-primary" (click)="createGrado(gradoForm)">Actualizar</button>
                 </form>
               </div>
             </div>
@@ -237,55 +197,54 @@
         </div>
       </tr>
     </tbody>
-    
   </table>
 </div>
+
 <br> <br><br> <br><br>
 <!-- ICONS -->
 <link rel="stylesheet" type="text/css"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
 <footer class="footer">
-    <div class="container">
-        <div class="row">
-            <div class="footer-col">
-                <h4>company</h4>
-                <ul>
-                    <li><a href="#">about us</a></li>
-                    <li><a href="#">our services</a></li>
-                    <li><a href="#">privacy policy</a></li>
-                    <li><a href="#">affiliate program</a></li>
-                </ul>
-            </div>
-            <div class="footer-col">
-                <h4>get help</h4>
-                <ul>
-                    <li><a href="#">FAQ</a></li>
-                    <li><a href="#">shipping</a></li>
-                    <li><a href="#">returns</a></li>
-                    <li><a href="#">order status</a></li>
-                    <li><a href="#">payment options</a></li>
-                </ul>
-            </div>
-            <div class="footer-col">
-                <h4>online shop</h4>
-                <ul>
-                    <li><a href="#">watch</a></li>
-                    <li><a href="#">bag</a></li>
-                    <li><a href="#">shoes</a></li>
-                    <li><a href="#">dress</a></li>
-                </ul>
-            </div>
-            <div class="footer-col">
-                <h4>follow us</h4>
-                <div class="social-links">
-                    <a href="#"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#"><i class="fab fa-twitter"></i></a>
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                </div>
-                <img src="assets/brain_blanco.png" alt="Logo" width="80" height="80"
-                    class="d-inline-block align-text-top">
-            </div>
+  <div class="container">
+    <div class="row">
+      <div class="footer-col">
+        <h4>company</h4>
+        <ul>
+          <li><a href="#">about us</a></li>
+          <li><a href="#">our services</a></li>
+          <li><a href="#">privacy policy</a></li>
+          <li><a href="#">affiliate program</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>get help</h4>
+        <ul>
+          <li><a href="#">FAQ</a></li>
+          <li><a href="#">shipping</a></li>
+          <li><a href="#">returns</a></li>
+          <li><a href="#">order status</a></li>
+          <li><a href="#">payment options</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>online shop</h4>
+        <ul>
+          <li><a href="#">watch</a></li>
+          <li><a href="#">bag</a></li>
+          <li><a href="#">shoes</a></li>
+          <li><a href="#">dress</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>follow us</h4>
+        <div class="social-links">
+          <a href="#"><i class="fab fa-facebook-f"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="#"><i class="fab fa-instagram"></i></a>
+          <a href="#"><i class="fab fa-linkedin-in"></i></a>
         </div>
+        <img src="assets/brain_blanco.png" alt="Logo" width="80" height="80" class="d-inline-block align-text-top">
+      </div>
     </div>
+  </div>
 </footer>

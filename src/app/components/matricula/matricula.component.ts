@@ -177,6 +177,8 @@ export class MatriculaComponent implements OnInit, OnDestroy {
 
 
   createAsignatura(form: NgForm): void {
+  
+
     // Verifica si ya hay un estudiante asignado a alguna asignatura
     if (this.selectedEstudiante && this.selectedEstudiante.id) {
       // Realiza una verificación adicional antes de permitir la matriculación
