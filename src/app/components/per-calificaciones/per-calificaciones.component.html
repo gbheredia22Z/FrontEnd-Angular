@@ -1,25 +1,52 @@
-
-<nav>
-    <ul class="nav justify-content-center">
-        <li class="nav-item">
-            <a class="nav-link active" routerLink="/admin" routerLinkActive="active">Inicio</a>
-        </li>
-
-    </ul>
+<nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
+    <a class="navbar-brand text-white d-flex align-items-center" href="">
+        <img src="assets/brain_morado.png" alt="Logo" width="150" height="60" class="d-inline-block align-text-top">
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
+        aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" href="/admin"> Inicio <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
+                    Administrar </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    <a class="dropdown-item" href="/docente">Docentes</a>
+                    <a class="dropdown-item" href="/estudiante"> Estudiantes</a>
+                    <a class="dropdown-item" href="/grado"> Grado </a>
+                    <a class="dropdown-item" href="/periodo"> Periodo </a>
+                    <a class="dropdown-item" href="/matricula"> Matrícula </a>
+                    <a class="dropdown-item" href="/actividades"> Tipo de Actividad </a>
+                    <a class="dropdown-item" href="/asignatura"> Asignatura </a>
+                    <a class="dropdown-item" href="/actividades-educativas"> Actividades Educativas </a>
+                    <a class="dropdown-item" href="/periodo-calificaciones"> Periodo de Calificaciones </a>
+                    <a class="dropdown-item" href="/nota"> Calificaciones </a>
+                </div>
+            </li>
+        </ul>
+    </div>
 </nav>
 
-<p class="est"><b> Periodo Calificación </b> </p>
+<h1 class=""> Periodo de Calificaciones </h1>
 
-<button type="button" class="btn btn-primary" id="modal" (click)="openAddActividadModal()">
-    Añadir Periodos de Calificación </button>
+<div class="d-flex align-items-center">
+    <button type="button" class="btn btn-primary" id="modal" (click)="openAddActividadModal()">
+        Añadir Periodos de Calificación </button>
+</div>
 <!-- Modal -->
 <div class="modal fade" id="addActividadModal" tabindex="-1" aria-labelledby="addPeriodoModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel"> Nombre Periodo</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
-                    (click)="closeAddAvtividadModal()"></button>
+                <h6 class="" id="exampleModalLabel"> <i class="bi bi-building-fill-up"></i> <br> Periodo Calificaciones
+                </h6>
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal" aria-label="Close"
+                    (click)="closeAddAvtividadModal()"><i class="bi bi-x-lg"></i></button>
             </div>
             <div class="modal-body">
                 <form #periodoForm="ngForm">
@@ -28,13 +55,15 @@
                             [(ngModel)]="perService.selectPerCalificaciones.id" />
                     </div>
                     <div class="row">
-                        <div class="col-md-6 mb-3">
+                        <div class="mb-3">
                             <label for="nombrePeriodo" class="form-label">Nombre Periodo:</label>
-                            <input type="text" class="form-control" id="nombrePeriodo" placeholder="Ingrese el nombre del periodo"
-                                [(ngModel)]="perService.selectPerCalificaciones.nombrePeriodo" name="nombrePeriodo" required>
+                            <input type="text" class="form-control" id="nombrePeriodo"
+                                placeholder="Ingrese el nombre del periodo"
+                                [(ngModel)]="perService.selectPerCalificaciones.nombrePeriodo" name="nombrePeriodo"
+                                required>
                         </div>
                     </div>
-                    <div class="col-md-6 mb-3">
+                    <div class="mb-3">
                         <label for="estado" class="form-label">Estado:</label>
                         <select class="form-select" aria-label="Selecciona el estado" id="estado" name="estado"
                             [(ngModel)]="perService.selectPerCalificaciones.estado" required>
@@ -42,25 +71,28 @@
                             <option value="I">Inactivo</option>
                         </select>
                     </div>
-                    
-                   
+
+
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="btn-g"
-                    (click)="createPeriodo(periodoForm)">Guardar</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                    (click)="closeAddAvtividadModal()">Cerrar</button>
+                <button type="button" class="btn btn-dark" id="" (click)="createPeriodo(periodoForm)">Guardar</button>
             </div>
         </div>
     </div>
 </div>
 
 <div class="container mt-4">
-    <button type="button" class="btn btn-primary2" (click)="onImprimir()">
-        <i class="bi bi-filetype-pdf"></i>
-      </button>
-      <button type="button" class="btn btn-primary2" (click)="imprimirExcel()">
-        <i class="bi bi-file-earmark-excel-fill"></i>
-      </button>
+    <div class="d-flex align-items-center">
+        <button type="button" class="btn btn-outline-danger" (click)="onImprimir()"> Descargar
+            <i class="bi bi-file-pdf" id="pdf"></i>
+        </button> <button type="button" class="btn btn-outline-success" (click)="imprimirExcel()">Descargar
+            <i class="bi bi-file-earmark-excel"></i>
+        </button>
+    </div>
+
     <table class="table table-bordered text-center" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
         <thead>
             <tr>
@@ -74,17 +106,18 @@
                 <td>{{periodo.nombrePeriodo}}</td>
                 <td>{{periodo.estado === 'A' ? 'Activo' : 'Inactivo'}}</td>
                 <td>
-                    <button type="button" class="btn btn-primary" id="btn-g"
-                        (click)="editTipoActividad(periodo)">Editar</button>
+                    <button type="button" class="btn btn-success" id="" (click)="editTipoActividad(periodo)"><i
+                            class="bi bi-pencil-square"></i></button>
                 </td>
                 <!-- Modal de Edición -->
                 <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="exampleModalLabel"
                     aria-hidden="true">
-                    <div class="modal-dialog">
+                    <div class="modal-dialog modal-dialog-scrollable">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h1 class="modal-title fs-5" id="exampleModalLabel">Editar Periodo Calificacion</h1>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                                <h6 class="" id="exampleModalLabel">
+                                    <i class="bi bi-save-fill"></i> <br> Editar Periodo de Calificaciones
+                                </h6> <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
                                     (click)="closeEditActividadModal()"></button>
                             </div>
                             <div class="modal-body">
@@ -92,13 +125,13 @@
                                     <!-- Campo de ID oculto -->
                                     <input type="hidden" [(ngModel)]="perService.selectPerCalificaciones" name="id" />
                                     <div class="row">
-                                        <div class="col-md-6 mb-3">
+                                        <div class="mb-3">
                                             <label for="nombreActividad" class="form-label">Nombre:</label>
                                             <input type="text" class="form-control" id="nombreActividad"
                                                 [(ngModel)]="perService.selectPerCalificaciones.nombrePeriodo"
                                                 name="nombreActividad">
                                         </div>
-                                        <div class="col-md-6 mb-3">
+                                        <div class="mb-3">
                                             <label for="estado" class="form-label">Estado:</label>
                                             <select class="form-select" aria-label="Selecciona el estado" id="estado"
                                                 name="estado" [(ngModel)]="perService.selectPerCalificaciones.estado"
@@ -107,11 +140,14 @@
                                                 <option value="I">Inactivo</option>
                                             </select>
                                         </div>
-                                       
                                     </div>
-                                    <!-- Botón de guardar en el modal de edición -->
-                                    <button type="button" class="btn btn-primary"
-                                        (click)="updatePeriodo(periodoForm2)">Guardar</button>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                                            (click)="closeEditActividadModal()">Cerrar</button>
+                                        <!-- Botón de guardar en el modal de edición -->
+                                        <button type="button" class="btn btn-dark"
+                                            (click)="updatePeriodo(periodoForm2)">Guardar</button>
+                                    </div>
                                 </form>
                             </div>
                         </div>
@@ -121,3 +157,54 @@
         </tbody>
     </table>
 </div>
+
+
+<br> <br><br> <br><br>
+<!-- ICONS -->
+<link rel="stylesheet" type="text/css"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+<footer class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="footer-col">
+                <h4>company</h4>
+                <ul>
+                    <li><a href="#">about us</a></li>
+                    <li><a href="#">our services</a></li>
+                    <li><a href="#">privacy policy</a></li>
+                    <li><a href="#">affiliate program</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>get help</h4>
+                <ul>
+                    <li><a href="#">FAQ</a></li>
+                    <li><a href="#">shipping</a></li>
+                    <li><a href="#">returns</a></li>
+                    <li><a href="#">order status</a></li>
+                    <li><a href="#">payment options</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>online shop</h4>
+                <ul>
+                    <li><a href="#">watch</a></li>
+                    <li><a href="#">bag</a></li>
+                    <li><a href="#">shoes</a></li>
+                    <li><a href="#">dress</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>follow us</h4>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+                <img src="assets/brain_blanco.png" alt="Logo" width="80" height="80"
+                    class="d-inline-block align-text-top">
+            </div>
+        </div>
+    </div>
+</footer>
