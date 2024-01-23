@@ -238,19 +238,11 @@ maxFechaNacimiento: string;
   
     // Validación de cédula (solo números y máximo 10 dígitos)
     const cedulaValue = form.value.cedula;
-    if (!this.validarCedulaEcuatoriana(cedulaValue)) {
+    if (!this.validarCedulaEcuatoriana(cedulaValue) || !/^\d{10}$/.test(cedulaValue)) {
       Swal.fire({
         icon: 'error',
         title: 'Error en la cédula',
         text: 'La cédula no es válida. Asegúrate de ingresar una cédula ecuatoriana válida.'
-      });
-      return;
-    }
-    if (!/^\d{10}$/.test(cedulaValue)) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Error en la cédula',
-        text: 'La cédula debe contener solo números y tener 10 dígitos.'
       });
       return;
     }
@@ -289,7 +281,6 @@ maxFechaNacimiento: string;
   
     // Validación de fecha (rango permitido)
     const fechaNacimientoValue = form.value.fechaNacimiento;
-    // Verifica si la fecha de nacimiento está vacía
     if (!fechaNacimientoValue) {
       Swal.fire({
         icon: 'error',
@@ -320,71 +311,29 @@ maxFechaNacimiento: string;
             text: 'Ya existe un estudiante con esta cédula. Ingresa una cédula diferente.'
           });
         } else {
-          // Validación de correo electrónico duplicado
-          this.personaService.getEstudianteByCorreo(correoValue).subscribe(
-            (existingStudentByCorreo) => {
-              if (existingStudentByCorreo.length > 0) {
-                Swal.fire({
-                  icon: 'error',
-                  title: 'Error en el correo electrónico',
-                  text: 'Ya existe un estudiante con este correo electrónico. Ingresa un correo diferente.'
-                });
-              } else {
-                // Validación de teléfono duplicado
-                this.personaService.getEstudianteByCelular(telefonoValue).subscribe(
-                  (existingStudentByCelular) => {
-                    if (existingStudentByCelular.length > 0) {
-                      Swal.fire({
-                        icon: 'error',
-                        title: 'Error en el número de teléfono',
-                        text: 'Ya existe un estudiante con este número de teléfono. Ingresa un número diferente.'
-                      });
-                    } else {
-                      // Si la cédula, el correo y el teléfono no están duplicados, continuar con la creación del estudiante
-                      this.personaService.postEstudiante(form.value).subscribe(
-                        (res) => {
-                          form.reset();
-                          Swal.fire({
-                            position: 'top',
-                            icon: 'success',
-                            title: 'Nuevo estudiante agregado',
-                            showConfirmButton: false,
-                            timer: 3000,
-                          });
+          // Si la cédula no está duplicada, continuar con la creación del estudiante
+          this.personaService.postEstudiante(form.value).subscribe(
+            (res) => {
+              form.reset();
+              Swal.fire({
+                position: 'top',
+                icon: 'success',
+                title: 'Nuevo estudiante agregado',
+                showConfirmButton: false,
+                timer: 3000,
+              });
   
-                          this.closeAddEstudianteModal();
-                          this.irListaEstudiantes();
-                        },
-                        (error) => {
-                          console.error('Error al crear estudiante:', error);
-                          Swal.fire({
-                            position: 'top',
-                            icon: 'error',
-                            title: 'Error al crear estudiante',
-                            showConfirmButton: false,
-                            timer: 1500,
-                          });
-                        }
-                      );
-                    }
-                  },
-                  (error) => {
-                    console.error('Error al verificar número de teléfono:', error);
-                    Swal.fire({
-                      icon: 'error',
-                      title: 'Error al verificar número de teléfono',
-                      text: 'Hubo un error al verificar el número de teléfono. Por favor, inténtalo nuevamente.'
-                    });
-                  }
-                );
-              }
+              this.closeAddEstudianteModal();
+              this.irListaEstudiantes();
             },
             (error) => {
-              console.error('Error al verificar correo electrónico:', error);
+              console.error('Error al crear estudiante:', error);
               Swal.fire({
+                position: 'top',
                 icon: 'error',
-                title: 'Error al verificar correo electrónico',
-                text: 'Hubo un error al verificar el correo electrónico. Por favor, inténtalo nuevamente.'
+                title: 'Error al crear estudiante',
+                showConfirmButton: false,
+                timer: 1500,
               });
             }
           );
@@ -400,6 +349,7 @@ maxFechaNacimiento: string;
       }
     );
   }
+  
   
   
   
@@ -558,6 +508,21 @@ maxFechaNacimiento: string;
       });
     }
   }
+  calcularEdad(fechaNacimiento: string): number {
+    const fechaNac = new Date(fechaNacimiento);
+    const hoy = new Date();
+  
+    let edad = hoy.getFullYear() - fechaNac.getFullYear();
+    const mesActual = hoy.getMonth() + 1;
+    const mesNacimiento = fechaNac.getMonth() + 1;
+  
+    if (mesNacimiento > mesActual || (mesNacimiento === mesActual && hoy.getDate() < fechaNac.getDate())) {
+      edad--;
+    }
+  
+    return edad;
+  }
+  
   
 }
 

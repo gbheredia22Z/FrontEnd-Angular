@@ -363,6 +363,7 @@ export class MatriculaComponent implements OnInit, OnDestroy {
       });
       
       this.closeEditMatriculaModal();
+      this.irPagina();
 
       // Cierra el modal de edición utilizando $
       $('#editModal').modal('hide');

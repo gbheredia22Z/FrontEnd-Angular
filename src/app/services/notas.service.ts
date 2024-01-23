@@ -55,6 +55,10 @@ export class NotasService {
   getAsignaturas() {
     return this.http.get<any[]>(this.URL_ASIGNATURAS);
   }
+  getGrados(){
+    return this.http.get<any[]>(this.URL_API+"/grado");
+  }
+
   //traer actividades
   //metodo para traerr las actividades
   getActividadesEducativas() {
@@ -70,6 +74,7 @@ export class NotasService {
     return this.http.get(this.URL_Student);
   }
 
+ 
   getNotas(){
     return this.http.get(this.URL_API+"/notas");
   }
@@ -88,13 +93,9 @@ asignarNota(id: string, valor_nota: number): Observable<any> {
   return this.http.put<any>(`${this.URL_API}/notas/${id}`, data);
 }
 
-  
-
- 
-  
-
-
-
-
+getAsignaturasPorGrado(gradoId: number): Observable<any[]> {
+  const url = `${this.URL_API}/asignatura/grado/${gradoId}`;
+  return this.http.get<any[]>(url);
+}
 
 }

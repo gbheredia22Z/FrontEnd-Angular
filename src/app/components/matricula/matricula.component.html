@@ -172,7 +172,7 @@
                 <td>{{matricula.periodo.anioLectivo}}</td>
                 <td>{{matricula.estado === 'A' ? 'Activo' : 'Inactivo' }}</td>
                 <td>
-                    <button type="button" class="btn btn-success" id=""><i class="bi bi-pencil-square"></i></button>
+                    <button (click)="editMatricula(matricula)" type="button" class="btn btn-success" id=""><i class="bi bi-pencil-square"></i></button>
                 </td>
             </tr>
         </tbody>
@@ -208,8 +208,8 @@
                             <div class="col-md-6 mb-2">
                                 <label for="docente" class="form-label">Seleccione Grado:</label>
                                 <select class="form-select" id="idGrado"
-                                    [(ngModel)]="matriculaServices.selectedMatricula.idGrado" name="idGrado" required>
-                                    <option *ngFor="let grado of grados" [value]="grado.id">{{ grado.nombreGrado }}
+                                    [(ngModel)]="matriculaServices.selectedMatricula.idGrado" name="idGrado" required [disabled]="true">
+                                    <option *ngFor="let grado of grados" [value]="grado.id">{{ grado.nombreGrado }} 
                                     </option>
                                 </select>
                             </div>
@@ -220,7 +220,7 @@
                                 <label for="docente" class="form-label">Seleccione Periodo:</label>
                                 <select class="form-select" id="idPeriodo"
                                     [(ngModel)]="matriculaServices.selectedMatricula.idPeriodo" name="idPeriodo"
-                                    required>
+                                    required [disabled]="true">
                                     <option *ngFor="let periodo of periodos" [value]="periodo.id">{{
                                         periodo.anioLectivo}}
                                     </option>
@@ -230,7 +230,7 @@
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
                                     (click)="closeAddAsignaturaModal()">Cerrar</button>
                                 <!-- Botón de guardar en el modal de edición -->
-                                <button type="button" class="btn btn-primary"
+                                <button type="button" class="btn btn-dark"
                                     (click)="updateMatricula(asignaturaForm2)">Guardar</button>
                             </div>
 

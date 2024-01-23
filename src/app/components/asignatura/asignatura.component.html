@@ -171,16 +171,10 @@
         <div class="modal-body">
           <form #gradoForm2="ngForm">
             <div class="input-group">
-              <!-- <input name="id_asignatura" class="form-control" type="hidden" #id="ngModel"
-                        [(ngModel)]="asignaturaService.selectedAsignatura.id" /> -->
-
-
-
             </div>
 
             <div class="row">
               <input type="hidden" name="id" [(ngModel)]="asignaturaService.selectedAsignatura.id" />
-
 
               <div class="mb-3">
                 <label for="nombreMateria" class="form-label">Nombre Materia:</label>
@@ -204,11 +198,6 @@
                 <input id="idGrado" class="form-control" type="text" formControlName="nombreGrado"
                   [value]="myForm.get('nombreGrado')?.value" [attr.disabled]="true"
                   [ngModel]="asignaturaService.selectedGrado?.nombreGrado">
-              </div>
-
-              <div class="mb-3">
-                <a class="btn btn-primary m-2" id="btn-g2" (click)="openGradosListaModal()">Seleccionar
-                  Grado</a>
               </div>
             </div>
             <div class="modal-footer">

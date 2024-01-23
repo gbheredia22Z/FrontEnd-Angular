@@ -69,7 +69,7 @@
               <label for="persId" class="form-label">Nombre del Docente:</label>
               <input id="persId" class="form-control" type="text" formControlName="nombreDocente"
                 [value]="myForm.get('nombreDocente')?.value" [attr.disabled]="true"
-                [ngModel]="gradoService.selectedDocentes?.nombre">
+                [ngModel]="gradoService.selectedDocentes?.nombre" >
             </div>
           </div>
           <div class="row">
@@ -108,7 +108,6 @@
               <th>Nombre</th>
               <th>Apellido</th>
               <th>Acciones</th>
-              <!-- Puedes agregar más columnas según tus necesidades -->
             </tr>
           </thead>
           <tbody>

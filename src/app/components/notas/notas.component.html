@@ -36,6 +36,13 @@
 
 <!-- Ajusta el código del HTML para utilizar correctamente las opciones -->
 <div class="col-md-6 mb-3">
+  <label for="periodo" class="form-label">Grados</label>
+  <select class="form-select" id="gradoId" [(ngModel)]="selectedGradoId" name="gradoId"
+    (change)="onGradoSelected()" required>
+    <option *ngFor="let grado of grados" [value]="grado.id">{{ grado.nombreGrado }} </option>
+  </select>
+</div>
+<div class="col-md-6 mb-3">
   <label for="periodo" class="form-label">Asignatura</label>
   <select class="form-select" id="asignaturaId" [(ngModel)]="selectedAsignaturaId" name="asignaturaId"
     (change)="onAsignaturaSelected()" required>
@@ -55,105 +62,35 @@
 <table class="table" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
   <thead>
     <tr>
-      <th>personaID</th>
+      
       <th>Nombre</th>
       <th>Apellido</th>
-      <th>idActividad</th>
-      <th>idAsignatura</th>
-      <th>id_nota</th>
+      <th>Actividad</th>
+      <th>Asignatura</th>
       <th>Nota</th>
-
-      <th>Nombre asignatura</th>
+      
 
     </tr>
   </thead>
   <tbody>
     <tr *ngFor="let result of datosfinales">
-      <td>{{ result.idPersona }}</td>
+    
       <td>{{ result.nombre }}</td>
       <td>{{ result.apellido }}</td>
-      <td>{{ result.idActividad }}</td>
-      <td>{{ result.idAsignatura }}</td>
-      <td>{{ result.idNota}}</td>
-      <td>{{ result.nota}}</td>
+      <td>{{ result.tituloActividad }}</td>
       <td>{{ result.nombreAsignatura}}</td>
-
       <td>
-        <button type="button" class="btn btn-primary" id="btn-g" (click)="editarNotas(result)">Editar</button>
+        <!-- Agrega el atributo 'contenteditable' al <td> para hacerlo editable -->
+          <div contenteditable="true" (focusout)="asignarNota(result.idNota, $event)">
+            {{ result.nota }}
+          </div>
       </td>
-
+  
     </tr>
   </tbody>
 </table>
 
 <!-- modal para abrir con un input y actualizar la nota -->
-<!-- Modal de Edición -->
-<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Asignar Nota</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
-          (click)="closeEditPeriodoModal()"></button>
-      </div>
-      <div class="modal-body">
-        <form #periodoForm2="ngForm">
-          <!-- Campo de ID oculto -->
-          <input type="hidden" [(ngModel)]="notaService.selectNotas.id" name="id" />
-          <input type="hidden" [(ngModel)]="notaService.selectNotas.personaId" name="id" />
-
-
-          <div class="row">
-
-            <input type="hidden" [(ngModel)]="notaService.selectNotas.personaId" name="id" />
-            <input type="hidden" [(ngModel)]="notaService.selectNotas.id" name="id" />
-            <input type="hidden" [(ngModel)]="notaService.selectDTO.id_nota" name="id" />
-
-            <div class="row">
-              <div class="col-md-6 mb-3">
-                <label for="id" class="form-label">Nombre del Estudiante:</label>
-                <input id="id" class="form-control" type="text" formControlName="nombre"
-                  [value]="formulario.get('nombre')?.value" [attr.disabled]="true">
-              </div>
-              <div class="col-md-6 mb-3">
-                <label for="actId" class="form-label">Actividad</label>
-                <input id="actId" class="form-control" type="text" formControlName="titulo"
-                  [value]="formulario.get('actividadEducativaTitulo')?.value" [attr.disabled]="true"
-                  [ngModel]="notaService.selectDTO.IdActividad" name="actId">
-              </div>
-              <div class="col-md-6 mb-3">
-                <label for="direccion" class="form-label">Direccion</label>
-                <input id="direccion" class="form-control" type="text" [attr.disabled]="true"
-                  [(ngModel)]="notaService.selectDTO.direccion" name="id">
-
-              </div>
-
-              <div class="col-md-6 mb-3">
-                <label for="direccion" class="form-label">Nota</label>
-                <input id="valor_nota" type="text" class="form-control" [(ngModel)]="notaService.seleccionarDto.nota"
-                  name="valor_nota" />
-              </div>
-            </div>
-
-          </div>
-          <!-- Botón de guardar en el modal de edición -->
-          <!-- <button type="button" class="btn btn-primary"
-                      (click)="">Guardar</button> -->
-          <!-- Ajusta según la ubicación y contexto en tu HTML -->
-          <!-- Agrega esto al final de tu formulario dentro del modal -->
-          <div class="row">
-            <div class="col-md-12">
-              <button type="button" class="btn btn-primary"
-                (click)="asignarNota(notaService.seleccionarDto.idNota, notaService.seleccionarDto.nota)">
-                Asignar Nota
-              </button>
-            </div>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
 
 
 

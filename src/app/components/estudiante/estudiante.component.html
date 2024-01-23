@@ -140,6 +140,7 @@
                 <th scope="col">Apellido</th>
                 <th scope="col">Cedula</th>
                 <th scope="col">Fecha Nacimiento</th>
+                <th scope="col">Edad</th>
                 <th scope="col">Direccion</th>
                 <th scope="col">Correo</th>
                 <th scope="col">Celular</th>
@@ -152,6 +153,7 @@
                 <td>{{estudiante.apellido}}</td>
                 <td>{{estudiante.cedula}}</td>
                 <td>{{ estudiante.fechaNacimiento | date:'dd-MM-yyyy' }}</td>
+                <td>{{ calcularEdad(estudiante.fechaNacimiento) }}</td>
                 <td>{{estudiante.direccion}}</td>
                 <td>{{estudiante.correo}}</td>
                 <td>{{estudiante.celular}}</td>

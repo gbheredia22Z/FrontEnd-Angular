@@ -7,6 +7,7 @@ import { Notas } from '../../models/notas';
 import { Persona } from '../../models/persona';
 import { NotasDTO } from '../../models/notas-dto';
 import { Notasdtoall } from '../../models/notasdtoall';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-notas',
@@ -20,6 +21,7 @@ export class NotasComponent {
   dtTrigger: Subject<any> = new Subject<any>();
   private subscriptions: Subscription[] = [];
   asignaturas: any[] = [];
+  grados: any[] = [];
   actividadesEducativas: any;
   selectedAsignaturaId: number | null = null;
   selectedActividadId: number | null = null;
@@ -30,6 +32,10 @@ export class NotasComponent {
   selectDTO:NotasDTO = new NotasDTO();
   datosfinales:Notasdtoall[] = [];
   selectNotasDto:Notasdtoall = new Notasdtoall();
+  filasModificadas: Set<number> = new Set<number>();
+  selectedGradoId: number | null = null;
+
+
 
   constructor(public notaService: NotasService, private router: Router, private route: ActivatedRoute, private fb: FormBuilder) {
     this.formulario = this.fb.group({
@@ -42,12 +48,20 @@ export class NotasComponent {
       direccion: [''],
     });
   }
+  estadoAsignacion: { [id: string]: boolean } = {};
+  mostrarAlerta: boolean = false;
+
 
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
       const asignaturaId = params.get('asignaturaId');
       console.log('Asignatura ID:', asignaturaId);
     });
+    this.formulario.get('grado')?.valueChanges.subscribe((gradoId) => {
+      this.selectedGradoId = gradoId;
+      this.onGradoSelected();
+    });
+  
 
     this.formulario.get('asignatura')?.valueChanges.subscribe((asignaturaId) => {
       this.selectedAsignaturaId = asignaturaId;
@@ -63,13 +77,35 @@ export class NotasComponent {
     this.getActividadesEducativas();
     this.getEstudiante();
     this.getNotas();
+    this.getGrados();
   }
 
+  // getAsignaturas() {
+  //   this.notaService.getAsignaturas().subscribe((res) => {
+  //     this.asignaturas = res;
+  //   });
+  // }
   getAsignaturas() {
-    this.notaService.getAsignaturas().subscribe((res) => {
-      this.asignaturas = res;
-    });
+    // Verifica que selectedGradoId no sea null antes de llamar a la función
+    if (this.selectedGradoId !== null) {
+      this.notaService.getAsignaturasPorGrado(this.selectedGradoId).subscribe((res) => {
+        this.asignaturas = res;
+      });
+    } else {
+      // Manejar el caso donde selectedGradoId es null
+      console.error('Error: selectedGradoId es null');
+    }
   }
+  getGrados() {
+  // Asumiendo que tienes un método en tu servicio para obtener los grados
+  this.notaService.getGrados().subscribe((res) => {
+    this.grados = res;
+    console.log(this.grados);
+  });
+}
+
+  
+  
 
 
   getActividadesEducativas() {
@@ -104,6 +140,12 @@ export class NotasComponent {
       );
     }
   }
+  onGradoSelected() {
+    if (this.selectedGradoId !== null) {
+      this.getAsignaturas(); // Actualiza las asignaturas al seleccionar un grado
+    }
+  }
+  
 
   //modal para abrir formulario
 
@@ -195,28 +237,68 @@ export class NotasComponent {
       console.log("Notas", res);
     })
   }
+  notaEditando: any = null;
+  activarEdicion(result: any) {
+    this.notaEditando = result;
+  }
+
+  desactivarEdicion(result: any) {
+    // Llama a tu método de asignarNota aquí
+    this.asignarNota(result.id, result.nota);
+    this.notaEditando = null;
+    alert("nota actualizada")
+  }
+
 
  // En tu componente
- asignarNota(id: string, valor_nota: number) {
-  // Log antes de asignar la nota
-  console.log('Antes de asignar la nota - ID:', id, 'Valor Nota:', valor_nota);
+ asignarNota(id: string, event: FocusEvent) {
+  const targetElement = event.target as HTMLElement;
 
-  this.notaService.asignarNota(id, valor_nota).subscribe(
-    (response) => {
-      // Log después de asignar la nota
-      console.log('Después de asignar la nota - ID:', id, 'Valor Nota:', valor_nota);
-      
-      console.log('Nota asignada exitosamente:', response);
-      // Aquí puedes realizar acciones adicionales después de asignar la nota
+  if (targetElement) {
+    const nuevaNota = targetElement.innerText;
+    const valor_nota = +nuevaNota;
 
-      // Cierra el modal después de asignar la nota si es necesario
-      this.closeEditPeriodoModal();
-    },
-    (error) => {
-      console.error('Error al asignar la nota:', error);
-    }
-  );
+    console.log('Antes de asignar la nota - ID:', id, 'Nueva Nota:', valor_nota);
+
+    this.notaService.asignarNota(id, valor_nota).subscribe(
+      (response) => {
+        console.log('Después de asignar la nota - ID:', id, 'Nueva Nota:', valor_nota);
+        console.log('Nota asignada exitosamente:', response);
+         // Marcar la nota como asignada en el estado después de asignarla
+         this.estadoAsignacion[id] = true;
+         console.log("estado asignacions",this.estadoAsignacion);
+     
+      },
+      (error) => {
+        console.error('Error al asignar la nota:', error);
+      }
+    );
+  }
 }
+
+todasFilasAsignadas(): boolean {
+  // Verifica si todas las filas modificadas han sido asignadas
+  for (const id of this.filasModificadas) {
+    if (!this.notaAsignada(id)) {
+      return false;
+    }
+  }
+  return true;
+}
+todasLasNotasAsignadas(): boolean {
+  const idsNotas = this.datosfinales.map((result) => result.idNota);
+  return idsNotas.every((id) => this.estadoAsignacion[id]);
+}
+
+
+notaAsignada(id: number): boolean {
+  // Verifica si la nota está marcada como asignada en el estado
+  return this.estadoAsignacion[id] || false;
+}
+
+
+
+
 
 
 

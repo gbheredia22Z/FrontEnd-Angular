@@ -231,17 +231,7 @@ export class GradoComponent implements OnInit, OnDestroy {
         return;
       }
     }
-    // Verifica si el grado ya existe
-    if (this.isGradoAlreadyExists(form.value.nombreGrado)) {
-      Swal.fire({
-        position: 'top',
-        icon: 'error',
-        title: 'El grado ya existe',
-        showConfirmButton: false,
-        timer: 1500,
-      });
-      return;
-    }
+   
     if (form.value.id) {
       // Asigna la información del estudiante seleccionado a la matrícula
       form.value.persId = this.selectedDocentes?.id;
@@ -259,6 +249,17 @@ export class GradoComponent implements OnInit, OnDestroy {
       });
     } else {
       if (form.valid) {
+         // Verifica si el grado ya existe
+    if (this.isGradoAlreadyExists(form.value.nombreGrado)) {
+      Swal.fire({
+        position: 'top',
+        icon: 'error',
+        title: 'El grado ya existe',
+        showConfirmButton: false,
+        timer: 1500,
+      });
+      return;
+    }
         // Asigna la información del estudiante seleccionado a la matrícula
         // form.value.persId = this.gradoService.selectedDocentes.id;
         // form.value.persona = {
