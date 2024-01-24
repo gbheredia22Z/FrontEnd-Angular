@@ -1,6 +1,6 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
+<nav class="navbar navbar-expand-lg navbar-light sticky-top">
     <a class="navbar-brand text-white d-flex align-items-center" href="">
-        <img src="assets/brain_morado.png" alt="Logo" width="150" height="60" class="d-inline-block align-text-top">
+        <img src="assets/blanco.png" alt="Logo" width="150" height="60" class="d-inline-block align-text-top">
     </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
         aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
@@ -15,23 +15,22 @@
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
                     aria-haspopup="true" aria-expanded="false">
                     Administrar </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                    <a class="dropdown-item" href="/docente">Docentes</a>
+                <div class="dropdown-menu bg-dark" aria-labelledby="navbarDropdownMenuLink">
                     <a class="dropdown-item" href="/estudiante"> Estudiantes</a>
+                    <a class="dropdown-item " href="/docente">Docentes</a>
                     <a class="dropdown-item" href="/grado"> Grado </a>
-                    <a class="dropdown-item" href="/periodo"> Periodo </a>
-                    <a class="dropdown-item" href="/matricula"> Matrícula </a>
-                    <a class="dropdown-item" href="/actividades"> Tipo de Actividad </a>
                     <a class="dropdown-item" href="/asignatura"> Asignatura </a>
-                    <a class="dropdown-item" href="/actividades-educativas"> Actividades Educativas </a>
+                    <a class="dropdown-item" href="/periodo"> Periodo Lectivo</a>
                     <a class="dropdown-item" href="/periodo-calificaciones"> Periodo de Calificaciones </a>
+                    <a class="dropdown-item" href="/actividades"> Tipo de Actividad </a>
+                    <a class="dropdown-item" href="/matricula"> Matrícula </a>
+                    <a class="dropdown-item" href="/actividades-educativas"> Actividades Educativas </a>
                     <a class="dropdown-item" href="/nota"> Calificaciones </a>
                 </div>
             </li>
         </ul>
     </div>
 </nav>
-
 <h1 class=""> Matrícula </h1>
 
 <div class="d-flex align-items-center">
@@ -45,8 +44,8 @@
     <div class="modal-dialog modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel"> <i class="bi bi-building-fill-up"></i> <br>Añadir
-                    Matricula</h1>
+                <h6 class="modal-title fs-5" id="exampleModalLabel"> <i class="bi bi-building-fill-up"></i> <br>Añadir
+                    Matricula</h6>
                 <button type="button" class="btn btn-light" data-bs-dismiss="modal" aria-label="Close"
                     (click)="closeAddAsignaturaModal()"><i class="bi bi-x-lg"></i></button>
             </div>
@@ -92,8 +91,8 @@
                                 [ngModel]="matriculaServices.selectedEstudiante?.nombre">
                         </div>
                     </div>
-                    <a class="btn btn-primary m-2" id="btn-g2" (click)="openEstudianteListaModal()">Buscar
-                        estudiante no matriculado</a>
+                    <a class="btn btn-primary m-2" (click)="openEstudianteListaModal()">Buscar estudiante
+                    </a>
                     <!-- Nuevo Modal para la Lista de ESTUDIANTES -->
                     <div class="modal fade" id="estudianteListModal" tabindex="-1" aria-labelledby="estudianteListModal"
                         aria-hidden="true">
@@ -101,8 +100,8 @@
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <h1 class="modal-title fs-5" id="estudianteListModal">Lista de Estudiantes</h1>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
-                                        (click)="closeDocenteListModal()"></button>
+                                    <button type="button" class="btn btn-light" data-bs-dismiss="modal" aria-label="Close"
+                                        (click)="closeDocenteListModal()"><i class="bi bi-x-lg"></i></button>
                                 </div>
                                 <!-- En el cuerpo del modal de la lista de docentes -->
                                 <div class="modal-body">
@@ -122,7 +121,6 @@
                                                 <td>{{ estudiante.cedula }}</td>
                                                 <td>{{ estudiante.nombre }}</td>
                                                 <td>{{ estudiante.apellido }}</td>
-                                                <!-- Puedes agregar más columnas según tus necesidades -->
                                                 <td>
                                                     <button type="button" class="btn btn-primary"
                                                         (click)="cargarStudiante(estudiante)"> Matricular</button>
@@ -139,7 +137,7 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
                     (click)="closeAddAsignaturaModal()"> Cerrar</button>
-                <button type="button" class="btn btn-dark" id="btn-g" (click)="createAsignatura(asignaturaForm)">
+                <button type="button" class="btn btn-dark" (click)="createAsignatura(asignaturaForm)">
                     Guardar</button>
             </div>
         </div>
@@ -154,8 +152,9 @@
             <i class="bi bi-file-earmark-excel"></i>
         </button>
     </div>
+    <br><br>
 
-    <table class="table table-bordered" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
+    <table class="table table-hover" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
         <thead>
             <tr>
                 <th scope="col">Estudiante </th>
@@ -172,7 +171,8 @@
                 <td>{{matricula.periodo.anioLectivo}}</td>
                 <td>{{matricula.estado === 'A' ? 'Activo' : 'Inactivo' }}</td>
                 <td>
-                    <button (click)="editMatricula(matricula)" type="button" class="btn btn-success" id=""><i class="bi bi-pencil-square"></i></button>
+                    <button (click)="editMatricula(matricula)" type="button" class="btn btn-success" id=""><i
+                            class="bi bi-pencil-square"></i></button>
                 </td>
             </tr>
         </tbody>
@@ -182,9 +182,10 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Editar Matrícula</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
-                        (click)="closeEditMatriculaModal()"></button>
+                    <h6 class="modal-title fs-5" id="exampleModalLabel"><i class="bi bi-save-fill"></i> <br>Editar
+                        Matrícula</h6>
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal" aria-label="Close"
+                        (click)="closeEditMatriculaModal()"><i class="bi bi-x-lg"></i></button>
                 </div>
                 <div class="modal-body">
                     <form #asignaturaForm2="ngForm">
@@ -194,8 +195,6 @@
                         </div>
 
                         <div class="row">
-
-
                             <div class="col-md-6 mb-3">
                                 <label for="estado" class="form-label">Estado:</label>
                                 <select class="form-select" aria-label="Selecciona el estado" id="estado" name="estado"
@@ -208,8 +207,9 @@
                             <div class="col-md-6 mb-2">
                                 <label for="docente" class="form-label">Seleccione Grado:</label>
                                 <select class="form-select" id="idGrado"
-                                    [(ngModel)]="matriculaServices.selectedMatricula.idGrado" name="idGrado" required [disabled]="true">
-                                    <option *ngFor="let grado of grados" [value]="grado.id">{{ grado.nombreGrado }} 
+                                    [(ngModel)]="matriculaServices.selectedMatricula.idGrado" name="idGrado" required
+                                    [disabled]="true">
+                                    <option *ngFor="let grado of grados" [value]="grado.id">{{ grado.nombreGrado }}
                                     </option>
                                 </select>
                             </div>
@@ -242,51 +242,26 @@
     </div>
 </div>
 
+
+<!--Footer-->
+
 <br> <br><br> <br><br>
-<!-- ICONS -->
-<link rel="stylesheet" type="text/css"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+
 <footer class="footer">
-    <div class="container">
+    <div class="container text-center">
         <div class="row">
-            <div class="footer-col">
-                <h4>company</h4>
-                <ul>
-                    <li><a href="#">about us</a></li>
-                    <li><a href="#">our services</a></li>
-                    <li><a href="#">privacy policy</a></li>
-                    <li><a href="#">affiliate program</a></li>
-                </ul>
+            <div class="col">
+                <h3>Brain Mentor</h3>
+                <hr>
+                <h4>Tu viaje educativo comienza con Brain Mentor, la guía perfecta hacia el conocimiento.</h4>
             </div>
-            <div class="footer-col">
-                <h4>get help</h4>
-                <ul>
-                    <li><a href="#">FAQ</a></li>
-                    <li><a href="#">shipping</a></li>
-                    <li><a href="#">returns</a></li>
-                    <li><a href="#">order status</a></li>
-                    <li><a href="#">payment options</a></li>
-                </ul>
-            </div>
-            <div class="footer-col">
-                <h4>online shop</h4>
-                <ul>
-                    <li><a href="#">watch</a></li>
-                    <li><a href="#">bag</a></li>
-                    <li><a href="#">shoes</a></li>
-                    <li><a href="#">dress</a></li>
-                </ul>
-            </div>
-            <div class="footer-col">
-                <h4>follow us</h4>
-                <div class="social-links">
-                    <a href="#"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#"><i class="fab fa-twitter"></i></a>
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+            <div class="col">
+                <div>
+                    <p class="derechos"> ©2024 Brain Mentor - Ecuador</p>
                 </div>
-                <img src="assets/brain_blanco.png" alt="Logo" width="80" height="80"
-                    class="d-inline-block align-text-top">
+            </div>
+            <div class="col">
+                <img id="imgfooter" src="assets/blanco.png" alt="Logo" width="140" heigh="50">
             </div>
         </div>
     </div>
