@@ -3,6 +3,7 @@
 /*FUENTES*/
 p {
     font-family: 'Raleway', sans-serif;
+    
 }
 
 a {
@@ -20,14 +21,19 @@ h1 {
 
 h2 {
     font-family: 'Raleway', sans-serif;
+   
 }
 
 h3 {
     font-family: 'Raleway', sans-serif;
+    text-align: left;
 }
 
 h4 {
     font-family: 'Raleway', sans-serif;
+    text-align: left;
+    font-size: 16px;
+
 }
 
 h6 {
@@ -81,16 +87,16 @@ nav ul li a:hover {
 /*MODAL*/
 
 .modal-header {
-    background: linear-gradient(#7917CA, #7a22c2, #8646b9, );
+    background: linear-gradient(#9358f2, #a777f4, #a372f3, );
 }
 
 .btn-light {
-    background-color: #7917CA;
-    border: 1px solid #7917CA;
+    background-color: #9358f2;
+    border: 1px solid #9358f2;
 }
 
 .btn-light:hover {
-    background-color: #7f20cd;
+    background-color: #9358f2;
 
 }
 
@@ -109,8 +115,8 @@ nav ul li a:hover {
 }
 
 .btn-primary {
-    background-color: #7917CA;
-    border: 1px solid #7917CA;
+    background-color: #9358f2;
+    border: 1px solid #9358f2;
     border-radius: 25px;
     color: #ffffff;
     height: 50px;
@@ -120,14 +126,14 @@ nav ul li a:hover {
 .btn-primary:hover {
     background-color: #f2f2f2;
     border-radius: 25px;
-    border: 1px solid #7917CA;
-    color: #7917CA;
+    border: 1px solid #9358f2;
+    color: #9358f2;
     margin: 30px;
 }
 
 .btn-dark {
-    background-color: #7917CA;
-    border: 1px solid #7917CA;
+    background-color: #9358f2;
+    border: 1px solid #9358f2;
     border-radius: 25px;
     color: #ffffff;
 }
@@ -135,8 +141,8 @@ nav ul li a:hover {
 .btn-dark:hover {
     background-color: #f2f2f2;
     border-radius: 25px;
-    border: 1px solid #7917CA;
-    color: #7917CA;
+    border: 1px solid #9358f2;
+    color: #9358f2;
 }
 
 .btn-secondary {
@@ -177,7 +183,7 @@ nav ul li a:hover {
 }
 
 input:hover {
-    border: 1px solid #7917CA;
+    border: 1px solid #9358f2;
 }
 
 .modal-body {
@@ -201,8 +207,10 @@ div.dataTables_wrapper div.dataTables_filter input {
     margin-left: .5em;
     display: inline-block;
     width: auto;
-    border: 1px solid #7917CA;
+    border: 1px solid #9358f2;
 }
+
+
 
 /*FOOTER*/
 .container {
@@ -227,10 +235,21 @@ ul {
     color: white;
 }
 
+hr{
+    width: 90px;
+    height: 3px;
+    background-color: #ead1ff;
+
+}
+
 .derechos{
-    margin-top: 30px;
+    margin-top: 15%;
+    text-align: center;
+    color: #939393;
+
+    
 }
 
 #imgfooter{
-    margin-top: 20px;
+    margin-top: 8%;
 }
