@@ -152,9 +152,8 @@ createTipoActividad(form: NgForm): void {
     actividad => actividad.nombreActividad === nombreActividad
   );
 
-// Expresión regular para validar letras (puede incluir espacios, pero no caracteres especiales)
-const regexSoloLetras = /^[a-zA-Z\s]+$/;
-
+  // Expresión regular para validar letras (puede incluir espacios, pero no caracteres especiales)
+  const regexSoloLetras = /^[a-zA-Z\s]+$/;
 
   if (!regexSoloLetras.test(nombreActividad)) {
     // Muestra un mensaje de error indicando que el nombre de la actividad no es válido
@@ -162,15 +161,6 @@ const regexSoloLetras = /^[a-zA-Z\s]+$/;
       position: 'top',
       icon: 'error',
       title: 'Ingrese solo letras en el nombre de la actividad',
-      showConfirmButton: false,
-      timer: 1500,
-    });
-  } else if (actividadExistente) {
-    // Muestra un mensaje de error indicando que la actividad ya existe
-    Swal.fire({
-      position: 'top',
-      icon: 'error',
-      title: 'La actividad ya existe',
       showConfirmButton: false,
       timer: 1500,
     });
@@ -191,19 +181,24 @@ const regexSoloLetras = /^[a-zA-Z\s]+$/;
       });
     } else {
       if (form.valid) {
-        this.tipoService.postTipoActividad(form.value).subscribe((res) => {
-          form.reset();
-          Swal.fire({
-            position: 'top',
-            icon: 'success',
-            title: 'Nuevo registro agregado',
-            showConfirmButton: false,
-            timer: 1500,
+        if (actividadExistente) {
+          // Muestra un mensaje de error indicando que la actividad ya existe
+          this.mostrarErrorActividadExistente();
+        } else {
+          this.tipoService.postTipoActividad(form.value).subscribe((res) => {
+            form.reset();
+            Swal.fire({
+              position: 'top',
+              icon: 'success',
+              title: 'Nuevo registro agregado',
+              showConfirmButton: false,
+              timer: 1500,
+            });
+            this.getTipoService();
+            this.closeAddAvtividadModal();
+            this.irPagina();
           });
-          this.getTipoService();
-          this.closeAddAvtividadModal();
-          this.irPagina();
-        });
+        }
       } else {
         Swal.fire({
           position: 'top',
@@ -216,6 +211,18 @@ const regexSoloLetras = /^[a-zA-Z\s]+$/;
     }
   }
 }
+
+// Agrega un nuevo método para mostrar el mensaje de error de actividad existente
+mostrarErrorActividadExistente() {
+  Swal.fire({
+    position: 'top',
+    icon: 'error',
+    title: 'La actividad ya existe',
+    showConfirmButton: false,
+    timer: 1500,
+  });
+}
+
 
 onImprimir() {
   if (this.data.length > 0) {

@@ -29,9 +29,9 @@ export class NotasComponent {
   notas: any = [];
   selectedNota: Notas = new Notas();
   datos: NotasDTO[] = [];
-  selectDTO:NotasDTO = new NotasDTO();
-  datosfinales:Notasdtoall[] = [];
-  selectNotasDto:Notasdtoall = new Notasdtoall();
+  selectDTO: NotasDTO = new NotasDTO();
+  datosfinales: Notasdtoall[] = [];
+  selectNotasDto: Notasdtoall = new Notasdtoall();
   filasModificadas: Set<number> = new Set<number>();
   selectedGradoId: number | null = null;
 
@@ -42,8 +42,8 @@ export class NotasComponent {
       actividad: [null],  // Utiliza un array para establecer el valor inicial
       asignatura: [null],
       nombre: [''],
-      actividadEducativaTitulo:[''],
-      idAsignatura:[''],
+      actividadEducativaTitulo: [''],
+      idAsignatura: [''],
       nota: [''], // Asegúrate de que este campo esté definido en tu formulario
       direccion: [''],
     });
@@ -61,7 +61,7 @@ export class NotasComponent {
       this.selectedGradoId = gradoId;
       this.onGradoSelected();
     });
-  
+
 
     this.formulario.get('asignatura')?.valueChanges.subscribe((asignaturaId) => {
       this.selectedAsignaturaId = asignaturaId;
@@ -80,11 +80,7 @@ export class NotasComponent {
     this.getGrados();
   }
 
-  // getAsignaturas() {
-  //   this.notaService.getAsignaturas().subscribe((res) => {
-  //     this.asignaturas = res;
-  //   });
-  // }
+
   getAsignaturas() {
     // Verifica que selectedGradoId no sea null antes de llamar a la función
     if (this.selectedGradoId !== null) {
@@ -97,16 +93,12 @@ export class NotasComponent {
     }
   }
   getGrados() {
-  // Asumiendo que tienes un método en tu servicio para obtener los grados
-  this.notaService.getGrados().subscribe((res) => {
-    this.grados = res;
-    console.log(this.grados);
-  });
-}
-
-  
-  
-
+    // Asumiendo que tienes un método en tu servicio para obtener los grados
+    this.notaService.getGrados().subscribe((res) => {
+      this.grados = res;
+      console.log(this.grados);
+    });
+  }
 
   getActividadesEducativas() {
     this.notaService.getActividadesEducativas().subscribe((res) => {
@@ -145,7 +137,6 @@ export class NotasComponent {
       this.getAsignaturas(); // Actualiza las asignaturas al seleccionar un grado
     }
   }
-  
 
   //modal para abrir formulario
 
@@ -164,14 +155,14 @@ export class NotasComponent {
       nota: datos.nota, // Asegúrate de usar el nombre correcto del campo
       direccion: datos.direccion
     });
-  
+
     const modal = document.getElementById('editModal');
     if (modal) {
       modal.classList.add('show');
       modal.style.display = 'block';
     }
   }
-  
+
   editarNotas(datosfinales: Notasdtoall) {
     console.log("valor nota: ", datosfinales.nota);
     //console.log("valor direccion: ", datosfinales.direccion);
@@ -181,30 +172,30 @@ export class NotasComponent {
       actividadEducativaTitulo: datosfinales.tituloActividad,
       idAsignatura: datosfinales.idAsignatura,
       nota: datosfinales.nota, // Asegúrate de usar el nombre correcto del campo
-     
+
     });
-  
+
     const modal = document.getElementById('editModal');
     if (modal) {
       modal.classList.add('show');
       modal.style.display = 'block';
     }
   }
-  
+
 
   editNotas2(estudianteId: string) {
     // Obtener el nombre del estudiante asociado a la nota
     this.notaService.getEstudianteById(estudianteId).subscribe((estudiante: any) => {
       console.log("Estudiante:", estudiante);
-  
+
       if (estudiante) {
         // Actualizar el nombre del docente directamente en el formulario
         this.formulario.patchValue({
           nombre: `${estudiante.nombre} ${estudiante.apellido}`,
-         
+
         });
       }
-  
+
       // Abre el modal de edición
       const modal = document.getElementById('editModal');
       if (modal) {
@@ -214,7 +205,6 @@ export class NotasComponent {
     });
   }
 
-  
   closeEditPeriodoModal(): void {
     const modal = document.getElementById('editModal');
     if (modal) {
@@ -231,8 +221,8 @@ export class NotasComponent {
     });
   }
 
-  getNotas(){
-    this.notaService.getNotas().subscribe((res)=>{
+  getNotas() {
+    this.notaService.getNotas().subscribe((res) => {
       this.notaService.notas = res as Notas[];
       console.log("Notas", res);
     })
@@ -250,51 +240,84 @@ export class NotasComponent {
   }
 
 
- // En tu componente
- asignarNota(id: string, event: FocusEvent) {
-  const targetElement = event.target as HTMLElement;
+  // En tu componente
+  asignarNota(id: string, event: FocusEvent) {
+    const targetElement = event.target as HTMLElement;
 
-  if (targetElement) {
-    const nuevaNota = targetElement.innerText;
-    const valor_nota = +nuevaNota;
+    if (targetElement) {
+      const nuevaNota = targetElement.innerText;
 
-    console.log('Antes de asignar la nota - ID:', id, 'Nueva Nota:', valor_nota);
+      // Expresión regular para validar que el valor es un número
+      const regexSoloNumeros = /^\d+$/;
 
-    this.notaService.asignarNota(id, valor_nota).subscribe(
-      (response) => {
-        console.log('Después de asignar la nota - ID:', id, 'Nueva Nota:', valor_nota);
-        console.log('Nota asignada exitosamente:', response);
-         // Marcar la nota como asignada en el estado después de asignarla
-         this.estadoAsignacion[id] = true;
-         console.log("estado asignacions",this.estadoAsignacion);
-     
-      },
-      (error) => {
-        console.error('Error al asignar la nota:', error);
+      if (!regexSoloNumeros.test(nuevaNota)) {
+        // Muestra un mensaje de error indicando que solo se permiten números
+        Swal.fire({
+          position: 'top',
+          icon: 'error',
+          title: 'Ingrese solo números en la nota',
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        // Puedes decidir si quieres limpiar el contenido del elemento después de mostrar el mensaje de error
+        // targetElement.innerText = '';
+        return;
       }
-    );
-  }
-}
 
-todasFilasAsignadas(): boolean {
-  // Verifica si todas las filas modificadas han sido asignadas
-  for (const id of this.filasModificadas) {
-    if (!this.notaAsignada(id)) {
-      return false;
+      const valor_nota = +nuevaNota;
+
+      // Validación de que la nota sea mayor a 20
+      if (valor_nota > 20) {
+        // Muestra un mensaje de error indicando que la nota no puede ser mayor a 20
+        Swal.fire({
+          position: 'top',
+          icon: 'error',
+          title: 'La nota no puede ser mayor a 20',
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        // Puedes decidir si quieres limpiar el contenido del elemento después de mostrar el mensaje de error
+        // targetElement.innerText = '';
+        return;
+      }
+
+      console.log('Antes de asignar la nota - ID:', id, 'Nueva Nota:', valor_nota);
+
+      this.notaService.asignarNota(id, valor_nota).subscribe(
+        (response) => {
+          console.log('Después de asignar la nota - ID:', id, 'Nueva Nota:', valor_nota);
+          console.log('Nota asignada exitosamente:', response);
+          // Marcar la nota como asignada en el estado después de asignarla
+          this.estadoAsignacion[id] = true;
+          console.log("estado asignacions", this.estadoAsignacion);
+        },
+        (error) => {
+          console.error('Error al asignar la nota:', error);
+        }
+      );
     }
   }
-  return true;
-}
-todasLasNotasAsignadas(): boolean {
-  const idsNotas = this.datosfinales.map((result) => result.idNota);
-  return idsNotas.every((id) => this.estadoAsignacion[id]);
-}
 
 
-notaAsignada(id: number): boolean {
-  // Verifica si la nota está marcada como asignada en el estado
-  return this.estadoAsignacion[id] || false;
-}
+  todasFilasAsignadas(): boolean {
+    // Verifica si todas las filas modificadas han sido asignadas
+    for (const id of this.filasModificadas) {
+      if (!this.notaAsignada(id)) {
+        return false;
+      }
+    }
+    return true;
+  }
+  todasLasNotasAsignadas(): boolean {
+    const idsNotas = this.datosfinales.map((result) => result.idNota);
+    return idsNotas.every((id) => this.estadoAsignacion[id]);
+  }
+
+
+  notaAsignada(id: number): boolean {
+    // Verifica si la nota está marcada como asignada en el estado
+    return this.estadoAsignacion[id] || false;
+  }
 
 
 
@@ -304,5 +327,5 @@ notaAsignada(id: number): boolean {
 
 
 
- 
+
 }

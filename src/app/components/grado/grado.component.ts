@@ -406,7 +406,7 @@ export class GradoComponent implements OnInit, OnDestroy {
         grado.persona.apellido
       ]);
 
-      this.srvImpresion.imprimir(encabezado, cuerpo, "Listado de Grado", true);
+      this.srvImpresion.imprimirExcel(encabezado, cuerpo, "Listado de Grado", true);
     } else {
       // Muestra un mensaje de alerta si no hay datos para imprimir
       Swal.fire({

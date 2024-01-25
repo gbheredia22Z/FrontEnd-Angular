@@ -332,11 +332,12 @@ export class AsignaturaComponent implements OnInit, OnDestroy {
   }
 
   imprimirExcel() {
-    if (this.gradosasig.length > 0) {
-      const encabezado = ["Asignatura", "Estado"];
-      const cuerpo = this.gradosasig.map((grado: Asignatura) => [
+    if (this.data.length > 0) {
+      const encabezado = ["Asignatura", "Estado","GradoID"];
+      const cuerpo = this.data.map((grado: Asignatura) => [
         grado.nombreMateria,
-        grado.estado === 'A' ? 'Activo' : 'Inactivo'
+        grado.estado === 'A' ? 'Activo' : 'Inactivo',
+        grado.idGrado
 
 
       ]);
