@@ -28,14 +28,10 @@ export class GradoComponent implements OnInit, OnDestroy {
   searchResults: any[] = [];
   selectedDocentes: any = null;
 
-
-
   getGrado() {
     this.gradoService.getGrado().subscribe((res) => {
       this.gradoService.grados = res as Grado[];
       console.log(res);
-      //this.dtTrigger.next(this.dtOptions);
-
     });
   }
 
@@ -47,6 +43,7 @@ export class GradoComponent implements OnInit, OnDestroy {
         this.dtTrigger.next(this.dtOptions);
       });
   }
+
   constructor(public gradoService: GradoService, private fb: FormBuilder, private srvImpresion: ImpresionService) {
     this.myForm = this.fb.group({
       id: new FormControl('', Validators.required),
@@ -54,7 +51,6 @@ export class GradoComponent implements OnInit, OnDestroy {
       estado: ['', Validators.required],
       nombreDocente: [''],
     });
-
   }
 
   ngOnInit(): void {
@@ -68,23 +64,17 @@ export class GradoComponent implements OnInit, OnDestroy {
     this.getGrado2();
   }
 
+
   getDocentes() {
     this.gradoService.getDocentes().subscribe((res) => {
       // Filtra los docentes que no están asignados a ningún grado
       this.docentes = res.filter(docente => !this.isDocenteAssignedToGrado(docente.id));
     });
   }
-  // getDocentes() {
-  //   this.gradoService.getDocentes().subscribe((res) => {
-  //     this.docentes = res;
-  //   });
-  // }
-
 
   ngOnDestroy(): void {
     //this.subscriptions.forEach(subscription => subscription.unsubscribe());
     this.dtTrigger.unsubscribe();
-
   }
 
   openAddGradoModal() {
@@ -102,23 +92,27 @@ export class GradoComponent implements OnInit, OnDestroy {
     }
     $('#addGradoModal').modal('hide');
   }
+
   searchDocente() {
     this.selectedDocentes = this.docentes.find(docente => docente.cedula === this.searchQuery);
   }
-  updateSelectedEstudianteName(newValue: string) {
+
+  updateSelectedEstudianteName(nombre: string, apellido: string) {
+    const nombreCompleto = nombre + ' ' + apellido;
+
     // Actualiza el nombre del docente en el formulario
     this.myForm.patchValue({
       persId: this.selectedDocentes?.id, // Asigna el ID del docente
       // Asegúrate de que el siguiente nombre de campo coincida con el campo real en tu formulario
       // Si el nombre del campo es diferente, ajústalo en consecuencia
-      nombreDocente: newValue, // Asigna el nombre del docente
+      nombreDocente: nombreCompleto, // Asigna el nombre completo del docente
     });
 
-    // Actualiza el nombre del docente en el objeto selectedDocentes
+    // Actualiza el nombre y apellido del docente en el objeto selectedDocentes
     if (this.selectedDocentes) {
-      this.selectedDocentes = { ...this.selectedDocentes, nombre: newValue };
+      this.selectedDocentes = { ...this.selectedDocentes, nombre, apellido };
     } else {
-      this.selectedDocentes = { nombre: newValue };
+      this.selectedDocentes = { nombre, apellido };
     }
   }
 
@@ -303,6 +297,7 @@ export class GradoComponent implements OnInit, OnDestroy {
   isGradoAlreadyExists(nombreGrado: string): boolean {
     return this.gradoService.grados.some(grado => grado.nombreGrado === nombreGrado);
   }
+
   closeAddGradoModal(): void {
     const modal = document.getElementById('addGradoModal');
     if (modal) {
@@ -311,19 +306,19 @@ export class GradoComponent implements OnInit, OnDestroy {
     }
   }
 
-
   onCedulaInput() {
     // Limpia el nombre del estudiante si se borra la cédula
     if (!this.searchQuery) {
       this.gradoService.selectedDocentes = null;
     }
   }
+
   updateSelectedDocenteName(newValue: string) {
     if (this.gradoService.selectedDocentes) {
       this.gradoService.selectedDocentes.nombre = newValue;
+
     }
   }
-
 
   filterByNameOrCedula(docentes: any[], searchQuery: string): any[] {
     if (!searchQuery) {
@@ -336,6 +331,7 @@ export class GradoComponent implements OnInit, OnDestroy {
       docentes.cedula.toLowerCase().includes(query)
     );
   }
+
   openDocenteListModal() {
     // Filtra los docentes que no están asignados a ningún grado
     const docentesNoAsignados = this.docentes.filter(docente => !this.isDocenteAssignedToGrado(docente.id));
@@ -366,7 +362,6 @@ export class GradoComponent implements OnInit, OnDestroy {
 
 
   closeDocenteListModal(): void {
-
     const docenteListModal = document.getElementById('docenteListModal');
     if (docenteListModal) {
       docenteListModal.classList.remove('show');
@@ -417,28 +412,12 @@ export class GradoComponent implements OnInit, OnDestroy {
     }
   }
 
-
-
-
-  // ... Otro código ...
-
   cargarDocente(docente: any) {
     this.selectedDocentes = docente;
-    this.updateSelectedEstudianteName(docente.nombre);
-
-    // Cierra el modal de la lista de docentes
+    this.updateSelectedEstudianteName(docente.nombre, docente.apellido);
     this.closeDocenteListModal();
   }
-
-
-  // ... Otro código ...
-
-
-
-
-
+  
 }
-
-
 
 declare var $: any;

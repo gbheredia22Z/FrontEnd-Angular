@@ -60,16 +60,25 @@
           <div class="row">
             <div class="mb-3">
               <label for="nombreGrado" class="form-label">Nombre Grado:</label>
-              <input type="text" class="form-control" id="nombreGrado" placeholder="Ingrese nombre de grado"
-                [(ngModel)]="gradoService.selectedGrado.nombreGrado" name="nombreGrado" required>
+              <select class="form-select" aria-label="Selecciona el periodo" id="nombreGrado" name="nombreGrado"
+                [(ngModel)]="gradoService.selectedGrado.nombreGrado" required>
+                <option value="P">Primer Grado</option>
+                <option value="S">Segundo Grado</option>
+                <option value="T">Tercer Grado</option>
+                <option value="C">Cuarto Grado</option>
+                <option value="Q">Quinto Grado</option>
+                <option value="X">Sexto Grado</option>
+                <option value="M">Séptimo Grado</option>
+              </select>
             </div>
 
             <div class="mb-3">
               <label for="persId" class="form-label">Nombre del Docente:</label>
               <input id="persId" class="form-control" type="text" formControlName="nombreDocente"
                 [value]="myForm.get('nombreDocente')?.value" [attr.disabled]="true"
-                [ngModel]="gradoService.selectedDocentes?.nombre">
+                [ngModel]="gradoService.selectedDocentes?.nombre + ' ' + gradoService.selectedDocentes?.apellido">
             </div>
+
           </div>
           <div class="row">
             <div class="mb-3">
@@ -146,7 +155,16 @@
     </thead>
     <tbody>
       <tr *ngFor="let grado of data">
-        <td>{{grado.nombreGrado}}</td>
+        <td>
+          {{ grado.nombreGrado === 'P' ? 'Primer Grado' :
+          grado.nombreGrado === 'S' ? 'Segundo Grado' :
+          grado.nombreGrado === 'T' ? 'Tercer Grado' :
+          grado.nombreGrado === 'C' ? 'Cuarto Grado' :
+          grado.nombreGrado === 'Q' ? 'Quinto Grado' :
+          grado.nombreGrado === 'X' ? 'Sexto Grado' :
+          grado.nombreGrado === 'M' ? 'Séptimo Grado' :
+          ''}}
+        </td>
         <td>{{grado.persona.nombre + ' ' + grado.persona.apellido }}</td>
         <td>
           <button type="button" class="btn btn-success" id="btn-g" (click)="editGrado(grado)"><i
@@ -170,8 +188,16 @@
                   <div class="row">
                     <div class="mb-3">
                       <label for="nombreGrado" class="form-label">Nombre Grado:</label>
-                      <input type="text" class="form-control" id="nombreGrado" placeholder="Ingrese nombre de grado"
-                        [(ngModel)]="gradoService.selectedGrado.nombreGrado" name="nombreGrado" required>
+                      <select class="form-select" aria-label="Selecciona el periodo" id="nombreGrado" name="nombreGrado"
+                        [(ngModel)]="gradoService.selectedGrado.nombreGrado" required>
+                        <option value="P">Primer Grado</option>
+                        <option value="S">Segundo Grado</option>
+                        <option value="T">Tercer Grado</option>
+                        <option value="C">Cuarto Grado</option>
+                        <option value="Q">Quinto Grado</option>
+                        <option value="X">Sexto Grado</option>
+                        <option value="M">Séptimo Grado</option>
+                      </select>
                     </div>
 
                     <div class="mb-3">
@@ -208,7 +234,7 @@
       <div class="col">
         <h3>Brain Mentor</h3>
         <hr>
-        <h4>Tu viaje educativo comienza con Brain Mentor, la guía perfecta hacia el conocimiento.</h4>
+        <h4>Tu viaje educativo comienza con la guía perfecta hacia el conocimiento.</h4>
       </div>
       <div class="col">
         <div>

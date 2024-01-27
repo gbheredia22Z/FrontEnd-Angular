@@ -16,15 +16,15 @@
                     aria-haspopup="true" aria-expanded="false">
                     Administrar </a>
                 <div class="dropdown-menu bg-dark" aria-labelledby="navbarDropdownMenuLink">
-                    <a class="dropdown-item " href="/docente">Docentes</a>
                     <a class="dropdown-item" href="/estudiante"> Estudiantes</a>
+                    <a class="dropdown-item " href="/docente">Docentes</a>
                     <a class="dropdown-item" href="/grado"> Grado </a>
-                    <a class="dropdown-item" href="/periodo"> Periodo </a>
-                    <a class="dropdown-item" href="/matricula"> Matrícula </a>
-                    <a class="dropdown-item" href="/actividades"> Tipo de Actividad </a>
                     <a class="dropdown-item" href="/asignatura"> Asignatura </a>
-                    <a class="dropdown-item" href="/actividades-educativas"> Actividades Educativas </a>
+                    <a class="dropdown-item" href="/periodo"> Periodo Lectivo</a>
                     <a class="dropdown-item" href="/periodo-calificaciones"> Periodo de Calificaciones </a>
+                    <a class="dropdown-item" href="/actividades"> Tipo de Actividad </a>
+                    <a class="dropdown-item" href="/matricula"> Matrícula </a>
+                    <a class="dropdown-item" href="/actividades-educativas"> Actividades Educativas </a>
                     <a class="dropdown-item" href="/nota"> Calificaciones </a>
                 </div>
             </li>
@@ -109,7 +109,8 @@
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h6 class="modal-title fs-5" id="exampleModalLabel"><i class="bi bi-save-fill"></i>
-                                    <br>Editar Tipo Actividad</h6>
+                                    <br>Editar Tipo Actividad
+                                </h6>
                                 <button type="button" class="btn btn-light" data-bs-dismiss="modal" aria-label="Close"
                                     (click)="closeEditActividadModal()"><i class="bi bi-x-lg"></i></button>
                             </div>

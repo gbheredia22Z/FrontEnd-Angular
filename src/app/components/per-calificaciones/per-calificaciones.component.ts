@@ -50,8 +50,6 @@ export class PerCalificacionesComponent {
       });
     }
 
-
-
     ngOnInit():void{
       this.dtOptions = {
         language: {
@@ -241,10 +239,6 @@ export class PerCalificacionesComponent {
       });
     }
   }
-
-
-
-
 }
 
 declare var $: any;

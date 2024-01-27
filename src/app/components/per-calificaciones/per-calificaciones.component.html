@@ -57,10 +57,13 @@
                     <div class="row">
                         <div class="mb-3">
                             <label for="nombrePeriodo" class="form-label">Nombre Periodo:</label>
-                            <input type="text" class="form-control" id="nombrePeriodo"
-                                placeholder="Ingrese el nombre del periodo"
-                                [(ngModel)]="perService.selectPerCalificaciones.nombrePeriodo" name="nombrePeriodo"
+                            <select class="form-select" aria-label="Selecciona el periodo" id="nombrePeriodo"
+                                name="nombrePeriodo" [(ngModel)]="perService.selectPerCalificaciones.nombrePeriodo"
                                 required>
+                                <option value="P">Primer Trimestre</option>
+                                <option value="S">Segundo Trimestre</option>
+                                <option value="T">Tercer Trimestre</option>
+                            </select>
                         </div>
                     </div>
                     <div class="mb-3">
@@ -71,8 +74,6 @@
                             <option value="I">Inactivo</option>
                         </select>
                     </div>
-
-
                 </form>
             </div>
             <div class="modal-footer">
@@ -103,8 +104,13 @@
         </thead>
         <tbody>
             <tr *ngFor="let periodo of data">
-                <td>{{periodo.nombrePeriodo}}</td>
-                <td>{{periodo.estado === 'A' ? 'Activo' : 'Inactivo'}}</td>
+                <td>
+                    {{ periodo.nombrePeriodo === 'P' ? 'Primer Trimestre' :
+                    periodo.nombrePeriodo === 'S' ? 'Segundo Trimestre' :
+                    periodo.nombrePeriodo === 'T' ? 'Tercer Trimestre' : '' }}
+                </td>
+                <td>{{ periodo.estado === 'A' ? 'Activo' : 'Inactivo'}}</td>
+
                 <td>
                     <button type="button" class="btn btn-success" id="" (click)="editTipoActividad(periodo)"><i
                             class="bi bi-pencil-square"></i></button>
@@ -117,19 +123,31 @@
                             <div class="modal-header">
                                 <h6 class="" id="exampleModalLabel">
                                     <i class="bi bi-save-fill"></i> <br> Editar Periodo de Calificaciones
-                                </h6> <button type="button" class="btn btn-light" data-bs-dismiss="modal" aria-label="Close"
-                                    (click)="closeEditActividadModal()"><i class="bi bi-x-lg"></i></button>
+                                </h6> <button type="button" class="btn btn-light" data-bs-dismiss="modal"
+                                    aria-label="Close" (click)="closeEditActividadModal()"><i
+                                        class="bi bi-x-lg"></i></button>
                             </div>
                             <div class="modal-body">
                                 <form #periodoForm2="ngForm">
-                                    <!-- Campo de ID oculto -->
                                     <input type="hidden" [(ngModel)]="perService.selectPerCalificaciones" name="id" />
                                     <div class="row">
                                         <div class="mb-3">
                                             <label for="nombreActividad" class="form-label">Nombre:</label>
-                                            <input type="text" class="form-control" id="nombreActividad"
-                                                [(ngModel)]="perService.selectPerCalificaciones.nombrePeriodo"
-                                                name="nombreActividad">
+                                            <select class="form-select" aria-label="Selecciona el periodo"
+                                                id="nombreActividad" name="nombreActividad"
+                                                [value]="myForm.get('nombreActividad')?.value" [disabled]="true"
+                                                [(ngModel)]="perService.selectPerCalificaciones.nombrePeriodo">
+                                                <option value="P"
+                                                    [selected]="perService.selectPerCalificaciones.nombrePeriodo === 'P'">
+                                                    Primer Trimestre</option>
+                                                <option value="S"
+                                                    [selected]="perService.selectPerCalificaciones.nombrePeriodo === 'S'">
+                                                    Segundo Trimestre</option>
+                                                <option value="T"
+                                                    [selected]="perService.selectPerCalificaciones.nombrePeriodo === 'T'">
+                                                    Tercer Trimestre</option>
+                                            </select>
+
                                         </div>
                                         <div class="mb-3">
                                             <label for="estado" class="form-label">Estado:</label>
@@ -170,7 +188,7 @@
             <div class="col">
                 <h3>Brain Mentor</h3>
                 <hr>
-                <h4>Tu viaje educativo comienza con Brain Mentor, la guía perfecta hacia el conocimiento.</h4>
+                <h4> Tu viaje educativo comienza con la guía perfecta hacia el conocimiento.</h4>
             </div>
             <div class="col">
                 <div>

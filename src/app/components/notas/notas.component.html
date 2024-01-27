@@ -34,9 +34,8 @@
 
 <h1 class=""> Calificaciones </h1>
 
-<!-- Ajusta el código del HTML para utilizar correctamente las opciones -->
 <div class="col-md-6 mb-3">
-  <label for="periodo" class="form-label">Grados</label>
+  <label for="periodo" class="form-label">Grado</label>
   <select class="form-select" id="gradoId" [(ngModel)]="selectedGradoId" name="gradoId" (change)="onGradoSelected()"
     required>
     <option *ngFor="let grado of grados" [value]="grado.id">{{ grado.nombreGrado }} </option>
@@ -58,25 +57,19 @@
   </select>
 </div>
 
-<!-- Agrega esto donde quieras mostrar los resultados -->
-<table class="table table-hover" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
+<table class="table table-hover"  datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
   <thead>
     <tr>
-
-      <th>Nombre</th>
-      <th>Apellido</th>
+      <th>Estudiante</th>
       <th>Actividad</th>
       <th>Asignatura</th>
       <th>Nota</th>
-
-
     </tr>
   </thead>
   <tbody>
     <tr *ngFor="let result of datosfinales">
 
-      <td>{{ result.nombre }}</td>
-      <td>{{ result.apellido }}</td>
+      <td>{{ result.nombre }}   {{ result.apellido }}</td>
       <td>{{ result.tituloActividad }}</td>
       <td>{{ result.nombreAsignatura}}</td>
       <td>
@@ -100,7 +93,7 @@
             <div class="col">
                 <h3>Brain Mentor</h3>
                 <hr>
-                <h4>Tu viaje educativo comienza con Brain Mentor, la guía perfecta hacia el conocimiento.</h4>
+                <h4>Tu viaje educativo comienza con la guía perfecta hacia el conocimiento.</h4>
             </div>
             <div class="col">
                 <div>
