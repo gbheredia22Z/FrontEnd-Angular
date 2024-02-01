@@ -238,51 +238,6 @@ export class EducativaActividadesComponent implements OnInit, OnDestroy {
     }
   }
 
-  editActividadEducativa(actividadEducativa: ActividadEducativa) {
-    // Clonar actividad educativa para evitar cambios directos
-    this.educativaService.selectedActividades = { ...actividadEducativa };
-
-    // Obtener el nombre y apellido del docente asociado a la actividad educativa
-
-
-    // Abre el modal de edición utilizando jQuery
-    $('#editModal').modal('show');
-
-  }
-
-  updateActividadEducativa(form: NgForm) {
-    this.educativaService.putActividadEducativa(this.educativaService.selectedActividades).subscribe(
-      (res) => {
-        // Buscar el índice de la actividad educativa actualizada en la lista de actividades educativas
-        const index = this.educativaService.actividadesEducativas.findIndex(
-          actividad => actividad.id === this.educativaService.selectedActividades.id
-        );
-
-        if (index !== -1) {
-          // Actualizar el nombre y apellido del docente en la lista de actividades educativas
-          const persona = this.educativaService.selectedActividades.persona;
-          this.educativaService.actividadesEducativas[index].persona.nombre = persona.nombre;
-          this.educativaService.actividadesEducativas[index].persona.apellido = persona.apellido;
-        }
-
-        Swal.fire({
-          position: 'top',
-          icon: 'success',
-          title: 'Registro actualizado',
-          showConfirmButton: false,
-          timer: 1500,
-        });
-
-        // Asume que tienes una función llamada goToPage para ir a la página deseada
-        // Cierra el modal de edición utilizando jQuery
-        $('#editModal').modal('hide');
-      },
-      (error) => {
-        // Manejo de errores si es necesario
-      }
-    );
-  }
-
   irPagina() {
     window.location.reload();
   }
