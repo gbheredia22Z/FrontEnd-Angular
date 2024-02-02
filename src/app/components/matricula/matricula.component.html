@@ -67,12 +67,11 @@
 
                         <div class="mb-3">
                             <label for="docente" class="form-label">Seleccione Grado:</label>
-                            <select class="form-select" id="idGrado"
-                                [(ngModel)]="matriculaServices.selectedMatricula.idGrado" name="idGrado" required>
-                                <option *ngFor="let grado of grados" [value]="grado.id">{{ grado.nombreGrado }}
-                                </option>
+                            <select class="form-select" id="idGrado" [(ngModel)]="matriculaServices.selectedMatricula.idGrado" name="idGrado" required>
+                              <option *ngFor="let grado of grados" [value]="grado.id">{{ getGrados(grado.nombreGrado) }}</option>
                             </select>
-                        </div>
+                          </div>
+                          
 
                     </div>
                     <div class="row">
@@ -209,10 +208,11 @@
                                 <select class="form-select" id="idGrado"
                                     [(ngModel)]="matriculaServices.selectedMatricula.idGrado" name="idGrado" required
                                     [disabled]="true">
-                                    <option *ngFor="let grado of grados" [value]="grado.id">{{ grado.nombreGrado }}
+                                    <option *ngFor="let grado of grados" [value]="grado.id">{{ getGradosEdit(grado.nombreGrado) }}
                                     </option>
                                 </select>
-                            </div>
+                              </div>
+                              
                         </div>
                         <div class="row">
 

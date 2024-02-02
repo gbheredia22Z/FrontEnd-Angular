@@ -100,10 +100,24 @@
                             <label for="periodo" class="form-label">Periodo Calificacion</label>
                             <select class="form-select" id="perCalId"
                                 [(ngModel)]="educativaService.selectedActividades.perCalId" name="perCalId" required>
-                                <option *ngFor="let periodo of periodoCalificacion" [value]="periodo.id">{{
-                                    periodo.nombrePeriodo }} </option>
+                                <option *ngFor="let periodo of periodoCalificacion" [value]="periodo.id">{{getPeriodo(periodo.nombrePeriodo) }} </option>
                             </select>
                         </div>
+                    <!-- Dentro del formulario en el modal -->
+<!--div class="mb-3">
+    <label for="grado" class="form-label">Grado</label>
+    <select class="form-select" id="gradoId" [(ngModel)]="educativaService.selectedActividades.gradoId" name="gradoId"
+        required>
+        <option *ngFor="let grado of grados" [value]="grado.id">{{ grado.nombreGrado }}</option>
+    </select>
+</div-->
+
+                          
+                          
+                    
+                          
+
+                  
 
                         <div class=" mb-3">
                             <label for="periodo" class="form-label">Asignatura</label>

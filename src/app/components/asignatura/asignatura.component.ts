@@ -125,6 +125,55 @@ export class AsignaturaComponent implements OnInit, OnDestroy {
       some(asignatura => asignatura.idGrado === idGrado) || false;
   }
 
+  getNombreGrado(abreviatura: string): string {
+    const nombresGrados: { [key: string]: string } = {
+      P: 'Primer Grado',
+      S: 'Segundo Grado',
+      T: 'Tercer Grado',
+      C: 'Cuarto Grado',
+      Q: 'Quinto Grado',
+      X: 'Sexto Grado',
+      M: 'Séptimo Grado',
+    };
+  
+    return nombresGrados[abreviatura] || abreviatura;
+  }
+
+  getNombreCompletoGrado(abreviatura: string): string {
+    const nombresGrados: { [key: string]: string } = {
+      P: 'Primer Grado',
+      S: 'Segundo Grado',
+      T: 'Tercer Grado',
+      C: 'Cuarto Grado',
+      Q: 'Quinto Grado',
+      X: 'Sexto Grado',
+      M: 'Séptimo Grado',
+    };
+
+
+  
+    return nombresGrados[abreviatura] || abreviatura;
+  }
+
+  getNombreEdit(abreviatura: string): string {
+    const nombresGrados: { [key: string]: string } = {
+      P: 'Primer Grado',
+      S: 'Segundo Grado',
+      T: 'Tercer Grado',
+      C: 'Cuarto Grado',
+      Q: 'Quinto Grado',
+      X: 'Sexto Grado',
+      M: 'Séptimo Grado',
+    };
+
+    
+  
+    return nombresGrados[abreviatura] || abreviatura;
+  }
+  
+  
+  
+
 
 
 

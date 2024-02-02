@@ -12,6 +12,8 @@ import { ImpresionService } from '../../services/impresion.service';
   styleUrl: './educativa-actividades.component.scss'
 })
 export class EducativaActividadesComponent implements OnInit, OnDestroy {
+  gradoId: number;
+  grados: any[] = [];
   dtOptions: DataTables.Settings = {};
   data: any = []; //aqui se alamcena
   dtTrigger: Subject<any> = new Subject<any>();
@@ -28,6 +30,12 @@ export class EducativaActividadesComponent implements OnInit, OnDestroy {
   actividad: any[] = [];
   periodoCalificacion: any[] = [];
   actividadesEducativas: any;
+  grado: any[] = [];
+
+  gradosasig: any;
+
+
+  selectedGrados: any = null;
 
   constructor(public educativaService: EducativaActividadesService, private fb: FormBuilder,
     private srvImpresion: ImpresionService) {
@@ -42,6 +50,7 @@ export class EducativaActividadesComponent implements OnInit, OnDestroy {
       perCalId: [null, Validators.required], // Inicializa con null o un valor por defecto
       asignaturaId: [null, Validators.required], // Inicializa con null o un valor por defecto
       estado: ['', Validators.required],
+      nombreGrado: [''],
     });
   }
 
@@ -60,18 +69,31 @@ export class EducativaActividadesComponent implements OnInit, OnDestroy {
 
 
   ngOnInit(): void {
+    //this.getGrados();
     this.dtOptions = {
       language: {
         url: "/assets/Spanish.json"
+
       },
     };
+    //this.getGrados();
     this.getAsignaturas();
     this.getActividadesEducativas1();
     this.getActividadesEducativas();
     this.getperiodoCalificaciones();
     this.getActividades();
 
+
   }
+  //getGrados() {
+    //this.educativaService.getGrados().subscribe((res) => {
+      //this.grados = res;
+    //});
+  //}
+
+
+
+
   //obtener las asignaturas
   getAsignaturas() {
     this.educativaService.getAsignaturas().subscribe((res) => {
@@ -347,6 +369,37 @@ export class EducativaActividadesComponent implements OnInit, OnDestroy {
 
     return null;
   }
+
+  getPeriodo(abreviatura: string): string {
+    const nombrePeriodo: { [key: string]: string } = {
+      P: 'Primer Trimestre',
+      S: 'Segundo Trimestre',
+      T: 'Tercer Trimestre',
+    };
+
+
+
+    return nombrePeriodo[abreviatura] || abreviatura;
+  }
+
+  getNombreGrado(abreviatura: string): string {
+    const nombresGrados: { [key: string]: string } = {
+      P: 'Primer Grado',
+      S: 'Segundo Grado',
+      T: 'Tercer Grado',
+      C: 'Cuarto Grado',
+      Q: 'Quinto Grado',
+      X: 'Sexto Grado',
+      M: 'Séptimo Grado',
+    };
+
+    return nombresGrados[abreviatura] || abreviatura;
+  }
+
+
+
+
+
 
 
 

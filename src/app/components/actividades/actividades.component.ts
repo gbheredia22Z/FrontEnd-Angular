@@ -232,7 +232,7 @@ onImprimir() {
       
     ]);
 
-    this.srvImpresion.imprimir(encabezado, cuerpo, "Listado de Grado", true);
+    this.srvImpresion.imprimir(encabezado, cuerpo, "Listado de Tipo de Actividades", true);
   } else {
     // Muestra un mensaje de alerta si no hay datos para imprimir
     Swal.fire({

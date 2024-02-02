@@ -111,6 +111,39 @@ export class MatriculaComponent implements OnInit, OnDestroy {
     return this.matriculaServices.matriculas?.
     some(matricula => matricula.idPersona === estudianteId) || false;
   }
+
+  getGrados(abreviatura: string): string {
+    const nombresGrados: { [key: string]: string } = {
+      P: 'Primer Grado',
+      S: 'Segundo Grado',
+      T: 'Tercer Grado',
+      C: 'Cuarto Grado',
+      Q: 'Quinto Grado',
+      X: 'Sexto Grado',
+      M: 'Séptimo Grado',
+    };
+
+
+  
+    return nombresGrados[abreviatura] || abreviatura;
+  }
+
+
+  getGradosEdit(abreviatura: string): string {
+    const nombresGrados: { [key: string]: string } = {
+      P: 'Primer Grado',
+      S: 'Segundo Grado',
+      T: 'Tercer Grado',
+      C: 'Cuarto Grado',
+      Q: 'Quinto Grado',
+      X: 'Sexto Grado',
+      M: 'Séptimo Grado',
+    };
+
+
+  
+    return nombresGrados[abreviatura] || abreviatura;
+  }
   
   
 

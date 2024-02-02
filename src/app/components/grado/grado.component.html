@@ -102,7 +102,7 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h6 class="modal-title fs-5" id="docenteListModalLabel">Lista de Docentes</h6>
+        <h1 class="modal-title fs-5" id="docenteListModalLabel">Lista de Docentes</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
           (click)="closeDocenteListModal()"></button>
       </div>
@@ -124,7 +124,7 @@
               <td>{{ docente.nombre}}</td>
               <td>{{ docente.apellido }}</td>
               <td>
-                <button type="button" class="btn btn-dark" (click)="cargarDocente(docente)">Cargar Docente</button>
+                <button type="button" class="btn btn-primary" (click)="cargarDocente(docente)">Cargar Docente</button>
               </td>
             </tr>
           </tbody>

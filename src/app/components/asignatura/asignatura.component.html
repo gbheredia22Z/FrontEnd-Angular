@@ -77,9 +77,10 @@
             <div class="mb-3">
               <label for="idGrado" class="form-label">Nombre del Grado:</label>
               <input id="idGrado" class="form-control" type="text" formControlName="nombreGrado"
-                [value]="myForm.get('nombreGrado')?.value" [attr.disabled]="true"
-                [ngModel]="asignaturaService.selectedGrado?.nombreGrado">
+                [value]="getNombreCompletoGrado(myForm.get('nombreGrado')?.value)"
+                [attr.disabled]="true" [ngModel]="asignaturaService.selectedGrado?.nombreGrado">
             </div>
+            
 
             <div class="row">
               <div class="col-md-6 mb-3">
@@ -102,7 +103,7 @@
   <div class="modal-dialog modal-dialog-scrollable">
     <div class="modal-content">
       <div class="modal-header">
-        <h6 class="modal-title fs-5" id="docenteListModalLabel">Listado Asignaturas</h6>
+        <h6 class="modal-title fs-5" id="docenteListModalLabel">Listado Grados</h6>
         <button type="button" class="btn btn-light" data-bs-dismiss="modal" aria-label="Close"
           (click)="closeGradoListModal()"><i class="bi bi-x-lg"></i></button>
       </div>
@@ -118,12 +119,13 @@
           </thead>
           <tbody>
             <tr *ngFor="let grado of searchResults">
-              <td>{{ grado.nombreGrado }}</td>
+              <td>{{ getNombreGrado(grado.nombreGrado) }}</td>
               <td>
                 <button type="button" class="btn btn-primary" (click)="cargarGrado(grado)">Seleccionar</button>
               </td>
             </tr>
           </tbody>
+          
         </table>
       </div>
     </div>
@@ -198,9 +200,10 @@
               <div class="mb-3">
                 <label for="idGrado" class="form-label">Nombre del Grado:</label>
                 <input id="idGrado" class="form-control" type="text" formControlName="nombreGrado"
-                  [value]="myForm.get('nombreGrado')?.value" [attr.disabled]="true"
-                  [ngModel]="asignaturaService.selectedGrado?.nombreGrado">
+                  [value]="getNombreEdit(myForm.get('nombreGrado')?.value)"
+                  [attr.disabled]="true" [ngModel]="asignaturaService.selectedGrado?.nombreGrado">
               </div>
+              
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
