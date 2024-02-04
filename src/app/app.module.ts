@@ -18,6 +18,7 @@ import { ActividadesComponent } from './components/actividades/actividades.compo
 import { PerCalificacionesComponent } from './components/per-calificaciones/per-calificaciones.component';
 import { EducativaActividadesComponent } from './components/educativa-actividades/educativa-actividades.component';
 import { NotasComponent } from './components/notas/notas.component';
+import { VistaEstudianteComponent } from './components/vista-estudiante/vista-estudiante.component';
 
 @NgModule({
     declarations: [
@@ -33,7 +34,8 @@ import { NotasComponent } from './components/notas/notas.component';
         ActividadesComponent,
         PerCalificacionesComponent,
         EducativaActividadesComponent,
-        NotasComponent
+        NotasComponent,
+        VistaEstudianteComponent
     ],
     imports: [
         BrowserModule,
