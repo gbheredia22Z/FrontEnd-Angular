@@ -1,3 +1,5 @@
+// login.model.ts
+
 export class Login {
     cedula: string;
     contrasena: string;
@@ -11,7 +13,7 @@ export class Login {
     }
 }
 
-export interface Login {
-    cedula: string;
-    contrasena: string;
+export interface LoginResponse {
+    mensaje: string;
+    token: string;
 }

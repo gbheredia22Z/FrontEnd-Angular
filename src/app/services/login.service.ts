@@ -22,9 +22,10 @@ export class LoginService {
         return this.http.get<Login[]>(this.URL_API);
     }
 
-    postLogin(login: Login) {
-        return this.http.post(this.URL_API, login);
+    postLogin(login: Login): Observable<any> {
+        return this.http.post<any>(this.URL_API, login);
     }
+
 
     putLogin(login: Login): Observable<any> {
         const url = `${this['URL_API']}${login.cedula}`;

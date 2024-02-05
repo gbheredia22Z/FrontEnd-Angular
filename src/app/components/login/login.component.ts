@@ -1,4 +1,8 @@
 import { Component } from '@angular/core';
+import { LoginService } from '../../services/login.service';
+import { Router } from '@angular/router';
+import { Login } from '../../models/login';
+
 
 @Component({
   selector: 'app-login',
@@ -6,8 +10,11 @@ import { Component } from '@angular/core';
   styleUrl: './login.component.scss'
 })
 export class LoginComponent {
+  selectedLogin: Login = new Login();
   username: string = '';
   password: string = '';
+
+  constructor(private loginService: LoginService, private router: Router) { }
 
   login() {
     // Aquí puedes agregar lógica para autenticar al usuario
@@ -16,4 +23,23 @@ export class LoginComponent {
     // Puedes redirigir a la página de inicio de docente o estudiante según la lógica de autenticación
   }
 
+  onSubmit() {
+    this.loginService.postLogin(this.selectedLogin).subscribe(
+      (response) => {
+        // Maneja la respuesta del servidor
+        console.log(response);
+
+        // Redirección según el tipo de persona
+        if (response.usuario && response.usuario.tipoPersona === 'E') {
+          this.router.navigate(['/vista-estudiante']);
+        } else {
+          // Manejar otros tipos de persona aquí
+        }
+      },
+      (error) => {
+        // Maneja el error
+        console.error(error);
+      }
+    );
+  }
 }
