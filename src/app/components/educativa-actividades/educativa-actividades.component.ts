@@ -44,8 +44,7 @@ export class EducativaActividadesComponent implements OnInit, OnDestroy {
       id: new FormControl('', Validators.required),
       titulo: ['', Validators.required],
       detalleActividad: ['', Validators.required],
-      fechaInicio: ['', Validators.required, this.validateFechaFin],
-      fechaFin: ['', Validators.required],
+      fechaInicio: ['', Validators.required],
       tipoActId: [null, Validators.required], // Inicializa con null o un valor por defecto
       perCalId: [null, Validators.required], // Inicializa con null o un valor por defecto
       asignaturaId: [null, Validators.required], // Inicializa con null o un valor por defecto
@@ -85,14 +84,6 @@ export class EducativaActividadesComponent implements OnInit, OnDestroy {
 
 
   }
-  //getGrados() {
-    //this.educativaService.getGrados().subscribe((res) => {
-      //this.grados = res;
-    //});
-  //}
-
-
-
 
   //obtener las asignaturas
   getAsignaturas() {
@@ -100,7 +91,6 @@ export class EducativaActividadesComponent implements OnInit, OnDestroy {
       this.asignatura = res;
     })
   }
-
 
   getActividades() {
     this.educativaService.getTipoActividad().subscribe((res) => {
@@ -164,7 +154,7 @@ export class EducativaActividadesComponent implements OnInit, OnDestroy {
   }
 
   createActividadesEducativas(form: NgForm): void {
-    const requiredFields = ['titulo', 'detalleActividad', 'fechaInicio', 'fechaFin', 'tipoActId', 'perCalId', 'asignaturaId', 'estado'];
+    const requiredFields = ['titulo', 'detalleActividad', 'fechaInicio',  'tipoActId', 'perCalId', 'asignaturaId', 'estado'];
 
     const isEmptyField = requiredFields.some(key => {
       const fieldValue = form.value[key];
@@ -296,13 +286,12 @@ export class EducativaActividadesComponent implements OnInit, OnDestroy {
 
   onImprimir() {
     if (this.actividadesEducativas.length > 0) {
-      const encabezado = ["Titulo", "Detalle", "Estado", "Fecha Fin", "Fecha Inicio", "Periodo",
+      const encabezado = ["Titulo", "Detalle", "Estado", "Fecha Inicio", "Periodo",
         "Actividad", "Asignatura"];
       const cuerpo = this.actividadesEducativas.map((grado: EducativaActividades) => [
         grado.titulo,
         grado.detalleActividad,
         grado.estado === 'A' ? 'Activo' : 'Inactivo',
-        this.formatoFecha(grado.fechaFin),
         this.formatoFecha(grado.fechaInicio),
         grado.periodoCalificaciones.nombrePeriodo,
         grado.tipoActividad.nombreActividad,
@@ -321,13 +310,12 @@ export class EducativaActividadesComponent implements OnInit, OnDestroy {
   }
   imprimirExcel() {
     if (this.actividadesEducativas.length > 0) {
-      const encabezado = ["Titulo", "Detalle", "Estado", "Fecha Fin", "Fecha Inicio", "Periodo",
+      const encabezado = ["Titulo", "Detalle", "Estado", "Fecha Inicio", "Periodo",
         "Actividad", "Asignatura"];
       const cuerpo = this.actividadesEducativas.map((grado: EducativaActividades) => [
         grado.titulo,
         grado.detalleActividad,
         grado.estado === 'A' ? 'Activo' : 'Inactivo',
-        this.formatoFecha(grado.fechaFin),
         this.formatoFecha(grado.fechaInicio),
         grado.periodoCalificaciones.nombrePeriodo,
         grado.tipoActividad.nombreActividad,
@@ -345,28 +333,13 @@ export class EducativaActividadesComponent implements OnInit, OnDestroy {
     }
   }
 
-
   // Método para validar que la fecha sea igual o posterior a hoy
   validateFechaInicio(control: FormControl): { [key: string]: boolean } | null {
     const fechaInicio = new Date(control.value);
     const hoy = new Date();
-
     if (fechaInicio < hoy) {
       return { 'fechaInvalida': true };
     }
-
-    return null;
-  }
-
-  // Método para validar que la fecha sea igual o posterior a hoy
-  validateFechaFin(control: FormControl): { [key: string]: boolean } | null {
-    const fechaFin = new Date(control.value);
-    const hoy = new Date();
-
-    if (fechaFin < hoy) {
-      return { 'fechaInvalida': true };
-    }
-
     return null;
   }
 
@@ -376,9 +349,6 @@ export class EducativaActividadesComponent implements OnInit, OnDestroy {
       S: 'Segundo Trimestre',
       T: 'Tercer Trimestre',
     };
-
-
-
     return nombrePeriodo[abreviatura] || abreviatura;
   }
 

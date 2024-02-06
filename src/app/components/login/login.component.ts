@@ -32,8 +32,11 @@ export class LoginComponent {
         // Redirección según el tipo de persona
         if (response.usuario && response.usuario.tipoPersona === 'E') {
           this.router.navigate(['/vista-estudiante']);
-        } else {
-          // Manejar otros tipos de persona aquí
+        } else if (response.usuario && response.usuario.tipoPersona === 'D') {
+          this.router.navigate(['/vista-docente']);
+        }else{
+          this.router.navigate(['/admin']);
+
         }
       },
       (error) => {

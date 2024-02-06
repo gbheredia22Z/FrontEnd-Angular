@@ -15,6 +15,7 @@ import { PerCalificacionesComponent } from './components/per-calificaciones/per-
 import { EducativaActividadesComponent } from './components/educativa-actividades/educativa-actividades.component';
 import { NotasComponent } from './components/notas/notas.component';
 import { VistaEstudianteComponent } from './components/vista-estudiante/vista-estudiante.component';
+import { VistaDocenteComponent } from './components/vista-docente/vista-docente.component';
 
 const routes: Routes = [
   {
@@ -73,6 +74,10 @@ const routes: Routes = [
   {
     path:'vista-estudiante',
     component:VistaEstudianteComponent
+  },
+  {
+    path:'vista-docente',
+    component:VistaDocenteComponent
   }
 
 ];
