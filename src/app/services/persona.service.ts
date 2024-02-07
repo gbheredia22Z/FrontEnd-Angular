@@ -19,7 +19,7 @@ export class PersonaService {
   URL_API2 = "http://127.0.0.1:3000/api/docente/";
   apiUrl = "http://127.0.0.1:3000/api"
   apiUrl2 = "http://127.0.0.1:3000/api"
-// En tu componente, puedes utilizar el DatePipe para formatear la fecha
+  URL_API_A = "http://127.0.0.1:3000/api/persona/asignaturas/";
   URL_Docente = "http://127.0.0.1:3000/api";
 
   constructor(private http: HttpClient) {
@@ -27,7 +27,6 @@ export class PersonaService {
     this.selectedDocente = new Persona();
   }
 
-  
   getEstudiante() {
     return this.http.get(this.URL_API);
   }
@@ -64,34 +63,42 @@ export class PersonaService {
     const url = `${this.apiUrl2}/estudiante/cedula/${cedula}`;
     return this.http.get(url);
   }
-  
+
   getEstudianteByCorreo(correo: string): Observable<any> {
     const url = `${this.apiUrl}/estudiante/correo/${correo}`;
     return this.http.get(url);
   }
 
-  getEstudianteByCelular(celular:string):Observable<any>{
+  getEstudianteByCelular(celular: string): Observable<any> {
     const url = `${this.apiUrl}/estudiante/celular/${celular}`;
     return this.http.get(url);
   }
   /*****PARA PROFSORES */
 
-  getTeacherByCi(cedula:string):Observable<any>{
+  getTeacherByCi(cedula: string): Observable<any> {
     const url = `${this.URL_Docente}/docente/cedula/${cedula}`;
     return this.http.get(url);
   }
 
-  getTeacherByCorreo(correo:string):Observable<any>{
+  getTeacherByCorreo(correo: string): Observable<any> {
     const url = `${this.URL_Docente}/docente/correo/${correo}`;
     return this.http.get(url);
   }
-  getTeacherByCelular(celular:string):Observable<any>{
+  getTeacherByCelular(celular: string): Observable<any> {
     const url = `${this.URL_Docente}/docente/celular/${celular}`;
     return this.http.get(url);
   }
 
-
-    
+  asignaturasPorIdPersona(id: number): Observable<any> {
+    const url = `${this.URL_API_A}/persona/asignaturas/${id}`;
+    return this.http.get(url).pipe(
+      catchError((error: any) => {
+        console.error('Error al obtener las asignaturas:', error);
+        throw error;
+      })
+    );
+  }
+  
 }
 
 
