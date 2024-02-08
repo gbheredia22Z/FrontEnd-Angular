@@ -105,13 +105,13 @@
                             </select>
                         </div>
                         <!-- Dentro del formulario en el modal -->
-                        <!--div class="mb-3">
-    <label for="grado" class="form-label">Grado</label>
-    <select class="form-select" id="gradoId" [(ngModel)]="educativaService.selectedActividades.gradoId" name="gradoId"
-        required>
-        <option *ngFor="let grado of grados" [value]="grado.id">{{ grado.nombreGrado }}</option>
-    </select>
-</div-->
+                        <div class="mb-3">
+                            <label for="grado" class="form-label">Grado</label>
+                            <select class="form-select" id="gradoId"
+                                [(ngModel)]="educativaService.selectedActividades.gradoId" name="gradoId" required>
+                                <option *ngFor="let grado of grados" [value]="grado.id">{{ getNombreGrados(grado.nombreGrado) }}</option>
+                            </select>
+                        </div>
 
                         <div class=" mb-3">
                             <label for="periodo" class="form-label">Asignatura</label>
@@ -165,17 +165,19 @@
 
             </tr>
         </thead>
+
+   
         <tbody>
             <tr *ngFor="let educativasAc of actividadesEducativas">
                 <td>{{educativasAc.titulo}}</td>
                 <td>{{educativasAc.detalleActividad}}</td>
                 <td>{{educativasAc.tipoActividad.nombreActividad}}</td>
                 <td>{{educativasAc.fechaInicio | date: 'dd/MM/yyyy'}}</td>
-                <td>{{educativasAc.periodoCalificaciones.nombrePeriodo}}</td>
+                <td>{{ getPeriodo(educativasAc.periodoCalificaciones.nombrePeriodo) }}</td>
                 <td>{{educativasAc.asignatura.nombreMateria}}</td>
                 <td>{{educativasAc.estado === 'A' ? 'Activo' : 'Inactivo'}}</td>
                 <td>
-                    <button type="button" class="btn btn-success" id="btn-g" (click)="(actividad)"><i
+                    <button type="button" class="btn btn-success" id="btn-g" (click)="editEducativas(educativasAc)"><i
                             class="bi bi-pencil-square"></i></button>
                 </td>
                 <!-- Modal de Edición -->
@@ -274,7 +276,9 @@
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
                                                     (click)="closeAddEducativaModal()">Cerrar</button>
-                                                <button type="submit" class="btn btn-dark">Guardar</button>
+
+                                                <button type="button" class="btn btn-dark"
+                                                    (click)="updateEstudiante(gradoForm)">Editar</button>
                                             </div>
                                         </div>
                                     </div>

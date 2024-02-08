@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 //Componentes
 import { EstudianteComponent } from './components/estudiante/estudiante.component';
-
 import { DocenteComponent } from './components/docente/docente.component';
 import { AdminComponent } from './components/admin/admin.component';
 import { PeriodoComponent } from './components/periodo/periodo.component';

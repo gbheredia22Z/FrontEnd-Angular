@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { PersonaService } from '../../services/persona.service'; // Asegúrate de importar correctamente el servicio PersonaService
+import { PersonaService } from '../../services/persona.service';
 import { Asignatura } from '../../models/asignatura';
 
 @Component({
@@ -10,20 +10,35 @@ import { Asignatura } from '../../models/asignatura';
 })
 export class VistaEstudianteComponent implements OnInit {
   mensajeBienvenida: string;
-  asignaturas: Asignatura[] = []; // Declara la propiedad asignaturas como un arreglo de Asignatura
+  asignaturas: Asignatura[] = [];
+  idEstudiante: number;
 
-  constructor(private route: ActivatedRoute, private router: Router, private personaService: PersonaService) { }
+  constructor(private personaService: PersonaService, private router: Router, private route: ActivatedRoute
+  ) { }
 
   ngOnInit(): void {
-    this.mensajeBienvenida = history.state.mensaje; // Asigna el mensaje de bienvenida desde el estado de la historia
-    this.obtenerAsignaturas(); // Llama al método obtenerAsignaturas al inicializar el componente
+    this.mensajeBienvenida = history.state.mensaje;
+    // Obtén el ID del estudiante desde los parámetros de la ruta
+    this.idEstudiante = history.state.idUser;
+
+    console.log('Objeto de respuesta:', history.state);
+
+    if ('usuario' in history.state) {
+      console.log('Propiedad "usuario" encontrada en el objeto de respuesta');
+      console.log('ID del Estudiante obtenido:', history.state.usuario.id);
+
+      // Accede al campo 'id' del objeto 'usuario'
+      this.idEstudiante = history.state.usuario.id;
+    }
+    // Luego, puedes llamar a tu función para obtener asignaturas
+    this.obtenerAsignaturas(this.idEstudiante);
+
   }
 
-  obtenerAsignaturas() {
-    const idUsuario: number = 1; // Reemplaza 123 con el ID del usuario actual obtenido de tu aplicación
-    this.personaService.asignaturasPorIdPersona(idUsuario).subscribe(
+  obtenerAsignaturas(idEstudiante: number) {
+    this.personaService.asignaturasPorIdEstudiante(idEstudiante).subscribe(
       (asignaturas: Asignatura[]) => {
-        this.asignaturas = asignaturas; // Asigna las asignaturas recuperadas del servicio a la propiedad asignaturas
+        this.asignaturas = asignaturas;
       },
       (error) => {
         console.error('Error al obtener las asignaturas:', error);
@@ -31,7 +46,7 @@ export class VistaEstudianteComponent implements OnInit {
     );
   }
 
-  logout() {
+  logout(): void {
     this.router.navigate(['/login']);
   }
 }

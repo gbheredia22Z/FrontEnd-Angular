@@ -3,6 +3,7 @@ import { LoginService } from '../../services/login.service';
 import { Router } from '@angular/router';
 import { Login } from '../../models/login';
 
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -13,6 +14,7 @@ export class LoginComponent {
   username: string = '';
   password: string = '';
   mensajeBienvenida: string = '';
+  idUsuario: number;
 
   constructor(private loginService: LoginService, private router: Router) { }
 
@@ -22,11 +24,15 @@ export class LoginComponent {
         console.log(response);
         if (response.usuario && response.usuario.tipoPersona === 'E') {
           this.mensajeBienvenida = `Bienvenido/a ${response.usuario.nombre}`;
-          this.router.navigate(['/vista-estudiante'], { state: { mensaje: this.mensajeBienvenida } });
+          this.idUsuario = response.usuario.id;
+          this.router.navigate(['/vista-estudiante'], { state: { mensaje: this.mensajeBienvenida,idUser: this.idUsuario} });
         } else if (response.usuario && response.usuario.tipoPersona === 'D') {
-          this.router.navigate(['/vista-docente']);
+          this.mensajeBienvenida = `Bienvenido/a ${response.usuario.nombre}`;
+          this.idUsuario = response.usuario.id;
+          this.router.navigate(['/vista-docente'], { state: { mensaje: this.mensajeBienvenida,idUser: this.idUsuario} });
         } else {
-          this.router.navigate(['/admin']);
+          this.mensajeBienvenida = `Bienvenido/a admin`;
+          this.router.navigate(['/admin'], { state: { mensaje: this.mensajeBienvenida,idUser: this.idUsuario} });
         }
       },
       (error) => {

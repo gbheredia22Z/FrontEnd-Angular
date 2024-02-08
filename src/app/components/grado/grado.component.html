@@ -82,7 +82,7 @@
           </div>
           <div class="row">
             <div class="mb-3">
-              <a class="btn btn-primary m-2" (click)="openDocenteListModal()"> Seleccionar </a>
+              <a class="btn btn-dark" (click)="openDocenteListModal()"> Seleccionar </a>
             </div>
           </div>
         </form>
@@ -102,9 +102,9 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="docenteListModalLabel">Lista de Docentes</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
-          (click)="closeDocenteListModal()"></button>
+        <h6 class="modal-title fs-5" id="docenteListModalLabel">Lista de Docentes</h6>
+        <button type="button" class="btn btn-light" data-bs-dismiss="modal" aria-label="Close"
+          (click)="closeDocenteListModal()"><i class="bi bi-x-lg"></i></button>
       </div>
       <!-- En el cuerpo del modal de la lista de docentes -->
       <div class="modal-body">
@@ -124,7 +124,7 @@
               <td>{{ docente.nombre}}</td>
               <td>{{ docente.apellido }}</td>
               <td>
-                <button type="button" class="btn btn-primary" (click)="cargarDocente(docente)">Cargar Docente</button>
+                <button type="button" class="btn btn-dark" (click)="cargarDocente(docente)">Cargar Docente</button>
               </td>
             </tr>
           </tbody>

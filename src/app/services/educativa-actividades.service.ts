@@ -2,12 +2,14 @@ import { Injectable } from '@angular/core';
 import { EducativaActividades } from '../models/educativa-actividades';
 import { HttpClient } from '@angular/common/http';
 import { Observable, catchError } from 'rxjs';
+import { Grado } from '../models/grado';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EducativaActividadesService {
   [x: string]: any;
+  grados!: Grado[];
   selectedActividades:EducativaActividades;
   actividades!:EducativaActividades[];
   URL_API="http://127.0.0.1:3000/api/actividades/"
@@ -15,11 +17,23 @@ export class EducativaActividadesService {
   URL_PERACADEMIC = "http://127.0.0.1:3000/api/periodoCalificaciones/"
   URL_TACTIVIDAD = "http://127.0.0.1:3000/api/tipoActividad/"
   URL_NOTAS= "http://127.0.0.1:3000/api"
+  URL_GRADO = "http://127.0.0.1:3000/api/grado";
+  URL_API2 = "http://127.0.0.1:3000/api"
 
   constructor(private http:HttpClient) {
     this.selectedActividades = new EducativaActividades();
     this.selectedActividades = new EducativaActividades();
    }
+
+   getGradoById(idGrado: string) {
+    return this.http.get<any>(`${this.URL_GRADO}${idGrado}`);
+  }
+
+  getGrados() {
+    return this.http.get<any[]>(this.URL_GRADO);
+  }
+
+
 
    //metodo para traerr las actividades
    getActividadesEducativas(){
@@ -67,5 +81,9 @@ export class EducativaActividadesService {
 
     // Realiza la solicitud HTTP con el cuerpo configurado
     return this.http.post(url, body);
+  }
+  getAsignaturasPorGrado(gradoId: number): Observable<any[]> {
+    const url = `${this.URL_API2}/asignatura/grado/${gradoId}`;
+    return this.http.get<any[]>(url);
   }
 }

@@ -18,6 +18,7 @@ export class AsignaturaService {
   URL_API = "http://127.0.0.1:3000/api/asignatura/";
   URL_API2 = "http://127.0.0.1:3000/api/asignaturaWithGrado";
   URL_GRADOS_BY_ID="http://localhost:3000/api/grado/traer/";
+  URL_API3 = "http://127.0.0.1:3000/api/asignatura/";
 
   constructor(private http: HttpClient) {
     this.selectedAsignatura = new Asignatura();
@@ -49,10 +50,21 @@ export class AsignaturaService {
     );
   }
   
+  validarAsignaturaPorGrado(nombreMateria: string, idGrado: number): Observable<void> {
+    const url = `${this.URL_API3}validarAsignaturaPorGrado`;
+
+   
+    return this.http.post<void>(url, { nombreMateria, idGrado }).pipe(
+      catchError((error: any) => {
+        console.error('Error al validar asignatura por grado:', error);
+        throw error;
+      })
+    );
+  }
 
 
   getGrados() {
-    return this.http.get<any[]>('http://127.0.0.1:3000/api/grado/gradosNoAsignados'); // Ajusta la ruta según tu API
+    return this.http.get<any[]>('http://127.0.0.1:3000/api/grado'); // Ajusta la ruta según tu API
   }
 
   getAsignaturaById(id: number): Observable<Asignatura> {

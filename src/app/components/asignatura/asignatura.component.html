@@ -84,7 +84,7 @@
 
             <div class="row">
               <div class="col-md-6 mb-3">
-                <a class="btn btn-primary m-2" (click)="openGradosListaModal()">Seleccionar </a>
+                <a class="btn btn-dark" (click)="openGradosListaModal()">Seleccionar </a>
               </div>
             </div>
           </div>
@@ -118,10 +118,10 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let grado of searchResults">
+            <tr *ngFor="let grado of datos">
               <td>{{ getNombreGrado(grado.nombreGrado) }}</td>
               <td>
-                <button type="button" class="btn btn-primary" (click)="cargarGrado(grado)">Seleccionar</button>
+                <button type="button" class="btn btn-dark" (click)="cargarGrado(grado)">Seleccionar</button>
               </td>
             </tr>
           </tbody>
@@ -144,16 +144,19 @@
   <table class="table table-hover" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
     <thead>
       <tr>
-        <th scope="col">Nombre Asignatura </th>
+        <th scope="col">Asignatura </th>
+        <th scope="col">Grado </th>
         <th scope="col">Estado</th>
         <th scope="col"> Acción </th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let asignatura of data">
-
         <td>{{asignatura.nombreMateria}}</td>
-        <td>{{ asignatura.estado === 'A' ? 'Activo' : 'Inactivo' }}</td>
+        <td>{{ getNombreGradoNuevo(asignatura.idGrado) }}</td>
+
+
+        <td>{{asignatura.estado === 'A' ? 'Activo' : 'Inactivo' }}</td>
         <td>
           <button type="button" class="btn btn-success" id="" (click)="editAsignatura(asignatura)"><i
               class="bi bi-pencil-square"></i></button>

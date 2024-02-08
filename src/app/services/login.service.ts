@@ -5,35 +5,32 @@ import { Observable } from 'rxjs/internal/Observable';
 import { catchError } from 'rxjs/internal/operators/catchError';
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root'
 })
 export class LoginService {
+  selectedLogin: Login;
+  logins: Login[] = [];
+  URL_API = "http://127.0.0.1:3000/api/login/";
 
-    [x: string]: any;
-    selectedLogin: Login;
-    logins: Login[] = [];
-    URL_API = "http://127.0.0.1:3000/api/login/";
+  constructor(private http: HttpClient) {
+    this.selectedLogin = new Login();
+  }
 
-    constructor(private http: HttpClient) {
-        this.selectedLogin = new Login();
-    }
+  getLogin() {
+    return this.http.get<Login[]>(this.URL_API);
+  }
 
-    getLogin() {
-        return this.http.get<Login[]>(this.URL_API);
-    }
+  postLogin(login: Login): Observable<any> {
+    return this.http.post<any>(this.URL_API, login);
+  }
 
-    postLogin(login: Login): Observable<any> {
-        return this.http.post<any>(this.URL_API, login);
-    }
-
-
-    putLogin(login: Login): Observable<any> {
-        const url = `${this['URL_API']}${login.cedula}`;
-        return this.http.put(url, login).pipe(
-            catchError((error: any) => {
-                console.error('Error al actualizar registro:', error);
-                throw error;
-            })
-        );
-    }
+  putLogin(login: Login): Observable<any> {
+    const url = `${this.URL_API}${login.cedula}`;
+    return this.http.put(url, login).pipe(
+      catchError((error: any) => {
+        console.error('Error al actualizar registro:', error);
+        throw error;
+      })
+    );
+  }
 }

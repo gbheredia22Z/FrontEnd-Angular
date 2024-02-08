@@ -40,7 +40,7 @@
       <label for="periodo" class="form-label">Grado</label>
       <select class="form-select" id="gradoId" [(ngModel)]="selectedGradoId" name="gradoId" (change)="onGradoSelected()"
         required>
-        <option *ngFor="let grado of grados" [value]="grado.id">{{ grado.nombreGrado }} </option>
+        <option *ngFor="let grado of grados" [value]="grado.id">{{ getGradosTable(grado.nombreGrado) }} </option>
       </select>
     </div>
     <div class="col">
@@ -61,6 +61,10 @@
 </div>
 
 <br><br>
+<div class="form-check form-switch" style="margin-right: 500px;">
+  <input class="form-check-input" type="checkbox" id="switchEditarNotas" [(ngModel)]="editarNotasHabilitado">
+  <label class="form-check-label" for="switchEditarNotas">Editar notas</label>
+</div>
 
 <table class="table table-hover" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
   <thead>
@@ -73,19 +77,25 @@
   </thead>
   <tbody>
     <tr *ngFor="let result of datosfinales">
-
       <td>{{ result.nombre }} {{ result.apellido }}</td>
       <td>{{ result.tituloActividad }}</td>
       <td>{{ result.nombreAsignatura}}</td>
       <td>
-        <div contenteditable="true" (focusout)="asignarNota(result.idNota, $event)">
+        <ng-container *ngIf="editarNotasHabilitado; else noEditable">
+          <div contenteditable="true" (focusout)="asignarNota(result.idNota, $event)">
+            {{ result.nota }}
+          </div>
+        </ng-container>
+        <ng-template #noEditable>
           {{ result.nota }}
-        </div>
+        </ng-template>
       </td>
-
     </tr>
   </tbody>
 </table>
+
+
+
 
 <!--Footer-->
 

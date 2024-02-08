@@ -17,6 +17,7 @@ export class AsignaturaComponent implements OnInit, OnDestroy {
 
   dtOptions: DataTables.Settings = {};
   data: any = []; //aqui se alamcena
+  datos:any=[];
   dtTrigger: Subject<any> = new Subject<any>();
   myForm: FormGroup;
   searchQuery: any;
@@ -28,7 +29,7 @@ export class AsignaturaComponent implements OnInit, OnDestroy {
   grados: any[] = [];
   searchResults: any[] = [];
   selectedGrados: any = null;
-
+  grado:any;
 
 
   getAsignatura2() {
@@ -60,10 +61,12 @@ export class AsignaturaComponent implements OnInit, OnDestroy {
   getAsignaturas() {
     this.asignaturaService.getAsignatura().subscribe((data) => {
       this.data = data;
+      this.datos = data; // Aquí asignamos los datos a la variable 'datos'
       console.log('Datos de asignatura cargados:', data);
       this.dtTrigger.next(this.dtOptions);
     })
   }
+  
 
   constructor(public asignaturaService: AsignaturaService, private fb: FormBuilder, private srvImpresion: ImpresionService) {
     this.myForm = this.fb.group({
@@ -74,6 +77,7 @@ export class AsignaturaComponent implements OnInit, OnDestroy {
     });
   }
 
+
   ngOnInit(): void {
     this.dtOptions = {
       language: {
@@ -81,24 +85,11 @@ export class AsignaturaComponent implements OnInit, OnDestroy {
       },
     };
     this.getAsignaturas();
-    //this.getAsignatura3();
-    //this.getAsignatura4();
-    // Retrasa la ejecución hasta que se complete la llamada asíncrona
-    //this.getGrado();
-    this.getGrados2();
+ 
+    this.getGrado();
   }
 
-  // getGrado(){
-  //   this.asignaturaService.getGrados().subscribe((res)=>{
-  //     this.grados = res;
-  //   })
-  // }
-  // getGrado() {
-  //   this.asignaturaService.getGrados().subscribe((res)=>{
-  //      // Filtra los docentes que no están asignados a ningún grado
-  //      this.grados = res.filter(grado => !this.esGradoAsignadoAMateria(grado.id));
-  //   })
-  // }
+
 
   getGrados2() {
     console.log("Asignaturas:", this.asignaturaService.asignaturas);
@@ -111,20 +102,36 @@ export class AsignaturaComponent implements OnInit, OnDestroy {
       console.log("Grados después del filtro:", this.grados);
     });
   }
-  
-  
 
+  getGrados3() {
+    console.log("Asignaturas:", this.asignaturaService.asignaturas);
+  
+    this.asignaturaService.getGrados().subscribe((res) => {
+      console.log("Grados antes del filtro:", res);
+  
+      this.grado = res.filter(grado => !this.isGradoAssignedToAsignatura(grado.id));
+  
+      console.log("Grados después del filtro:", this.grado);
+    });
+  }
+  
+  getGrado() {
+    this.asignaturaService.getGrados().
+      subscribe((datos) => {
+        this.datos = datos;
+        console.log("grados totales",datos);
+        
+      });
+  }
+  
   isGradoAssignedToAsignatura(gradoId: string): boolean {
     return this.asignaturaService.asignaturas?.some(asignatura => asignatura.idGrado === gradoId);
   }
   
-  
-
   isGradoAsignadoToAsignatura(idGrado: string): boolean {
     return this.asignaturaService.asignaturas?.
       some(asignatura => asignatura.idGrado === idGrado) || false;
   }
-
   getNombreGrado(abreviatura: string): string {
     const nombresGrados: { [key: string]: string } = {
       P: 'Primer Grado',
@@ -139,6 +146,46 @@ export class AsignaturaComponent implements OnInit, OnDestroy {
     return nombresGrados[abreviatura] || abreviatura;
   }
 
+  getNombreGrado2(idGrado: number): string {
+    const grado = this.grados.find(grado => grado.id === idGrado);
+    return grado ? grado.nombreGrado : 'Grado Desconocido';
+  }
+  
+
+
+  
+
+  getNombreGradoAsignatura(abreviatura: string): string {
+    const nombresGrados: { [key: string]: string } = {
+      'P': 'Primer Grado',
+      'S': 'Segundo Grado',
+      'T': 'Tercer Grado',
+      'C': 'Cuarto Grado',
+      'Q': 'Quinto Grado',
+      'X': 'Sexto Grado',
+      'M': 'Séptimo Grado',
+    };
+  
+    return nombresGrados[abreviatura] || abreviatura;
+  }
+
+  getNombreGradoNuevo(abreviatura: string): string {
+    const nombresGrados: { [key: string]: string } = {
+      1: 'Primer Grado',
+      2: 'Segundo Grado',
+      3: 'Tercer Grado',
+      4: 'Cuarto Grado',
+      5: 'Quinto Grado',
+      6: 'Sexto Grado',
+      7: 'Séptimo Grado',
+
+    };
+  
+    return nombresGrados[abreviatura] || abreviatura;
+  }
+  
+  
+  
   getNombreCompletoGrado(abreviatura: string): string {
     const nombresGrados: { [key: string]: string } = {
       P: 'Primer Grado',
@@ -149,9 +196,18 @@ export class AsignaturaComponent implements OnInit, OnDestroy {
       X: 'Sexto Grado',
       M: 'Séptimo Grado',
     };
-
-
-  
+    return nombresGrados[abreviatura] || abreviatura;
+  }
+  getNombreReal(abreviatura: string): string {
+    const nombresGrados: { [key: string]: string } = {
+      P: 'Primer Grado',
+      S: 'Segundo Grado',
+      T: 'Tercer Grado',
+      C: 'Cuarto Grado',
+      Q: 'Quinto Grado',
+      X: 'Sexto Grado',
+      M: 'Séptimo Grado',
+    };
     return nombresGrados[abreviatura] || abreviatura;
   }
 
@@ -166,19 +222,9 @@ export class AsignaturaComponent implements OnInit, OnDestroy {
       M: 'Séptimo Grado',
     };
 
-    
-  
     return nombresGrados[abreviatura] || abreviatura;
   }
   
-  
-  
-
-
-
-
-
-
   openGradosListaModal() {
     console.log("Total de grados:", this.grados.length);
     // Filtra los docentes que no están asignados a ningún grado
@@ -228,11 +274,6 @@ export class AsignaturaComponent implements OnInit, OnDestroy {
     // Cierra el modal de la lista de docentes
     this.closeGradoListModal();
   }
-
-
-
-
-
 
   ngOnDestroy(): void {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
@@ -337,20 +378,9 @@ export class AsignaturaComponent implements OnInit, OnDestroy {
     }
   }
   
-  
-
-
-
-
   irPagina(){
     window.location.reload();
   }
-
-
-
-
-
-
 
   closeAddAsignaturaModal(): void {
     const modal = document.getElementById('addAsignaturaModal');
@@ -402,7 +432,6 @@ export class AsignaturaComponent implements OnInit, OnDestroy {
     }
   }
 
-
   editAsignatura(asignatura: Asignatura) {
     // Clonar asignatura para evitar cambios directos
     this.asignaturaService.selectedAsignatura = { ...asignatura };
@@ -428,9 +457,6 @@ export class AsignaturaComponent implements OnInit, OnDestroy {
     });
   }
   
-  
-
-
   closeEditAsignaturaModal(): void {
     const modal = document.getElementById('editModal');
     if (modal) {
@@ -439,15 +465,9 @@ export class AsignaturaComponent implements OnInit, OnDestroy {
     }
   }
 
-
-
   isAsigaturaAlreadyExists(nombreMateria: string): boolean {
     return this.asignaturaService.asignaturas.some(grado => grado.nombreMateria === nombreMateria);
   }
-
-
-
-
 
 }
 

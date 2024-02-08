@@ -13,7 +13,8 @@ import { ImpresionService } from '../../services/impresion.service';
 })
 export class EducativaActividadesComponent implements OnInit, OnDestroy {
   gradoId: number;
-  grados: any[] = [];
+  grados: any= [];
+  datos:any=[];
   dtOptions: DataTables.Settings = {};
   data: any = []; //aqui se alamcena
   dtTrigger: Subject<any> = new Subject<any>();
@@ -31,12 +32,12 @@ export class EducativaActividadesComponent implements OnInit, OnDestroy {
   periodoCalificacion: any[] = [];
   actividadesEducativas: any;
   grado: any[] = [];
-
+  selectedGradoId: number | null = null;
   gradosasig: any;
-
-
   selectedGrados: any = null;
-
+  selectedAsignaturaId: number | null = null;
+    selectedActividadId: number | null = null;
+ actividades: any[] = [];
   constructor(public educativaService: EducativaActividadesService, private fb: FormBuilder,
     private srvImpresion: ImpresionService) {
 
@@ -44,7 +45,6 @@ export class EducativaActividadesComponent implements OnInit, OnDestroy {
       id: new FormControl('', Validators.required),
       titulo: ['', Validators.required],
       detalleActividad: ['', Validators.required],
-      fechaInicio: ['', Validators.required],
       tipoActId: [null, Validators.required], // Inicializa con null o un valor por defecto
       perCalId: [null, Validators.required], // Inicializa con null o un valor por defecto
       asignaturaId: [null, Validators.required], // Inicializa con null o un valor por defecto
@@ -68,14 +68,14 @@ export class EducativaActividadesComponent implements OnInit, OnDestroy {
 
 
   ngOnInit(): void {
-    //this.getGrados();
+    this.getGrados();
     this.dtOptions = {
       language: {
         url: "/assets/Spanish.json"
-
+        
       },
     };
-    //this.getGrados();
+    this.getGrados();
     this.getAsignaturas();
     this.getActividadesEducativas1();
     this.getActividadesEducativas();
@@ -84,6 +84,29 @@ export class EducativaActividadesComponent implements OnInit, OnDestroy {
 
 
   }
+  getGrados() {
+    this.educativaService.getGrados().subscribe((res) => {
+      this.grados = res;
+      console.log("Grados", res);
+    });
+  }
+
+  onGradoSelected() {
+    if (this.selectedGradoId !== null) {
+      this.getAsignaturas(); // Actualiza las asignaturas al seleccionar un grado
+    }
+  }
+  onAsignaturaSelected() {
+    if (this.selectedAsignaturaId !== null) {
+      this.educativaService.getAsignaturasPorGrado(this.selectedAsignaturaId).subscribe((actividades) => {
+        this.actividades = actividades;
+
+        // Establece la actividad seleccionada a null cuando cambia la asignatura
+        this.selectedActividadId = null;
+      });
+    }
+  }
+
 
   //obtener las asignaturas
   getAsignaturas() {
@@ -91,6 +114,7 @@ export class EducativaActividadesComponent implements OnInit, OnDestroy {
       this.asignatura = res;
     })
   }
+
 
   getActividades() {
     this.educativaService.getTipoActividad().subscribe((res) => {
@@ -154,7 +178,7 @@ export class EducativaActividadesComponent implements OnInit, OnDestroy {
   }
 
   createActividadesEducativas(form: NgForm): void {
-    const requiredFields = ['titulo', 'detalleActividad', 'fechaInicio',  'tipoActId', 'perCalId', 'asignaturaId', 'estado'];
+    const requiredFields = ['titulo', 'detalleActividad', 'fechaInicio', 'tipoActId', 'perCalId', 'asignaturaId', 'estado'];
 
     const isEmptyField = requiredFields.some(key => {
       const fieldValue = form.value[key];
@@ -183,21 +207,11 @@ export class EducativaActividadesComponent implements OnInit, OnDestroy {
     }
     const today = new Date();
     const fechaInicio = new Date(form.value.fechaInicio);
-    const fechaFin = new Date(form.value.fechaFin);
-
+    
     // Establecer horas, minutos, segundos y milisegundos a 0 para comparar solo fechas
     today.setHours(0, 0, 0, 0);
     fechaInicio.setHours(0, 0, 0, 0);
-    fechaFin.setHours(0, 0, 0, 0);
-
-    if (fechaInicio > today || fechaFin > today) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Error en el formulario',
-        text: 'Las fechas de inicio y fin no pueden ser anteriores a la fecha actual.'
-      });
-      return;
-    }
+    
     if (form.value.id) {
       // Código para actualizar
       // ...
@@ -286,13 +300,12 @@ export class EducativaActividadesComponent implements OnInit, OnDestroy {
 
   onImprimir() {
     if (this.actividadesEducativas.length > 0) {
-      const encabezado = ["Titulo", "Detalle", "Estado", "Fecha Inicio", "Periodo",
+      const encabezado = ["Titulo", "Detalle", "Estado", "Fecha Fin", "Fecha Inicio", "Periodo",
         "Actividad", "Asignatura"];
       const cuerpo = this.actividadesEducativas.map((grado: EducativaActividades) => [
         grado.titulo,
         grado.detalleActividad,
         grado.estado === 'A' ? 'Activo' : 'Inactivo',
-        this.formatoFecha(grado.fechaInicio),
         grado.periodoCalificaciones.nombrePeriodo,
         grado.tipoActividad.nombreActividad,
         grado.asignatura.nombreMateria
@@ -310,13 +323,12 @@ export class EducativaActividadesComponent implements OnInit, OnDestroy {
   }
   imprimirExcel() {
     if (this.actividadesEducativas.length > 0) {
-      const encabezado = ["Titulo", "Detalle", "Estado", "Fecha Inicio", "Periodo",
+      const encabezado = ["Titulo", "Detalle", "Estado", "Fecha Fin", "Fecha Inicio", "Periodo",
         "Actividad", "Asignatura"];
       const cuerpo = this.actividadesEducativas.map((grado: EducativaActividades) => [
         grado.titulo,
         grado.detalleActividad,
         grado.estado === 'A' ? 'Activo' : 'Inactivo',
-        this.formatoFecha(grado.fechaInicio),
         grado.periodoCalificaciones.nombrePeriodo,
         grado.tipoActividad.nombreActividad,
         grado.asignatura.nombreMateria
@@ -333,15 +345,9 @@ export class EducativaActividadesComponent implements OnInit, OnDestroy {
     }
   }
 
+
   // Método para validar que la fecha sea igual o posterior a hoy
-  validateFechaInicio(control: FormControl): { [key: string]: boolean } | null {
-    const fechaInicio = new Date(control.value);
-    const hoy = new Date();
-    if (fechaInicio < hoy) {
-      return { 'fechaInvalida': true };
-    }
-    return null;
-  }
+
 
   getPeriodo(abreviatura: string): string {
     const nombrePeriodo: { [key: string]: string } = {
@@ -349,6 +355,9 @@ export class EducativaActividadesComponent implements OnInit, OnDestroy {
       S: 'Segundo Trimestre',
       T: 'Tercer Trimestre',
     };
+
+
+  
     return nombrePeriodo[abreviatura] || abreviatura;
   }
 
@@ -362,16 +371,66 @@ export class EducativaActividadesComponent implements OnInit, OnDestroy {
       X: 'Sexto Grado',
       M: 'Séptimo Grado',
     };
-
+  
     return nombresGrados[abreviatura] || abreviatura;
   }
 
+  getNombreGradosAñadir(abreviatura: string): string {
+    const nombresGrados: { [key: string]: string } = {
+      P: 'Primer Grado',
+      S: 'Segundo Grado',
+      T: 'Tercer Grado',
+      C: 'Cuarto Grado',
+      Q: 'Quinto Grado',
+      X: 'Sexto Grado',
+      M: 'Séptimo Grado',
+    };
+  
+    return nombresGrados[abreviatura] || abreviatura;
+  }
 
+  getNombreGrados(abreviatura: string): string {
+    const nombresGrados: { [key: string]: string } = {
+      P: 'Primer Grado',
+      S: 'Segundo Grado',
+      T: 'Tercer Grado',
+      C: 'Cuarto Grado',
+      Q: 'Quinto Grado',
+      X: 'Sexto Grado',
+      M: 'Séptimo Grado',
+    };
+  
+    return nombresGrados[abreviatura] || abreviatura;
+  }
 
+  editEducativas(educativasAc: EducativaActividades) {
+    // Clona el estudiante para evitar cambios directos
+    this.educativaService.selectedActividades = { ...educativasAc };
 
+    // Abre el modal de edición
+    const modal = document.getElementById('editModal');
+    if (modal) {
+      modal.classList.add('show'); // Agrega la clase 'show' para mostrar el modal
+      modal.style.display = 'block'; // Establece el estilo 'display' en 'block'
+    }
+  }
+  updateEstudiante(form: NgForm) {
+    this.educativaService.putEducativaActividades(this.educativaService.selectedActividades).subscribe((res) => {
+      Swal.fire({
+        position: 'top',
+        icon: 'success',
+        title: 'Registro actualizado',
+        showConfirmButton: false,
+        timer: 1500,
+      });
+      this.irListaActividades();
+      this.closeAddEducativaModal();
 
-
-
+      // Cierra el modal de edición utilizando $
+      $('#editModal').modal('hide');
+    });
+  }
+  
 
 }
 declare var $: any;

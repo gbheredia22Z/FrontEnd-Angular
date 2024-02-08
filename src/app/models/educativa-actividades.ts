@@ -1,9 +1,9 @@
 export class EducativaActividades {
     id: string;
+    gradoId: number;
     titulo: string;
     detalleActividad: string;
     fechaInicio: string;
-    fechaFin: string;
     tipoActId: number; // Cambiado a tipo number
     perCalId: number; // Cambiado a tipo number
     estado: string;
@@ -23,7 +23,7 @@ export class EducativaActividades {
         titulo: string = '',
         detalleActividad: string = '',
         fechaInicio: string = '',
-        fechaFin: string = '',
+        gradoId: number = 0,
         tipoActId: number = 0, // Inicializado a 0
         perCalId: number = 0, // Inicializado a 0
         estado: string = '',
@@ -36,7 +36,8 @@ export class EducativaActividades {
         this.titulo = titulo;
         this.detalleActividad = detalleActividad;
         this.fechaInicio = fechaInicio;
-        this.fechaFin = fechaFin;
+     
+        this.gradoId = gradoId;
         this.tipoActId = tipoActId;
         this.perCalId = perCalId;
         this.estado = estado;

@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Persona } from '../models/persona';
 import { Observable } from 'rxjs/internal/Observable';
 import { catchError } from 'rxjs/internal/operators/catchError';
-
+import { Asignatura } from '../models/asignatura';
 
 @Injectable({
   providedIn: 'root'
@@ -17,9 +17,10 @@ export class PersonaService {
 
   URL_API = "http://127.0.0.1:3000/api/estudiante/";
   URL_API2 = "http://127.0.0.1:3000/api/docente/";
-  apiUrl = "http://127.0.0.1:3000/api"
-  apiUrl2 = "http://127.0.0.1:3000/api"
-  URL_API_A = "http://127.0.0.1:3000/api/persona/asignaturas/";
+  apiUrl = "http://127.0.0.1:3000/api";
+  apiUrl2 = "http://127.0.0.1:3000/api";
+  URL_API_A = "http://127.0.0.1:3000/api";
+  URL_API_D = "http://127.0.0.1:3000/api";
   URL_Docente = "http://127.0.0.1:3000/api";
 
   constructor(private http: HttpClient) {
@@ -89,16 +90,26 @@ export class PersonaService {
     return this.http.get(url);
   }
 
-  asignaturasPorIdPersona(id: number): Observable<any> {
-    const url = `${this.URL_API_A}/persona/asignaturas/${id}`;
-    return this.http.get(url).pipe(
+  asignaturasPorIdEstudiante(idEstudiante: number): Observable<Asignatura[]> {
+    const url = `${this.URL_API_A}/persona/asignaturas/${idEstudiante}`;
+    return this.http.get<Asignatura[]>(url).pipe(
       catchError((error: any) => {
         console.error('Error al obtener las asignaturas:', error);
         throw error;
       })
     );
   }
-  
+
+  asignaturasPorIdDocente(idDocente: number): Observable<Asignatura[]> {
+    const url = `${this.URL_API_D}/persona/asignaturas/${idDocente}`;
+    return this.http.get<Asignatura[]>(url).pipe(
+      catchError((error: any) => {
+        console.error('Error al obtener las asignaturas:', error);
+        throw error;
+      })
+    );
+  }
+
 }
 
 

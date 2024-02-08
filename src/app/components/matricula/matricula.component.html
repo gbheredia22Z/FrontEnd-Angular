@@ -67,13 +67,11 @@
 
                         <div class="mb-3">
                             <label for="docente" class="form-label">Seleccione Grado:</label>
-                            <select class="form-select" id="idGrado"
-                                [(ngModel)]="matriculaServices.selectedMatricula.idGrado" name="idGrado" required>
-                                <option *ngFor="let grado of grados" [value]="grado.id">{{ getGrados(grado.nombreGrado)
-                                    }}</option>
+                            <select class="form-select" id="idGrado" [(ngModel)]="matriculaServices.selectedMatricula.idGrado" name="idGrado" required>
+                              <option *ngFor="let grado of grados" [value]="grado.id">{{ getGrados(grado.nombreGrado) }}</option>
                             </select>
-                        </div>
-
+                          </div>
+                          
 
                     </div>
                     <div class="row">
@@ -100,10 +98,9 @@
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h6 class="modal-title fs-5" id="estudianteListModal">Lista de Estudiantes</h6>
-                                    <button type="button" class="btn btn-light" data-bs-dismiss="modal"
-                                        aria-label="Close" (click)="closeDocenteListModal()"><i
-                                            class="bi bi-x-lg"></i></button>
+                                    <h1 class="modal-title fs-5" id="estudianteListModal">Lista de Estudiantes</h1>
+                                    <button type="button" class="btn btn-light" data-bs-dismiss="modal" aria-label="Close"
+                                        (click)="closeDocenteListModal()"><i class="bi bi-x-lg"></i></button>
                                 </div>
                                 <!-- En el cuerpo del modal de la lista de docentes -->
                                 <div class="modal-body">
@@ -124,7 +121,7 @@
                                                 <td>{{ estudiante.nombre }}</td>
                                                 <td>{{ estudiante.apellido }}</td>
                                                 <td>
-                                                    <button type="button" class="btn btn-dark"
+                                                    <button type="button" class="btn btn-primary"
                                                         (click)="cargarStudiante(estudiante)"> Matricular</button>
                                                 </td>
                                             </tr>
@@ -169,14 +166,7 @@
         <tbody>
             <tr *ngFor="let matricula of matriculaLista">
                 <td>{{ matricula.persona.nombre + ' ' + matricula.persona.apellido }}</td>
-                <td>{{matricula.grado.nombreGrado === 'P' ? 'Primer Grado' :
-                    matricula.nombreGrado === 'S' ? 'Segundo Grado' :
-                    matricula.nombreGrado === 'T' ? 'Tercer Grado' :
-                    matricula.nombreGrado === 'C' ? 'Cuarto Grado' :
-                    matricula.nombreGrado === 'Q' ? 'Quinto Grado' :
-                    matricula.nombreGrado === 'X' ? 'Sexto Grado' :
-                    matricula.nombreGrado === 'M' ? 'Séptimo Grado' :
-                    ''}}</td>
+                <td>{{getGradosTable(matricula.grado.nombreGrado)}}</td>
                 <td>{{matricula.periodo.anioLectivo}}</td>
                 <td>{{matricula.estado === 'A' ? 'Activo' : 'Inactivo' }}</td>
                 <td>
@@ -218,12 +208,11 @@
                                 <select class="form-select" id="idGrado"
                                     [(ngModel)]="matriculaServices.selectedMatricula.idGrado" name="idGrado" required
                                     [disabled]="true">
-                                    <option *ngFor="let grado of grados" [value]="grado.id">{{
-                                        getGradosEdit(grado.nombreGrado) }}
+                                    <option *ngFor="let grado of grados" [value]="grado.id">{{ getGradosEdit(grado.nombreGrado) }}
                                     </option>
                                 </select>
-                            </div>
-
+                              </div>
+                              
                         </div>
                         <div class="row">
 

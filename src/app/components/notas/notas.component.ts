@@ -15,6 +15,7 @@ import Swal from 'sweetalert2';
   styleUrls: ['./notas.component.scss']
 })
 export class NotasComponent {
+  editarNotasHabilitado: boolean = false;
   formulario: FormGroup;
   dtOptions: DataTables.Settings = {};
   data: any[] = [];
@@ -134,7 +135,8 @@ export class NotasComponent {
   }
   onGradoSelected() {
     if (this.selectedGradoId !== null) {
-      this.getAsignaturas(); // Actualiza las asignaturas al seleccionar un grado
+      this.getAsignaturas(); 
+      this.actividades = [];// Actualiza las asignaturas al seleccionar un grado
     }
   }
 
@@ -221,6 +223,22 @@ export class NotasComponent {
     });
   }
 
+  getGradosTable(abreviatura: string): string {
+    const nombresGrados: { [key: string]: string } = {
+      P: 'Primer Grado',
+      S: 'Segundo Grado',
+      T: 'Tercer Grado',
+      C: 'Cuarto Grado',
+      Q: 'Quinto Grado',
+      X: 'Sexto Grado',
+      M: 'Séptimo Grado',
+    };
+
+
+  
+    return nombresGrados[abreviatura] || abreviatura;
+  }
+
   getNotas() {
     this.notaService.getNotas().subscribe((res) => {
       this.notaService.notas = res as Notas[];
@@ -243,6 +261,7 @@ export class NotasComponent {
   // En tu componente
   asignarNota(id: string, event: FocusEvent) {
     const targetElement = event.target as HTMLElement;
+
 
     if (targetElement) {
       const nuevaNota = targetElement.innerText;
@@ -318,14 +337,5 @@ export class NotasComponent {
     // Verifica si la nota está marcada como asignada en el estado
     return this.estadoAsignacion[id] || false;
   }
-
-
-
-
-
-
-
-
-
 
 }
