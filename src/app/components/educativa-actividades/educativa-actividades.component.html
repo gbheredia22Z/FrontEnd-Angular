@@ -109,7 +109,8 @@
                             <label for="grado" class="form-label">Grado</label>
                             <select class="form-select" id="gradoId"
                                 [(ngModel)]="educativaService.selectedActividades.gradoId" name="gradoId" required>
-                                <option *ngFor="let grado of grados" [value]="grado.id">{{ getNombreGrados(grado.nombreGrado) }}</option>
+                                <option *ngFor="let grado of grados" [value]="grado.id">{{
+                                    getNombreGrados(grado.nombreGrado) }}</option>
                             </select>
                         </div>
 
@@ -165,8 +166,6 @@
 
             </tr>
         </thead>
-
-   
         <tbody>
             <tr *ngFor="let educativasAc of actividadesEducativas">
                 <td>{{educativasAc.titulo}}</td>
@@ -248,7 +247,7 @@
                                                         name="perCalId" required>
                                                         <option *ngFor="let periodo of periodoCalificacion"
                                                             [value]="periodo.id">{{
-                                                            periodo.nombrePeriodo }} </option>
+                                                            getPeriodoEdit(periodo.nombrePeriodo) }} </option>
                                                     </select>
                                                 </div>
 
@@ -278,7 +277,7 @@
                                                     (click)="closeAddEducativaModal()">Cerrar</button>
 
                                                 <button type="button" class="btn btn-dark"
-                                                    (click)="updateEstudiante(gradoForm)">Editar</button>
+                                                    (click)="updateEstudiante(gradoForm)">Guardar</button>
                                             </div>
                                         </div>
                                     </div>
@@ -291,8 +290,6 @@
         </tbody>
     </table>
 </div>
-
-
 
 <!--Footer-->
 

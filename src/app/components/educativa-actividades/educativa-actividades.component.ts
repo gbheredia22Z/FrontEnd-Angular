@@ -355,10 +355,16 @@ export class EducativaActividadesComponent implements OnInit, OnDestroy {
       S: 'Segundo Trimestre',
       T: 'Tercer Trimestre',
     };
+  return nombrePeriodo[abreviatura] || abreviatura;
+  }
 
-
-  
-    return nombrePeriodo[abreviatura] || abreviatura;
+  getPeriodoEdit(abreviatura: string): string {
+    const nombrePeriodo: { [key: string]: string } = {
+      P: 'Primer Trimestre',
+      S: 'Segundo Trimestre',
+      T: 'Tercer Trimestre',
+    };
+  return nombrePeriodo[abreviatura] || abreviatura;
   }
 
   getNombreGrado(abreviatura: string): string {

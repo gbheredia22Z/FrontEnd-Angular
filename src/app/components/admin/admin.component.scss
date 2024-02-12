@@ -46,6 +46,12 @@ h6 {
     color: #ffffff;
 }
 
+input, textarea, select, label {
+	font-family: 'Raleway', sans-serif;
+	color: #1c1c1c;
+
+}
+
 .form-label {
     display: inline-block;
     margin-bottom: .5rem;
@@ -123,11 +129,11 @@ nav ul li a:hover {
 }
 
 .cards {
-    margin: 2%;
+    margin: 4%;
 }
 
 .row {
-    margin-top: 3%;
+    margin-top:50px;
 }
 
 .card {
