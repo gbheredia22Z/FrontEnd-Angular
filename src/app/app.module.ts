@@ -40,13 +40,13 @@ import { VistaDocenteComponent } from './components/vista-docente/vista-docente.
         VistaDocenteComponent
     ],
     imports: [
-        BrowserModule,
+        BrowserModule, 
         AppRoutingModule,
         FormsModule,
         ReactiveFormsModule,
         HttpClientModule,
         DataTablesModule,
-        RouterModule
+        RouterModule,
     ],
     providers: [],
     bootstrap: [AppComponent],

@@ -13,8 +13,8 @@ import { ImpresionService } from '../../services/impresion.service';
 })
 export class EducativaActividadesComponent implements OnInit, OnDestroy {
   gradoId: number;
-  grados: any= [];
-  datos:any=[];
+  grados: any = [];
+  datos: any = [];
   dtOptions: DataTables.Settings = {};
   data: any = []; //aqui se alamcena
   dtTrigger: Subject<any> = new Subject<any>();
@@ -36,8 +36,8 @@ export class EducativaActividadesComponent implements OnInit, OnDestroy {
   gradosasig: any;
   selectedGrados: any = null;
   selectedAsignaturaId: number | null = null;
-    selectedActividadId: number | null = null;
- actividades: any[] = [];
+  selectedActividadId: number | null = null;
+  actividades: any[] = [];
   constructor(public educativaService: EducativaActividadesService, private fb: FormBuilder,
     private srvImpresion: ImpresionService) {
 
@@ -72,7 +72,7 @@ export class EducativaActividadesComponent implements OnInit, OnDestroy {
     this.dtOptions = {
       language: {
         url: "/assets/Spanish.json"
-        
+
       },
     };
     this.getGrados();
@@ -207,11 +207,11 @@ export class EducativaActividadesComponent implements OnInit, OnDestroy {
     }
     const today = new Date();
     const fechaInicio = new Date(form.value.fechaInicio);
-    
+
     // Establecer horas, minutos, segundos y milisegundos a 0 para comparar solo fechas
     today.setHours(0, 0, 0, 0);
     fechaInicio.setHours(0, 0, 0, 0);
-    
+
     if (form.value.id) {
       // Código para actualizar
       // ...
@@ -289,6 +289,15 @@ export class EducativaActividadesComponent implements OnInit, OnDestroy {
       modal.style.display = 'none'; // Establece el estilo 'display' en 'none'
     }
   }
+
+  closeEditEducativaModal(): void {
+    const modal = document.getElementById('editModal');
+    if (modal) {
+      modal.classList.remove('show'); // Quita la clase 'show' para ocultar el modal
+      modal.style.display = 'none'; // Establece el estilo 'display' en 'none'
+    }
+  }
+
   ngOnDestroy(): void {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
@@ -344,18 +353,14 @@ export class EducativaActividadesComponent implements OnInit, OnDestroy {
       });
     }
   }
-
-
   // Método para validar que la fecha sea igual o posterior a hoy
-
-
   getPeriodo(abreviatura: string): string {
     const nombrePeriodo: { [key: string]: string } = {
       P: 'Primer Trimestre',
       S: 'Segundo Trimestre',
       T: 'Tercer Trimestre',
     };
-  return nombrePeriodo[abreviatura] || abreviatura;
+    return nombrePeriodo[abreviatura] || abreviatura;
   }
 
   getPeriodoEdit(abreviatura: string): string {
@@ -364,7 +369,7 @@ export class EducativaActividadesComponent implements OnInit, OnDestroy {
       S: 'Segundo Trimestre',
       T: 'Tercer Trimestre',
     };
-  return nombrePeriodo[abreviatura] || abreviatura;
+    return nombrePeriodo[abreviatura] || abreviatura;
   }
 
   getNombreGrado(abreviatura: string): string {
@@ -377,7 +382,7 @@ export class EducativaActividadesComponent implements OnInit, OnDestroy {
       X: 'Sexto Grado',
       M: 'Séptimo Grado',
     };
-  
+
     return nombresGrados[abreviatura] || abreviatura;
   }
 
@@ -391,7 +396,7 @@ export class EducativaActividadesComponent implements OnInit, OnDestroy {
       X: 'Sexto Grado',
       M: 'Séptimo Grado',
     };
-  
+
     return nombresGrados[abreviatura] || abreviatura;
   }
 
@@ -405,7 +410,7 @@ export class EducativaActividadesComponent implements OnInit, OnDestroy {
       X: 'Sexto Grado',
       M: 'Séptimo Grado',
     };
-  
+
     return nombresGrados[abreviatura] || abreviatura;
   }
 
@@ -436,7 +441,6 @@ export class EducativaActividadesComponent implements OnInit, OnDestroy {
       $('#editModal').modal('hide');
     });
   }
-  
-
 }
+
 declare var $: any;

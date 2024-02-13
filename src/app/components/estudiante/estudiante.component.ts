@@ -10,10 +10,6 @@ import { takeUntil } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { ImpresionService } from '../../services/impresion.service';
 
-
-
-
-
 @Component({
   selector: 'app-estudiante',
   templateUrl: './estudiante.component.html',
@@ -22,21 +18,17 @@ import { ImpresionService } from '../../services/impresion.service';
 })
 
 export class EstudianteComponent implements OnInit, OnDestroy {
-
- 
-  
-  
-  dtOptions:DataTables.Settings={};
-  data:any=[]; //aqui se alamcena
-  dtTrigger:Subject<any> = new Subject<any>();
+  dtOptions: DataTables.Settings = {};
+  data: any = []; //aqui se alamcena
+  dtTrigger: Subject<any> = new Subject<any>();
   myForm: FormGroup;
   searchQuery: any;
   private subscriptions: Subscription[] = [];
   isEditModalOpen = false;
 
-// Define el rango permitido para la fecha de nacimiento
-minFechaNacimiento: string;
-maxFechaNacimiento: string;
+  // Define el rango permitido para la fecha de nacimiento
+  minFechaNacimiento: string;
+  maxFechaNacimiento: string;
 
   getEstudiante() {
     this.personaService.getEstudiante().subscribe((res) => {
@@ -52,7 +44,7 @@ maxFechaNacimiento: string;
 
     // Restringe también la fecha mínima al año 2010
     const fechaMinimaPermitida = new Date('2010-01-01');
-    
+
     // Convierte las fechas a valores numéricos y aplica Math.max()
     const fechaMinimaNumerica = fechaMinima.getTime();
     const fechaMinimaPermitidaNumerica = fechaMinimaPermitida.getTime();
@@ -68,7 +60,7 @@ maxFechaNacimiento: string;
     return `${year}-${month}-${day}`;
   }
 
-  getEstudiantes2(){
+  getEstudiantes2() {
     this.personaService.getEstudiante().
       subscribe((data) => {
         this.data = data;
@@ -77,7 +69,6 @@ maxFechaNacimiento: string;
       });
   }
 
-
   validateFieldLength(value: string, maxLength: number, fieldName: string): { isValid: boolean, error?: string } {
     if (value.length > maxLength) {
       return {
@@ -85,11 +76,10 @@ maxFechaNacimiento: string;
         error: `El campo ${fieldName} debe tener máximo ${maxLength} caracteres`
       };
     }
-
     return { isValid: true };
   }
 
-  constructor(public personaService: PersonaService, private fb: FormBuilder, private router:Router, private srvImpresion:ImpresionService) {
+  constructor(public personaService: PersonaService, private fb: FormBuilder, private router: Router, private srvImpresion: ImpresionService) {
     this.myForm = this.fb.group({
       id: new FormControl('', Validators.required),
       nombre: ['', Validators.required],
@@ -99,28 +89,27 @@ maxFechaNacimiento: string;
       direccion: ['', Validators.required],
       correo: ['', Validators.required],
       celular: ['', Validators.required],
-
     });
   }
+
   ngOnInit(): void {
     this.dtOptions = {
       language: {
         url: "/assets/Spanish.json"
       },
     };
- 
-    this.getEstudiantes2();
-     // Calcula el rango permitido (puedes ajustar los valores según tus necesidades)
-     const fechaActual = new Date();
-     this.minFechaNacimiento = '2010-01-01';
-     this.maxFechaNacimiento = '2017-12-31';
-  }
 
+    this.getEstudiantes2();
+    // Calcula el rango permitido (puedes ajustar los valores según tus necesidades)
+    const fechaActual = new Date();
+    this.minFechaNacimiento = '2010-01-01';
+    this.maxFechaNacimiento = '2017-12-31';
+  }
 
   ngOnDestroy(): void {
     //this.subscriptions.forEach(subscription => subscription.unsubscribe());
     this.dtTrigger.unsubscribe();
-    
+
   }
 
   onSearch(): void {
@@ -151,7 +140,7 @@ maxFechaNacimiento: string;
     $('#addEstudianteModal').modal('hide');
   }
 
-  
+
   filterNumeric(event: any): void {
     const inputElement = event.target as HTMLInputElement;
     inputElement.value = inputElement.value.replace(/[^0-9]/g, '');
@@ -160,7 +149,7 @@ maxFechaNacimiento: string;
   validateForm(form: any, isSubmitAttempted: boolean): { isValid: boolean, errors: { [key: string]: string } } {
     const errors: { [key: string]: string } = {};
     let isValid = true;
-  
+
     // Validación de campo vacío para el nombre solo si se intenta enviar el formulario
     if (isSubmitAttempted && !form.nombre.trim()) {
       isValid = false;
@@ -169,14 +158,10 @@ maxFechaNacimiento: string;
       isValid = false;
       errors['nombre'] = 'El nombre debe tener máximo 100 caracteres y no debe contener números';
     }
-  
-    // Resto de las validaciones...
-  
     return { isValid, errors };
   }
-  
-  
-   validarCedulaEcuatoriana(cedula: string): boolean {
+
+  validarCedulaEcuatoriana(cedula: string): boolean {
     const cedulaRegExp = /^[0-9]{10}$/;
 
     if (!cedulaRegExp.test(cedula)) {
@@ -201,18 +186,14 @@ maxFechaNacimiento: string;
       const producto = coeficientes[i] * Number(cedula[i]);
       suma += producto > 9 ? producto - 9 : producto;
     }
-
     const decenaSuperior = Math.ceil(suma / 10) * 10;
     const digitoVerificador = decenaSuperior - suma;
 
     if (digitoVerificador !== Number(cedula[9])) {
       return false;
     }
-
     return true;
   }
-  
-  
 
   createEstudiante(form: NgForm): void {
     // Validación de formulario totalmente vacío
@@ -225,7 +206,6 @@ maxFechaNacimiento: string;
       });
       return;
     }
-  
     // Validación de nombre (solo texto, no números)
     if (!/^[A-Za-z\s]+$/.test(form.value.nombre)) {
       Swal.fire({
@@ -235,7 +215,7 @@ maxFechaNacimiento: string;
       });
       return;
     }
-  
+
     // Validación de cédula (solo números y máximo 10 dígitos)
     const cedulaValue = form.value.cedula;
     if (!this.validarCedulaEcuatoriana(cedulaValue) || !/^\d{10}$/.test(cedulaValue)) {
@@ -246,7 +226,7 @@ maxFechaNacimiento: string;
       });
       return;
     }
-  
+
     // Validación de dirección (solo texto)
     if (!/^[A-Za-z0-9\s]+$/.test(form.value.direccion)) {
       Swal.fire({
@@ -256,7 +236,7 @@ maxFechaNacimiento: string;
       });
       return;
     }
-  
+
     // Validación de correo electrónico
     const correoValue = form.value.correo;
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correoValue)) {
@@ -267,7 +247,7 @@ maxFechaNacimiento: string;
       });
       return;
     }
-  
+
     // Validación de teléfono (solo números y máximo 10 dígitos)
     const telefonoValue = form.value.celular;
     if (!/^\d{10}$/.test(telefonoValue)) {
@@ -278,7 +258,7 @@ maxFechaNacimiento: string;
       });
       return;
     }
-  
+
     // Validación de fecha (rango permitido)
     const fechaNacimientoValue = form.value.fechaNacimiento;
     if (!fechaNacimientoValue) {
@@ -290,7 +270,7 @@ maxFechaNacimiento: string;
       return;
     }
     const fechaNacimiento = new Date(fechaNacimientoValue);
-  
+
     // Verifica que la fecha esté dentro del rango permitido
     if (fechaNacimiento.getFullYear() < 2010 || fechaNacimiento.getFullYear() > 2017) {
       Swal.fire({
@@ -300,7 +280,7 @@ maxFechaNacimiento: string;
       });
       return;
     }
-  
+
     // Validación de cédula duplicada
     this.personaService.getEstudianteByCi(cedulaValue).subscribe(
       (existingStudent) => {
@@ -322,7 +302,7 @@ maxFechaNacimiento: string;
                 showConfirmButton: false,
                 timer: 3000,
               });
-  
+
               this.closeAddEstudianteModal();
               this.irListaEstudiantes();
             },
@@ -349,10 +329,6 @@ maxFechaNacimiento: string;
       }
     );
   }
-  
-  
-  
-  
 
   // Agregar un método para cerrar el modal de añadir estudiante
   closeAddEstudianteModal(): void {
@@ -392,7 +368,7 @@ maxFechaNacimiento: string;
     });
   }
 
-  irListaEstudiantes(){
+  irListaEstudiantes() {
     //this.router.navigate(["/estudiante"])
     window.location.reload()
   }
@@ -404,7 +380,7 @@ maxFechaNacimiento: string;
       modal.style.display = 'none'; // Establece el estilo 'display' en 'none'
     }
   }
-  
+
   validarFechaNacimiento(): void {
     const fechaNacimientoControl = this.myForm.get('fechaNacimiento');
     if (fechaNacimientoControl) {
@@ -412,60 +388,58 @@ maxFechaNacimiento: string;
       const fechaActual = new Date();
       const fechaMinima = new Date();
       fechaMinima.setFullYear(fechaMinima.getFullYear() - 5);
-  
+
       const errors: ValidationErrors = {};
-  
+
       if (fechaNacimientoControl.errors && fechaNacimientoControl.errors['required']) {
         errors['required'] = true;
       }
-  
+
       if (fechaNacimientoControl.errors && fechaNacimientoControl.errors['min']) {
         errors['min'] = fechaNacimientoControl.errors['min'];
       }
-  
+
       if (fechaNacimientoControl.errors && fechaNacimientoControl.errors['max']) {
         errors['max'] = fechaNacimientoControl.errors['max'];
       }
-  
+
       if (fechaNacimientoControl.errors && fechaNacimientoControl.errors['matDatepickerMin']) {
         errors['matDatepickerMin'] = fechaNacimientoControl.errors['matDatepickerMin'];
       }
-  
+
       if (fechaNacimiento.toDateString() === fechaActual.toDateString()) {
         errors['invalidFechaActual'] = true;
-  
+
         // Nueva validación para estudiantes menores de 5 años
         const fechaMaxima = new Date();
         fechaMaxima.setFullYear(fechaMaxima.getFullYear() - 5);
-  
+
         if (fechaNacimiento > fechaMaxima) {
           errors['invalidEdadEstudiante'] = true;
         }
       }
-  
+
       if (fechaNacimiento < fechaMinima) {
         errors['invalidFechaMinima'] = true;
       }
-  
+
       if (fechaNacimiento > fechaActual) {
         errors['invalidFechaFutura'] = true;
       }
-  
       // Restricciones adicionales para estudiantes
       const anioMinimoEstudiante = 2010;
       const anioMaximoEstudiante = 2018;
-  
+
       const anioNacimiento = fechaNacimiento.getFullYear();
-  
+
       if (anioNacimiento < anioMinimoEstudiante || anioNacimiento > anioMaximoEstudiante) {
         errors['invalidRangoEstudiante'] = true;
       }
-  
       fechaNacimientoControl.setErrors(Object.keys(errors).length > 0 ? errors : null);
     }
   }
 
-  
+
   onImprimir() {
     if (this.data.length > 0) {
       const encabezado = ["Nombre", "Apellido", "Cedula", "Correo", "Celular"];
@@ -476,7 +450,7 @@ maxFechaNacimiento: string;
         estudiante.correo,
         estudiante.celular
       ]);
-  
+
       this.srvImpresion.imprimir(encabezado, cuerpo, "Listado de Estudiantes", true);
     } else {
       // Muestra un mensaje de alerta si no hay datos para imprimir
@@ -487,7 +461,7 @@ maxFechaNacimiento: string;
       });
     }
   }
-  imprimirExcel(){
+  imprimirExcel() {
     if (this.data.length > 0) {
       const encabezado = ["Nombre", "Apellido", "Cedula", "Correo", "Celular"];
       const cuerpo = this.data.map((estudiante: Persona) => [
@@ -497,7 +471,7 @@ maxFechaNacimiento: string;
         estudiante.correo,
         estudiante.celular
       ]);
-  
+
       this.srvImpresion.imprimirExcel(encabezado, cuerpo, "Listado de Estudiantes", true);
     } else {
       // Muestra un mensaje de alerta si no hay datos para imprimir
@@ -511,19 +485,19 @@ maxFechaNacimiento: string;
   calcularEdad(fechaNacimiento: string): number {
     const fechaNac = new Date(fechaNacimiento);
     const hoy = new Date();
-  
+
     let edad = hoy.getFullYear() - fechaNac.getFullYear();
     const mesActual = hoy.getMonth() + 1;
     const mesNacimiento = fechaNac.getMonth() + 1;
-  
+
     if (mesNacimiento > mesActual || (mesNacimiento === mesActual && hoy.getDate() < fechaNac.getDate())) {
       edad--;
     }
-  
+
     return edad;
   }
-  
-  
+
+
 }
 
 declare var $: any;

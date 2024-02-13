@@ -9,7 +9,7 @@
     <!--no mover-->
     <div class="collapse navbar-collapse" id="navbarNavDropdown">
         <ul class="navbar-nav">
-            <li class="nav-item dropdown " >
+            <li class="nav-item dropdown ">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
                     aria-haspopup="true" aria-expanded="false">
                     {{ mensajeBienvenida }} </a>
@@ -19,9 +19,9 @@
             </li>
         </ul>
     </div>
-    
 </nav>
 
+<!-- Vista de asignaturas -->
 <div *ngIf="asignaturas && asignaturas.length > 0">
     <section class="cards">
         <div class="row">
@@ -32,12 +32,43 @@
                     <div class="card-body">
                         <h5 class="card-title">{{ asignatura.nombreMateria }}</h5>
                         <p class="card-text">ID: {{ asignatura.id }}</p>
+                        <button type="button" class="btn btn-primary" (click)="cargarActividades(asignatura.id)">
+                            Ver detalles
+                        </button>
+                        <!-- Modal -->
+                        <div class="modal fade" [id]="'modal-' + asignatura.id" tabindex="-1" role="dialog"
+                        aria-labelledby="exampleModalLabel" aria-hidden="true" [class.show]="modalVisible[asignatura.id]">
+                  
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">{{ asignatura.nombreMateria }}</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>ID: {{ asignatura.id }}</p>
+                                        <ul>
+                                            <!-- Iterar sobre las actividades de la asignatura -->
+                                            <li *ngFor="let actividad of actividades[asignatura.id]">
+                                                {{ actividad.titulo }} - {{ actividad.detalleActividad }}
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 </div>
+>
+
+
+
 
 <br> <br><br> <br><br>
 

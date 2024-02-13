@@ -5,9 +5,11 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { Subject, Subscription } from 'rxjs';
 import { Notas } from '../../models/notas';
 import { Persona } from '../../models/persona';
+import { ImpresionService } from '../../services/impresion.service';
 import { NotasDTO } from '../../models/notas-dto';
 import { Notasdtoall } from '../../models/notasdtoall';
 import Swal from 'sweetalert2';
+
 
 @Component({
   selector: 'app-notas',
@@ -36,9 +38,7 @@ export class NotasComponent {
   filasModificadas: Set<number> = new Set<number>();
   selectedGradoId: number | null = null;
 
-
-
-  constructor(public notaService: NotasService, private router: Router, private route: ActivatedRoute, private fb: FormBuilder) {
+  constructor(public notaService: NotasService, private router: Router, private route: ActivatedRoute, private fb: FormBuilder, private srvImpresion: ImpresionService) {
     this.formulario = this.fb.group({
       actividad: [null],  // Utiliza un array para establecer el valor inicial
       asignatura: [null],
@@ -79,6 +79,12 @@ export class NotasComponent {
     this.getEstudiante();
     this.getNotas();
     this.getGrados();
+
+    this.dtOptions = {
+      language: {
+        url: "/assets/Spanish.json"
+      },
+    };
   }
 
 
@@ -135,7 +141,7 @@ export class NotasComponent {
   }
   onGradoSelected() {
     if (this.selectedGradoId !== null) {
-      this.getAsignaturas(); 
+      this.getAsignaturas();
       this.actividades = [];// Actualiza las asignaturas al seleccionar un grado
     }
   }
@@ -233,10 +239,48 @@ export class NotasComponent {
       X: 'Sexto Grado',
       M: 'Séptimo Grado',
     };
-
-
-  
     return nombresGrados[abreviatura] || abreviatura;
+  }
+
+  onImprimir() {
+    if (this.datosfinales.length > 0) {
+      const encabezado = ["Estudiante", "Actividad", "Asignatura", "Nota"];
+      const cuerpo = this.datosfinales.map((nota: Notasdtoall) => [
+        nota.nombre + " " + nota.apellido,
+        nota.tituloActividad,
+        nota.nombreAsignatura,
+        nota.nota
+      ]);
+
+      this.srvImpresion.imprimir(encabezado, cuerpo, "Listado de Calificaciones", true);
+    } else {
+      // Muestra un mensaje de alerta si no hay datos para imprimir
+      Swal.fire({
+        icon: 'warning',
+        title: 'Sin datos',
+        text: 'No hay datos para generar el informe PDF.',
+      });
+    }
+  }
+  imprimirExcel() {
+    if (this.datosfinales.length > 0) {
+      const encabezado = ["Estudiante", "Actividad", "Asignatura", "Nota"];
+      const cuerpo = this.datosfinales.map((nota: Notasdtoall) => [
+        nota.nombre + " " + nota.apellido,
+        nota.tituloActividad,
+        nota.nombreAsignatura,
+        nota.nota
+      ]);
+
+      this.srvImpresion.imprimirExcel(encabezado, cuerpo, "Listado de Calificaciones", true);
+    } else {
+      // Muestra un mensaje de alerta si no hay datos para imprimir
+      Swal.fire({
+        icon: 'warning',
+        title: 'Sin datos',
+        text: 'No hay datos para generar el informe PDF.',
+      });
+    }
   }
 
   getNotas() {

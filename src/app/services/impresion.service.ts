@@ -8,8 +8,6 @@ import * as XLSX from 'xlsx';
 })
 export class ImpresionService {
 
-
-
   constructor() { }
 
   imprimir(encabezado: string[], cuerpo: Array<any>, titulo: string, guardar?: boolean) {
@@ -18,23 +16,26 @@ export class ImpresionService {
       unit: "mm",
       format: 'a4',
     });
-
+  
     doc.setFontSize(16);
+    
+    // Escribir el título
+    doc.setTextColor('#000000'); // Color negro para el título
     doc.text(titulo, doc.internal.pageSize.width / 2, 25, { align: 'center' });
+  
     // Añadir logo (reemplaza 'path/to/logo.png' con la ruta de tu logo)
-    const logoX = doc.internal.pageSize.width - 30; // Ajusta la posición X del logo
-    const logoY = 10; // Ajusta la posición Y del logo
-    doc.addImage('../../../assets/brain_naranja.png', 'PNG', logoX, logoY, 20, 20);
-
-
+    const logoX = doc.internal.pageSize.width - 33; // Ajustar la posición X del logo
+    const logoY = 10; // Ajustar la posición Y del logo
+    doc.addImage('../../../assets/brain_morado2.png', 'PNG', logoX, logoY, 20, 20);
+  
     const tableOptions = {
       head: [encabezado],
       body: cuerpo,
-      startY: 30,
+      startY: 40, // Mover la tabla más abajo del título
     };
-
+  
     autoTable(doc, tableOptions);
-
+  
     if (guardar) {
       const hoy = new Date();
       doc.save(hoy.getDate() + hoy.getMonth() + hoy.getFullYear() + hoy.getTime() + '.pdf');
@@ -43,11 +44,11 @@ export class ImpresionService {
       window.open(URL.createObjectURL(new Blob([data], { type: 'application/pdf' })));
     }
   }
-
+  
   imprimirExcel(encabezado: string[], cuerpo: Array<any>, titulo: string, guardar?: boolean) {
     const ws: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet([encabezado, ...cuerpo]);
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, 'Informe');
+    XLSX.utils.book_append_sheet(wb, ws, 'Listado');
 
     if (guardar) {
       // Guardar como archivo Excel
@@ -60,6 +61,6 @@ export class ImpresionService {
     }
   }
 
-  
+
 
 }

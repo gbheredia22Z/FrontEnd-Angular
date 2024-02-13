@@ -60,24 +60,19 @@
                         <input name="code" class="form-control" type="hidden" name="id" #id="ngModel"
                             [(ngModel)]="educativaService.selectedActividades.id" />
                     </div>
-
                     <div class="row">
                         <div class="mb-3">
                             <label for="titulo"><i class="fas fa-user"></i> Titulo </label>
                             <input id="titulo" type="text" class="form-control" name="titulo"
                                 [(ngModel)]="educativaService.selectedActividades.titulo" required maxlength="100">
-
                         </div>
-
                         <div class="mb-3">
                             <label for="detalleActividad"><i class="fas fa-user"></i> Detalle Actividad</label>
                             <input id="detalleActividad" type="text" class="form-control" name="detalleActividad"
                                 [(ngModel)]="educativaService.selectedActividades.detalleActividad" required
                                 maxlength="100">
-
                         </div>
                     </div>
-
                     <div class="row">
                         <div class="mb-3">
                             <label for="fechaInicio"><i class="fas fa-id-card"></i> Fecha Inicio</label>
@@ -85,9 +80,7 @@
                                 [(ngModel)]="educativaService.selectedActividades.fechaInicio" [min]="minFechaActual()">
                         </div>
                     </div>
-
                     <div class="row">
-
                         <div class="mb-3">
                             <label for="actividad" class="form-label">Tipo Actividad</label>
                             <select class="form-select" id="tipoActId"
@@ -113,7 +106,6 @@
                                     getNombreGrados(grado.nombreGrado) }}</option>
                             </select>
                         </div>
-
                         <div class=" mb-3">
                             <label for="periodo" class="form-label">Asignatura</label>
                             <select class="form-select" id="asignaturaId"
@@ -189,7 +181,7 @@
                                     <i class="bi bi-save-fill"></i> <br> Editar Actividad
                                 </h6>
                                 <button type="button" class="btn btn-light" data-bs-dismiss="modal" aria-label="Close"
-                                    (click)="closeAddEducativaModal()"><i class="bi bi-x-lg"></i></button>
+                                    (click)="closeEditEducativaModal()"><i class="bi bi-x-lg"></i></button>
                             </div>
                             <div class="modal-body">
                                 <form #gradoForm="ngForm">
@@ -216,7 +208,6 @@
 
                                                 </div>
                                             </div>
-
                                             <div class="row">
                                                 <div class="mb-3">
                                                     <label for="fechaInicio"><i class="fas fa-id-card"></i> Fecha
@@ -229,7 +220,6 @@
                                             </div>
 
                                             <div class="row">
-
                                                 <div class="mb-3">
                                                     <label for="actividad" class="form-label">Tipo Actividad</label>
                                                     <select class="form-select" id="tipoActId"
@@ -274,8 +264,7 @@
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
-                                                    (click)="closeAddEducativaModal()">Cerrar</button>
-
+                                                (click)="closeEditEducativaModal()">Cerrar</button>
                                                 <button type="button" class="btn btn-dark"
                                                     (click)="updateEstudiante(gradoForm)">Guardar</button>
                                             </div>

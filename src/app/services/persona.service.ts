@@ -21,6 +21,7 @@ export class PersonaService {
   apiUrl2 = "http://127.0.0.1:3000/api";
   URL_API_A = "http://127.0.0.1:3000/api";
   URL_API_D = "http://127.0.0.1:3000/api";
+  URL_API_AC = "http://127.0.0.1:3000/api";
   URL_Docente = "http://127.0.0.1:3000/api";
 
   constructor(private http: HttpClient) {
@@ -109,6 +110,18 @@ export class PersonaService {
       })
     );
   }
+
+  obtenerActividadesPorAsignatura(asignaturaId: number): Observable<any> {
+    const url = `${this.URL_API_AC}/actividades/asignatura/${asignaturaId}`;
+    return this.http.get<Asignatura[]>(url).pipe(
+      catchError((error: any) => {
+        console.error('Error al obtener las actividades:', error);
+        throw error;
+      })
+    );
+
+  }
+  
 
 }
 
