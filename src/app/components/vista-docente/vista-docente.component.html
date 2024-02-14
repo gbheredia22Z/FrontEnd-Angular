@@ -21,12 +21,11 @@
     </div>
 </nav>
 
-<!-- Vista de asignaturas -->
 <div *ngIf="asignaturas && asignaturas.length > 0">
     <section class="cards">
         <div class="row">
             <div class="col" *ngFor="let asignatura of asignaturas">
-                <div class="card mb-3" style="max-width: 18rem; max-height: 19rem;">
+                <div class="card mb-3" style="width: auto; margin: auto auto">
                     <img src="../../../assets/students.png" class="card-img-top" alt=""
                         style="width: 100px; height: 100px;">
                     <div class="card-body">
@@ -35,29 +34,15 @@
                         <button type="button" class="btn btn-primary" (click)="cargarActividades(asignatura.id)">
                             Ver detalles
                         </button>
-                        <!-- Modal -->
-                        <div class="modal fade" [id]="'modal-' + asignatura.id" tabindex="-1" role="dialog"
-                        aria-labelledby="exampleModalLabel" aria-hidden="true" [class.show]="modalVisible[asignatura.id]">
-                  
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title">{{ asignatura.nombreMateria }}</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <p>ID: {{ asignatura.id }}</p>
-                                        <ul>
-                                            <!-- Iterar sobre las actividades de la asignatura -->
-                                            <li *ngFor="let actividad of actividades[asignatura.id]">
-                                                {{ actividad.titulo }} - {{ actividad.detalleActividad }}
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
+                        
+                        <!-- Actividades de la asignatura -->
+                        <div *ngIf="actividades[asignatura.id]">
+                            <h6>Actividades:</h6>
+                            <ul>
+                                <li *ngFor="let actividad of actividades[asignatura.id]">
+                                    {{ actividad.titulo }} - {{ actividad.detalleActividad }}
+                                </li>
+                            </ul>
                         </div>
                     </div>
                 </div>
@@ -65,7 +50,6 @@
         </div>
     </section>
 </div>
->
 
 
 

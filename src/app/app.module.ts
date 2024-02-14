@@ -20,6 +20,9 @@ import { EducativaActividadesComponent } from './components/educativa-actividade
 import { NotasComponent } from './components/notas/notas.component';
 import { VistaEstudianteComponent } from './components/vista-estudiante/vista-estudiante.component';
 import { VistaDocenteComponent } from './components/vista-docente/vista-docente.component';
+import { ActividadesdocenteComponent } from './components/actividadesdocente/actividadesdocente.component';
+import { CambioContraseniaComponent } from './components/cambio-contrasenia/cambio-contrasenia.component';
+import { ActividadesestudianteComponent } from './components/actividadesestudiante/actividadesestudiante.component';
 
 @NgModule({
     declarations: [
@@ -37,7 +40,10 @@ import { VistaDocenteComponent } from './components/vista-docente/vista-docente.
         EducativaActividadesComponent,
         NotasComponent,
         VistaEstudianteComponent,
-        VistaDocenteComponent
+        VistaDocenteComponent,
+        ActividadesdocenteComponent,
+        CambioContraseniaComponent,
+        ActividadesestudianteComponent
     ],
     imports: [
         BrowserModule, 

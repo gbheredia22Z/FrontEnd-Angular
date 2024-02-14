@@ -18,14 +18,16 @@ export class NotasService {
   notas!: Notas[];
   selectedEstudiante: Persona;
   estudiantes!: Persona[];
-  selectDTO:NotasDTO;
+  selectDTO: NotasDTO;
   seleccionarDto: Notasdtoall;
   URL_API = "http://127.0.0.1:3000/api"
   URL_ASIGNATURAS = "http://127.0.0.1:3000/api/asignatura/";
   URL_API3 = "http://127.0.0.1:3000/api/actividades/";
-  private apiUrl = 'http://localhost:3000/api'; 
+  private apiUrl = 'http://localhost:3000/api';
   URL_Student = "http://127.0.0.1:3000/api/estudiante/";
-  URL_ESTUDIANTE_BY_ID="http://127.0.0.1:3000/api/estudiante/traer/";
+  URL_ESTUDIANTE_BY_ID = "http://127.0.0.1:3000/api/estudiante/traer/";
+  URL_APIACT = 'http://localhost:3000/api';
+
 
   constructor(private http: HttpClient) {
     this.selectNotas = new Notas();
@@ -55,8 +57,8 @@ export class NotasService {
   getAsignaturas() {
     return this.http.get<any[]>(this.URL_ASIGNATURAS);
   }
-  getGrados(){
-    return this.http.get<any[]>(this.URL_API+"/grado");
+  getGrados() {
+    return this.http.get<any[]>(this.URL_API + "/grado");
   }
 
   //traer actividades
@@ -74,9 +76,9 @@ export class NotasService {
     return this.http.get(this.URL_Student);
   }
 
- 
-  getNotas(){
-    return this.http.get(this.URL_API+"/notas");
+
+  getNotas() {
+    return this.http.get(this.URL_API + "/notas");
   }
   getEstudianteById(personaId: string) {
     return this.http.get<any>(`${this.URL_ESTUDIANTE_BY_ID}${personaId}`);
@@ -86,16 +88,21 @@ export class NotasService {
   }
 
   //actualizr nota:
-//actualizar nota:
-asignarNota(id: string, valor_nota: number): Observable<any> {
-  const data = { valor_nota: parseFloat(valor_nota.toString()) }; // Convierte a número antes de enviar al servidor
+  //actualizar nota:
+  asignarNota(id: string, valor_nota: number): Observable<any> {
+    const data = { valor_nota: parseFloat(valor_nota.toString()) }; // Convierte a número antes de enviar al servidor
 
-  return this.http.put<any>(`${this.URL_API}/notas/${id}`, data);
-}
+    return this.http.put<any>(`${this.URL_API}/notas/${id}`, data);
+  }
 
-getAsignaturasPorGrado(gradoId: number): Observable<any[]> {
-  const url = `${this.URL_API}/asignatura/grado/${gradoId}`;
-  return this.http.get<any[]>(url);
-}
+  getAsignaturasPorGrado(gradoId: number): Observable<any[]> {
+    const url = `${this.URL_API}/asignatura/grado/${gradoId}`;
+    return this.http.get<any[]>(url);
+  }
+  obtenerNotasEstudiante(idEstudiante: number, idAsignatura: number) {
+    const url = `${this.URL_APIACT}/traeractividades/asignatura/estudiante/?idEstudiante=${idEstudiante}&idAsignatura=${idAsignatura}`;
+    return this.http.get(url);
+  }
+ 
 
 }

@@ -90,7 +90,7 @@
                                 [ngModel]="matriculaServices.selectedEstudiante?.nombre">
                         </div>
                     </div>
-                    <a class="btn btn-primary m-2" (click)="openEstudianteListaModal()">Buscar estudiante
+                    <a class="btn btn-dark" (click)="openEstudianteListaModal()">Buscar estudiante
                     </a>
                     <!-- Nuevo Modal para la Lista de ESTUDIANTES -->
                     <div class="modal fade" id="estudianteListModal" tabindex="-1" aria-labelledby="estudianteListModal"
@@ -98,7 +98,7 @@
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h1 class="modal-title fs-5" id="estudianteListModal">Lista de Estudiantes</h1>
+                                    <h6 class="modal-title fs-5" id="estudianteListModal">Lista de Estudiantes</h6>
                                     <button type="button" class="btn btn-light" data-bs-dismiss="modal" aria-label="Close"
                                         (click)="closeDocenteListModal()"><i class="bi bi-x-lg"></i></button>
                                 </div>
@@ -121,7 +121,7 @@
                                                 <td>{{ estudiante.nombre }}</td>
                                                 <td>{{ estudiante.apellido }}</td>
                                                 <td>
-                                                    <button type="button" class="btn btn-primary"
+                                                    <button type="button" class="btn btn-dark"
                                                         (click)="cargarStudiante(estudiante)"> Matricular</button>
                                                 </td>
                                             </tr>

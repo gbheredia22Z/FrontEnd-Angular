@@ -15,68 +15,83 @@ import { EducativaActividadesComponent } from './components/educativa-actividade
 import { NotasComponent } from './components/notas/notas.component';
 import { VistaEstudianteComponent } from './components/vista-estudiante/vista-estudiante.component';
 import { VistaDocenteComponent } from './components/vista-docente/vista-docente.component';
+import { ActividadesdocenteComponent } from './components/actividadesdocente/actividadesdocente.component';
+import { CambioContraseniaComponent } from './components/cambio-contrasenia/cambio-contrasenia.component';
+import { ActividadesestudianteComponent } from './components/actividadesestudiante/actividadesestudiante.component';
 
 const routes: Routes = [
   {
-    path:'',
+    path: '',
     redirectTo: '',
     pathMatch: 'full'
   },
   {
-    path:'estudiante',
+    path: 'estudiante',
     component: EstudianteComponent
   },
   {
-    path:'admin',
+    path: 'admin',
     component: AdminComponent
   },
   {
-    path:'docente',
+    path: 'docente',
     component: DocenteComponent
   },
   {
-    path:'periodo',
+    path: 'periodo',
     component: PeriodoComponent
   },
   {
-    path:'asignatura',
+    path: 'asignatura',
     component: AsignaturaComponent
   },
   {
-    path:'grado',
+    path: 'grado',
     component: GradoComponent
   },
   {
-    path:'matricula',
+    path: 'matricula',
     component: MatriculaComponent
   },
   {
-    path:'login',
+    path: 'login',
     component: LoginComponent
   },
   {
-    path:'actividades',
-    component:ActividadesComponent
+    path: 'actividades',
+    component: ActividadesComponent
   },
   {
-    path:'periodo-calificaciones',
-    component:PerCalificacionesComponent
+    path: 'periodo-calificaciones',
+    component: PerCalificacionesComponent
   },
   {
-    path:'actividades-educativas',
-    component:EducativaActividadesComponent
+    path: 'actividades-educativas',
+    component: EducativaActividadesComponent
   },
   {
-    path:'nota',
-    component:NotasComponent
+    path: 'nota',
+    component: NotasComponent
   },
   {
-    path:'vista-estudiante',
-    component:VistaEstudianteComponent
+    path: 'vista-estudiante',
+    component: VistaEstudianteComponent
   },
   {
-    path:'vista-docente',
-    component:VistaDocenteComponent
+    path: 'vista-docente',
+    component: VistaDocenteComponent
+  },
+  {
+    path: 'actividad-docente/:asignaturaId',
+    component: ActividadesdocenteComponent
+  },
+  {
+    path: 'actividad-estudiante/:asignaturaId',
+    component: ActividadesestudianteComponent
+  },
+  {
+    path: 'cambio-contrasenia',
+    component: CambioContraseniaComponent
   }
 
 ];
