@@ -44,8 +44,6 @@ export class VistaDocenteComponent implements OnInit {
 
   async cargarActividades(asignaturaId: string) {
       this.router.navigate(['/actividad-docente', asignaturaId]);
-      
-
   }
 
 

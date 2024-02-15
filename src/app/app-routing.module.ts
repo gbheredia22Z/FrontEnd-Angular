@@ -17,12 +17,11 @@ import { VistaEstudianteComponent } from './components/vista-estudiante/vista-es
 import { VistaDocenteComponent } from './components/vista-docente/vista-docente.component';
 import { ActividadesdocenteComponent } from './components/actividadesdocente/actividadesdocente.component';
 import { CambioContraseniaComponent } from './components/cambio-contrasenia/cambio-contrasenia.component';
-import { ActividadesestudianteComponent } from './components/actividadesestudiante/actividadesestudiante.component';
 
 const routes: Routes = [
   {
     path: '',
-    redirectTo: '',
+    redirectTo: 'login',
     pathMatch: 'full'
   },
   {
@@ -84,10 +83,6 @@ const routes: Routes = [
   {
     path: 'actividad-docente/:asignaturaId',
     component: ActividadesdocenteComponent
-  },
-  {
-    path: 'actividad-estudiante/:asignaturaId',
-    component: ActividadesestudianteComponent
   },
   {
     path: 'cambio-contrasenia',

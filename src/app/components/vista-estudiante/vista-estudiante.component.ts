@@ -27,7 +27,7 @@ export class VistaEstudianteComponent implements OnInit {
   ngOnInit(): void {
     this.mensajeBienvenida = history.state.mensaje;
     this.idEstudiante = history.state.idUser;
-
+   
     if ('usuario' in history.state) {
       this.idEstudiante = history.state.usuario.id;
     }
@@ -52,9 +52,21 @@ export class VistaEstudianteComponent implements OnInit {
 
   obtenerActividadesDeNotas(idEstudiante: number, idMateria: number): void {
     this.notasService.obtenerNotasEstudiante(idEstudiante, idMateria).subscribe(
-        (actividades: any) => {
-            console.log('Actividades de notas:', actividades); // Agregar este log para verificar los datos recibidos
-            // Resto del código...
+        (actividades: any[]) => {
+            console.log('Actividades de notas:', actividades); 
+            this.actividadesPorAsignatura[idMateria] = actividades; // Guardar las actividades por id de asignatura
+        },
+        (error) => {
+            console.error('Error al obtener las actividades de notas:', error);
+        }
+    );
+  }
+
+  obtenerNotasEstudiante(idEstudiante: number, idAsignatura: number) {
+    this.notasService.obtenerNotasEstudiante(idEstudiante, idAsignatura).subscribe(
+        (data: any[]) => {
+            console.log('Actividades de notas:', data);
+            this.actividadesPorAsignatura[idAsignatura] = data;
         },
         (error) => {
             console.error('Error al obtener las actividades de notas:', error);

@@ -10,7 +10,7 @@ import { ImpresionService } from '../../services/impresion.service';
 
 @Component({
   selector: 'app-periodo',
-  templateUrl: './periodo.component.html',
+  templateUrl:'./periodo.component.html',
   styleUrl: './periodo.component.scss'
 })
 export class PeriodoComponent implements OnInit, OnDestroy {

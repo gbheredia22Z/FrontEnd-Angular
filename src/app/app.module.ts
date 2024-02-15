@@ -22,7 +22,6 @@ import { VistaEstudianteComponent } from './components/vista-estudiante/vista-es
 import { VistaDocenteComponent } from './components/vista-docente/vista-docente.component';
 import { ActividadesdocenteComponent } from './components/actividadesdocente/actividadesdocente.component';
 import { CambioContraseniaComponent } from './components/cambio-contrasenia/cambio-contrasenia.component';
-import { ActividadesestudianteComponent } from './components/actividadesestudiante/actividadesestudiante.component';
 
 @NgModule({
     declarations: [
@@ -42,9 +41,7 @@ import { ActividadesestudianteComponent } from './components/actividadesestudian
         VistaEstudianteComponent,
         VistaDocenteComponent,
         ActividadesdocenteComponent,
-        CambioContraseniaComponent,
-        ActividadesestudianteComponent
-    ],
+        CambioContraseniaComponent    ],
     imports: [
         BrowserModule, 
         AppRoutingModule,

@@ -25,12 +25,12 @@
     <section class="cards">
         <div class="row">
             <div class="col" *ngFor="let asignatura of asignaturas">
-                <div class="card mb-3" style="width: auto; margin: auto auto">
+                <div class="card mb-3" style="width: auto; margin: auto auto; height: 75%;">
                     <img src="../../../assets/students.png" class="card-img-top" alt=""
                         style="width: 100px; height: 100px;">
                     <div class="card-body">
                         <h5 class="card-title">{{ asignatura.nombreMateria }}</h5>
-                        <p class="card-text">ID: {{ asignatura.id }}</p>
+                        <p class="card-text"></p>
                         <button type="button" class="btn btn-primary" (click)="cargarActividades(asignatura.id)">
                             Ver detalles
                         </button>

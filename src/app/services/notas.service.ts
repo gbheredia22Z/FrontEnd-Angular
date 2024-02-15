@@ -99,10 +99,11 @@ export class NotasService {
     const url = `${this.URL_API}/asignatura/grado/${gradoId}`;
     return this.http.get<any[]>(url);
   }
-  obtenerNotasEstudiante(idEstudiante: number, idAsignatura: number) {
-    const url = `${this.URL_APIACT}/traeractividades/asignatura/estudiante/?idEstudiante=${idEstudiante}&idAsignatura=${idAsignatura}`;
-    return this.http.get(url);
+  // En NotasService
+  obtenerNotasEstudiante(idEstudiante: number, idAsignatura: number): Observable<any[]> {
+    const url = `http://127.0.0.1:3000/api/traeractividades/asignatura/estudiante/?idEstudiante=${idEstudiante}&idAsignatura=${idAsignatura}`;
+    return this.http.get<any[]>(url);
   }
- 
+
 
 }

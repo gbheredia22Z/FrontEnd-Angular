@@ -84,7 +84,7 @@
                             <select class="form-select" id="gradoId"
                                 [(ngModel)]="educativaService.selectedActividades.gradoId" name="gradoId" required>
                                 <option *ngFor="let grado of grados" [value]="grado.id">{{
-                                    getNombreGrados(grado.nombreGrado) }}</option>
+                                    getNombreGrados(grado.id) }}</option>
                             </select>
                         </div>
                         
