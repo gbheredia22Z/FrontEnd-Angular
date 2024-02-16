@@ -65,8 +65,6 @@ export class EducativaActividadesComponent implements OnInit, OnDestroy {
     return formattedDate;
   }
 
-
-
   ngOnInit(): void {
     this.getGrados();
     this.dtOptions = {
@@ -106,8 +104,6 @@ export class EducativaActividadesComponent implements OnInit, OnDestroy {
       });
     }
   }
-
-
   //obtener las asignaturas
   getAsignaturas() {
     this.educativaService.getAsignaturas().subscribe((res) => {

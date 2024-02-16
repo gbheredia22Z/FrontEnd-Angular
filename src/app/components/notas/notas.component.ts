@@ -21,6 +21,8 @@ export class NotasComponent {
   formulario: FormGroup;
   dtOptions: DataTables.Settings = {};
   data: any[] = [];
+  notasEditadas: { [id: number]: string } = {};
+
   dtTrigger: Subject<any> = new Subject<any>();
   private subscriptions: Subscription[] = [];
   asignaturas: any[] = [];
@@ -86,6 +88,21 @@ export class NotasComponent {
       },
     };
   }
+
+  guardarCambiosNotas() {
+    if (!this.editarNotasHabilitado) {
+      // Itera sobre los resultados para guardar los cambios en los datos finales
+      for (const result of this.datosfinales) {
+        // Obtenemos el valor actual de la nota en el contenido editable
+        const editable = document.getElementById(result.idNota);
+        if (editable) {
+          result.nota = +editable.innerText;
+        }
+      }
+    }
+  }
+  
+  
 
 
   getAsignaturas() {
@@ -381,5 +398,6 @@ export class NotasComponent {
     // Verifica si la nota está marcada como asignada en el estado
     return this.estadoAsignacion[id] || false;
   }
+  
 
 }

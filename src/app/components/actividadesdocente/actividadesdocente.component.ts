@@ -1,11 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
-import { Location } from '@angular/common';
 import { Subject, Subscription, forkJoin, mergeMap } from 'rxjs';
 import { EducativaActividadesService } from '../../services/educativa-actividades.service';
 import { EducativaActividades } from '../../models/educativa-actividades';
 import Swal from 'sweetalert2';
 import { ImpresionService } from '../../services/impresion.service';
+import { Location } from '@angular/common';
+
+
 import { PersonaService } from '../../services/persona.service'; // Importa tu servicio PersonaService
 import { ActivatedRoute, Params } from '@angular/router';
 
@@ -43,7 +45,6 @@ export class ActividadesdocenteComponent implements OnInit, OnDestroy {
   selectedActividadId: number | null = null;
   actividades: any[] = [];
 
-
   constructor(public educativaService: EducativaActividadesService, private fb: FormBuilder,
     private srvImpresion: ImpresionService, private personaService: PersonaService, private route: ActivatedRoute,
     private location: Location) {
@@ -60,15 +61,17 @@ export class ActividadesdocenteComponent implements OnInit, OnDestroy {
     });
   }
 
+  regresarPagina(): void {
+    this.location.back();
+  }
+
   minFechaActual(): string {
     const today = new Date();
     const year = today.getFullYear();
     const month = today.getMonth() + 1; // Los meses comienzan desde 0
     const day = today.getDate();
-
     // Formatea la fecha en el formato requerido por los campos de fecha (YYYY-MM-DD)
     const formattedDate = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
-
     return formattedDate;
   }
 
@@ -88,15 +91,9 @@ export class ActividadesdocenteComponent implements OnInit, OnDestroy {
       this.getAsignaturas();
       this.getperiodoCalificaciones();
       this.getActividades();
-      this.getActividadesEducativas();
       this.getActividadesEducativas1();
-      this.getActividadesEducativas2();
     });
 
-  }
-
-  regresarPagina(): void {
-    this.location.back();
   }
 
   getGrados() {
@@ -116,7 +113,6 @@ export class ActividadesdocenteComponent implements OnInit, OnDestroy {
     if (this.selectedAsignaturaId !== null) {
       this.educativaService.getAsignaturasPorGrado(this.selectedAsignaturaId).subscribe((actividades) => {
         this.actividades = actividades;
-
         // Establece la actividad seleccionada a null cuando cambia la asignatura
         this.selectedActividadId = null;
 
@@ -128,19 +124,16 @@ export class ActividadesdocenteComponent implements OnInit, OnDestroy {
     }
   }
 
-
   //obtener las asignaturas
   getAsignaturas() {
     this.educativaService.getAsignaturas().subscribe((res) => {
       this.asignatura = res;
     })
   }
-
   getActividades() {
     this.educativaService.getTipoActividad().subscribe((res) => {
       this.actividad = res;
     })
-
   }
   getperiodoCalificaciones() {
     this.educativaService.getPCalificaciones().subscribe((res) => {
@@ -158,24 +151,7 @@ export class ActividadesdocenteComponent implements OnInit, OnDestroy {
       }
     );
   }
-
-  getActividadesEducativas() {
-    this.educativaService.getActividadesEducativas().subscribe((res) => {
-      this.educativaService.actividades = res as EducativaActividades[];
-      console.log(res);
-    })
-  }
   getActividadesEducativas1() {
-    this.educativaService.getActividadesEducativas().
-      subscribe((data) => {
-        this.actividadesEducativas = data;
-        console.log(data);
-        this.dtTrigger.next(this.dtOptions);
-        this.dtTrigger.unsubscribe(); // Desactivar DataTables
-      });
-  }
-
-  getActividadesEducativas2() {
     // Verifica si asignaturaId es válido antes de hacer la solicitud
     if (this.asignaturaId) {
       this.educativaService.getActividadesPorAsignatura(this.asignaturaId)
@@ -189,15 +165,12 @@ export class ActividadesdocenteComponent implements OnInit, OnDestroy {
       console.error('Error: asignaturaId no es válido.');
     }
   }
-
   //para abrir el modal
   openAddEducativaModal() {
     // Resetea el formulario antes de abrir el modal para un nuevo estudiante
     this.myForm.reset();
-
     // Crea una nueva instancia de Persona para evitar problemas con la edición
     this.educativaService.selectedActividades = new EducativaActividades();
-
     // Abre el modal de añadir estudiante
     const modal = document.getElementById('addEducativaModal');
     if (modal) {
@@ -208,7 +181,6 @@ export class ActividadesdocenteComponent implements OnInit, OnDestroy {
   }
   validateTitulo(control: FormControl): { [key: string]: boolean } | null {
     const nombreRegex = /^[a-zA-Z0-9\s]+$/;
-
     if (!nombreRegex.test(control.value)) {
       Swal.fire({
         icon: 'error',
@@ -217,16 +189,17 @@ export class ActividadesdocenteComponent implements OnInit, OnDestroy {
       });
       return { 'nombreInvalido': true };
     }
-
     return null;
   }
 
-  createActividadesEducativas(form: NgForm): void {
-    const requiredFields = ['titulo', 'detalleActividad', 'fechaInicio', 'tipoActId', 'perCalId', 'asignaturaId', 'estado'];
+  handleSeleccionMateria(materia: any) {
+    this.educativaService.selectedActividades.asignaturaId = materia.id;
+}
 
+  createActividadesEducativas(form: NgForm): void {
+    const requiredFields = ['titulo', 'detalleActividad', 'fechaInicio', 'tipoActId', 'perCalId', 'estado'];
     const isEmptyField = requiredFields.some(key => {
       const fieldValue = form.value[key];
-
       // Verificar si el campo es nulo o vacío
       return fieldValue === null || fieldValue === undefined || fieldValue === '';
     });
@@ -257,13 +230,11 @@ export class ActividadesdocenteComponent implements OnInit, OnDestroy {
     fechaInicio.setHours(0, 0, 0, 0);
 
     if (form.value.id) {
-      // Código para actualizar
-      // ...
     } else {
       if (form.valid) {
         form.value.tipoActId = Number(form.value.tipoActId);
         form.value.perCalId = Number(form.value.perCalId);
-        form.value.asignaturaId = Number(form.value.asignaturaId);
+        form.value.asignaturaId = this.educativaService.selectedActividades.asignaturaId;
 
         console.log("tipoActId:", form.value.tipoActId);
         console.log("perCalId:", form.value.perCalId);
@@ -273,8 +244,9 @@ export class ActividadesdocenteComponent implements OnInit, OnDestroy {
         this.educativaService.postActividadesEducativas(form.value).pipe(
           mergeMap(resPostActividades => {
             console.log('Nuevo registro agregado', resPostActividades);
-            // Realizar la solicitud a la otra API
-            return this.educativaService.registrarNotasAsignatura(form.value.asignaturaId);
+            // Ya no necesitas tomar el ID de la asignatura del formulario, sino que ya lo tienes
+            // en educativaService.selectedActividades.asignaturaId
+            return this.educativaService.registrarNotasAsignatura(this.educativaService.selectedActividades.asignaturaId);
           })
         ).subscribe(
           resRegistrarNotas => {

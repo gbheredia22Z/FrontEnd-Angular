@@ -9,10 +9,11 @@
     <div class="collapse navbar-collapse" id="navbarNavDropdown">
         <ul class="navbar-nav">
             <li class="nav-item" (click)="regresarPagina()">
-                <a class="nav-link" > <i class="bi bi-house-gear-fill"></i> Inicio  <span class="sr-only">(current)</span></a>
+                <a class="nav-link"> <i class="bi bi-house-gear-fill"></i> Inicio <span
+                        class="sr-only">(current)</span></a>
             </li>
         </ul>
-    </div> 
+    </div>
 </nav>
 
 <h1 class=""> Actividades Educativas </h1>
@@ -78,16 +79,7 @@
                                     {{getPeriodo(periodo.nombrePeriodo) }} </option>
                             </select>
                         </div>
-                        <!-- Dentro del formulario en el modal -->
-                        <div class="mb-3">
-                            <label for="grado" class="form-label">Grado</label>
-                            <select class="form-select" id="gradoId"
-                                [(ngModel)]="educativaService.selectedActividades.gradoId" name="gradoId" required>
-                                <option *ngFor="let grado of grados" [value]="grado.id">{{
-                                    getNombreGrados(grado.id) }}</option>
-                            </select>
-                        </div>
-                        
+
                         <div class=" mb-3">
                             <label for="estado" class="form-label">Estado:</label>
                             <select class="form-select" aria-label="Selecciona el estado" id="estado" name="estado"
@@ -107,8 +99,8 @@
         </div>
     </div>
 </div>
-<div class="container mt-4">
 
+<div class="container mt-4">
     <div class="d-flex align-items-center">
         <button type="button" class="btn btn-outline-danger" (click)="onImprimir()"> Descargar
             <i class="bi bi-file-pdf" id="pdf"></i>
@@ -211,6 +203,17 @@
                                                             getPeriodoEdit(periodo.nombrePeriodo) }} </option>
                                                     </select>
                                                 </div>
+
+                                                <div class=" mb-3">
+                                                    <label for="periodo" class="form-label">Asignatura</label>
+                                                    <select class="form-select" id="asignaturaId"
+                                                        [(ngModel)]="educativaService.selectedActividades.asignaturaId"
+                                                        name="asignaturaId" required>
+                                                        <option *ngFor="let asignaturas of asignatura"
+                                                            [value]="asignaturas.id">{{
+                                                            asignaturas.nombreMateria }} </option>
+                                                    </select>
+                                                </div>
                                                 <div class=" mb-3">
                                                     <label for="estado" class="form-label">Estado:</label>
                                                     <select class="form-select" aria-label="Selecciona el estado"
@@ -240,10 +243,7 @@
     </table>
 </div>
 
-
-
 <br> <br><br> <br><br>
-
 
 <footer class="footer">
     <div class="container text-center">
