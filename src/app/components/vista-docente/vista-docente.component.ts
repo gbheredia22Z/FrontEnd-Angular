@@ -18,15 +18,12 @@ export class VistaDocenteComponent implements OnInit {
 
   constructor(private personaService: PersonaService, private router: Router, private route: ActivatedRoute) { }
 
-
   ngOnInit(): void {
     this.mensajeBienvenida = history.state.mensaje;
     this.idDocente = history.state.idUser;
-
     if ('usuario' in history.state) {
       this.idDocente = history.state.usuario.id;
     }
-
     this.obtenerAsignaturas(this.idDocente);
   }
 
@@ -42,10 +39,9 @@ export class VistaDocenteComponent implements OnInit {
     );
   }
 
-  async cargarActividades(asignaturaId: string) {
-      this.router.navigate(['/actividad-docente', asignaturaId]);
+  cargarActividades(asignaturaId: string) {
+    this.router.navigate(['/actividad-docente', asignaturaId], { state: { asignaturaId: asignaturaId } });
   }
-
 
   cerrarModal(asignaturaId: string) {
     this.modalVisible[asignaturaId] = false; // Ocultar el modal correspondiente

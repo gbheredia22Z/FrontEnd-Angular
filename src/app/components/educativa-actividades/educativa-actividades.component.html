@@ -100,11 +100,12 @@
                         <!-- Dentro del formulario en el modal -->
                         <div class="mb-3">
                             <label for="grado" class="form-label">Grado</label>
-                            <select class="form-select" id="gradoId"
-                                [(ngModel)]="educativaService.selectedActividades.gradoId" name="gradoId" required>
+                            <select class="form-select" id="gradoId" [(ngModel)]="selectedGradoId" name="gradoId"
+                                (change)="onGradoSelected()" required>
                                 <option *ngFor="let grado of grados" [value]="grado.id">{{
                                     getNombreGrados(grado.nombreGrado) }}</option>
                             </select>
+
                         </div>
                         <div class=" mb-3">
                             <label for="periodo" class="form-label">Asignatura</label>
@@ -153,6 +154,7 @@
                 <th scope="col">Fecha Inicio </th>
                 <th scope="col"> Periodo Calificacion </th>
                 <th scope="col"> Asignatura </th>
+                <th scope="col"> Grado </th>
                 <th scope="col">Estado</th>
                 <th>Acciones</th>
 
@@ -166,6 +168,7 @@
                 <td>{{educativasAc.fechaInicio | date: 'dd/MM/yyyy'}}</td>
                 <td>{{ getPeriodo(educativasAc.periodoCalificaciones.nombrePeriodo) }}</td>
                 <td>{{educativasAc.asignatura.nombreMateria}}</td>
+                <td>{{ getNombreGrado(educativasAc.grado) }}</td>
                 <td>{{educativasAc.estado === 'A' ? 'Activo' : 'Inactivo'}}</td>
                 <td>
                     <button type="button" class="btn btn-success" id="btn-g" (click)="editEducativas(educativasAc)"><i
@@ -264,7 +267,7 @@
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
-                                                (click)="closeEditEducativaModal()">Cerrar</button>
+                                                    (click)="closeEditEducativaModal()">Cerrar</button>
                                                 <button type="button" class="btn btn-dark"
                                                     (click)="updateEstudiante(gradoForm)">Guardar</button>
                                             </div>

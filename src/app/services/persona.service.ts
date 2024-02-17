@@ -14,6 +14,9 @@ export class PersonaService {
   estudiantes!: Persona[];
   selectedDocente: Persona;
   docentes!: Persona[];
+  selectedAdmin: Persona;
+  administrador!: Persona[];
+
 
   URL_API = "http://127.0.0.1:3000/api/estudiante/";
   URL_API2 = "http://127.0.0.1:3000/api/docente/";
@@ -23,12 +26,13 @@ export class PersonaService {
   URL_API_D = "http://127.0.0.1:3000/api";
   URL_API_AC = "http://127.0.0.1:3000/api";
   URL_Docente = "http://127.0.0.1:3000/api";
+  URL_Admin = "http://127.0.0.1:3000/api/admin/";
 
   constructor(private http: HttpClient) {
     this.selectedEstudiante = new Persona();
     this.selectedDocente = new Persona();
+    this.selectedAdmin = new Persona();
   }
-
   getEstudiante() {
     return this.http.get(this.URL_API);
   }
@@ -44,7 +48,6 @@ export class PersonaService {
       })
     );
   }
-
   getDocente() {
     return this.http.get(this.URL_API2);
   }
@@ -60,28 +63,23 @@ export class PersonaService {
       })
     );
   }
-
   getEstudianteByCi(cedula: string): Observable<any> {
     const url = `${this.apiUrl2}/estudiante/cedula/${cedula}`;
     return this.http.get(url);
   }
-
   getEstudianteByCorreo(correo: string): Observable<any> {
     const url = `${this.apiUrl}/estudiante/correo/${correo}`;
     return this.http.get(url);
   }
-
   getEstudianteByCelular(celular: string): Observable<any> {
     const url = `${this.apiUrl}/estudiante/celular/${celular}`;
     return this.http.get(url);
   }
   /*****PARA PROFSORES */
-
   getTeacherByCi(cedula: string): Observable<any> {
     const url = `${this.URL_Docente}/docente/cedula/${cedula}`;
     return this.http.get(url);
   }
-
   getTeacherByCorreo(correo: string): Observable<any> {
     const url = `${this.URL_Docente}/docente/correo/${correo}`;
     return this.http.get(url);
@@ -90,7 +88,6 @@ export class PersonaService {
     const url = `${this.URL_Docente}/docente/celular/${celular}`;
     return this.http.get(url);
   }
-
   asignaturasPorIdEstudiante(idEstudiante: number): Observable<Asignatura[]> {
     const url = `${this.URL_API_A}/persona/asignaturas/${idEstudiante}`;
     return this.http.get<Asignatura[]>(url).pipe(
@@ -100,7 +97,6 @@ export class PersonaService {
       })
     );
   }
-
   asignaturasPorIdDocente(idDocente: number): Observable<Asignatura[]> {
     const url = `${this.URL_API_D}/persona/asignaturas/${idDocente}`;
     return this.http.get<Asignatura[]>(url).pipe(
@@ -110,7 +106,6 @@ export class PersonaService {
       })
     );
   }
-
   obtenerActividadesPorAsignatura(asignaturaId: number): Observable<any> {
     const url = `${this.URL_API_AC}/actividades/asignatura/${asignaturaId}`;
     return this.http.get<Asignatura[]>(url).pipe(
@@ -121,8 +116,38 @@ export class PersonaService {
     );
 
   }
-  
-
+  //ADMIN
+  getAdmin() {
+    return this.http.get(this.URL_Admin);
+  }
+  postAdmin(administrador: Persona) {
+    return this.http.post(this.URL_Admin, administrador);
+  }
+  putAdmin(administrador: Persona): Observable<any> {
+    const url = `${this['URL_Admin']}${administrador.id}`;
+    return this.http.put(url, administrador).pipe(
+      catchError((error: any) => {
+        console.error('Error al actualizar administrador:', error);
+        throw error;
+      })
+    );
+  }
+  getAdminById(id: string): Observable<any> {
+    const url = `${this.URL_Admin}/id/${id}`;
+    return this.http.get(url);
+  }
+  getAdminByCi(cedula: string): Observable<any> {
+    const url = `${this.URL_Admin}/cedula/${cedula}`;
+    return this.http.get(url);
+  }
+  getAdminByCorreo(correo: string): Observable<any> {
+    const url = `${this.URL_Admin}/correo/${correo}`;
+    return this.http.get(url);
+  }
+  getAdminByCelular(celular: string): Observable<any> {
+    const url = `${this.URL_Admin}/celular/${celular}`;
+    return this.http.get(url);
+  }
 }
 
 

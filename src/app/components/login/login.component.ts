@@ -26,14 +26,20 @@ export class LoginComponent {
         if (response.usuario && response.usuario.tipoPersona === 'E') {
           this.mensajeBienvenida = `Bienvenido/a ${response.usuario.nombre}`;
           this.idUsuario = response.usuario.id;
-          this.router.navigate(['/vista-estudiante'], { state: { mensaje: this.mensajeBienvenida, idUser: this.idUsuario } });
+          this.router.navigate(['/vista-estudiante'], {
+            state: { mensaje: this.mensajeBienvenida, idUser: this.idUsuario }
+          });
         } else if (response.usuario && response.usuario.tipoPersona === 'D') {
           this.mensajeBienvenida = `Bienvenido/a ${response.usuario.nombre}`;
           this.idUsuario = response.usuario.id;
-          this.router.navigate(['/vista-docente'], { state: { mensaje: this.mensajeBienvenida, idUser: this.idUsuario} });
-        } else {
+          this.router.navigate(['/vista-docente'], {
+            state: { mensaje: this.mensajeBienvenida, idUser: this.idUsuario }
+          });
+        } else if (response.usuario && response.usuario.tipoPersona === 'A') {
           this.mensajeBienvenida = `Bienvenido/a admin`;
-          this.router.navigate(['/admin'], { state: { mensaje: this.mensajeBienvenida, idUser: this.idUsuario } });
+          this.router.navigate(['/admin'], {
+            state: { mensaje: this.mensajeBienvenida, idUser: this.idUsuario }
+          });
         }
       },
       (error) => {

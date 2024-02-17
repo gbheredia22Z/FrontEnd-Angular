@@ -29,65 +29,47 @@
                 </div>
             </li>
         </ul>
-        <!--no mover-->
-        <div class="collapse navbar-collapse" id="navbarNavDropdown">
-            <ul class="navbar-nav ml-auto" style="margin-right: 30px;">
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="false">
-                        {{ mensajeBienvenida }}
-                    </a>
-                    <div class="dropdown-menu bg-dark" aria-labelledby="navbarDropdownMenuLink">
-                        <!-- Nuevo elemento -->
-                        <a class="dropdown-item" href="/administrador"><i class="bi bi-gear"></i> Configurar</a>
-                    </div>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" (click)="logout()"> <i class="bi bi-arrow-left-square-fill"></i> Salir</a>
-                </li>
-            </ul>
-        </div>
     </div>
 </nav>
 
-<h1 class=""> Docentes </h1>
+<h1 class=""> Administrador </h1>
 
 <div class="d-flex align-items-center">
-    <!-- Botón "Añadir Docente" -->
-    <button type="button" class="btn btn-primary" id="modal" (click)="openAddDocenteModal()">
-        Añadir Docente
+    <!-- Botón "Añadir Admin" -->
+    <button type="button" class="btn btn-primary" id="modal" (click)="openAddAdminModal()">
+        Añadir
     </button>
 </div>
 
 <!-- Modal -->
-<div class="modal fade" id="addDocenteModal" tabindex="-1" aria-labelledby="addDocenteModalLabel" aria-hidden="true">
+<div class="modal fade" id="addAdminModal" tabindex="-1" aria-labelledby="addAdminModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
-                <h6 class="" id="exampleModalLabel"> <i class="bi bi-building-fill-up"></i> <br>Añadir Docente </h6>
+                <h6 class="" id="exampleModalLabel"> <i class="bi bi-building-fill-up"></i> <br>Añadir Administrador </h6>
                 <button type="button" class="btn btn-light" data-bs-dismiss="modal" aria-label="Close"
-                    (click)="closeAddDocenteModal()"><i class="bi bi-x-lg"></i></button>
+                    (click)="closeAddAdminModal()"><i class="bi bi-x-lg"></i></button>
             </div>
 
             <div class="modal-body">
-                <form *ngIf="myForm" #myForm="ngForm" (ngSubmit)="createDocente(myForm)">
+                <form *ngIf="myForm" #myForm="ngForm" (ngSubmit)="createAdmin(myForm)">
                     <div class="input-group">
-                        <input name="code" class="form-control" type="hidden" name="id_docente" #id="ngModel"
-                            [(ngModel)]="personaService.selectedDocente.id" />
+                        <input name="code" class="form-control" type="hidden" name="id_admin" #id="ngModel"
+                            [(ngModel)]="personaService.selectedAdmin.id" />
                     </div>
 
                     <div class="row">
                         <div class="mb-3">
                             <label for="nombre"><i class="fas fa-user"></i> Nombre </label>
                             <input id="nombre" type="text" class="form-control" name="nombre"
-                                [(ngModel)]="personaService.selectedDocente.nombre" required maxlength="100">
+                                [(ngModel)]="personaService.selectedAdmin.nombre" required maxlength="100">
 
                         </div>
 
                         <div class="mb-3">
                             <label for="apellido"><i class="fas fa-user"></i> Apellido</label>
                             <input id="apellido" type="text" class="form-control" name="apellido"
-                                [(ngModel)]="personaService.selectedDocente.apellido" required maxlength="100">
+                                [(ngModel)]="personaService.selectedAdmin.apellido" required maxlength="100">
 
                         </div>
                     </div>
@@ -96,7 +78,7 @@
                         <div class="mb-3">
                             <label for="cedula"><i class="fas fa-id-card"></i> Cédula</label>
                             <input id="cedula" type="text" class="form-control" name="cedula"
-                                [(ngModel)]="personaService.selectedDocente.cedula" required pattern="[0-9]{10}"
+                                [(ngModel)]="personaService.selectedAdmin.cedula" required pattern="[0-9]{10}"
                                 (input)="filterNumeric($event)" maxlength="10">
                         </div>
 
@@ -105,7 +87,7 @@
                             <label for="fechaNacimiento" class="form-label">Fecha de Nacimiento:</label>
 
                             <input type="date" class="form-control" id="fechaNacimiento" #fechaNacimiento="ngModel"
-                                [(ngModel)]="personaService.selectedDocente.fechaNacimiento" name="fechaNacimiento"
+                                [(ngModel)]="personaService.selectedAdmin.fechaNacimiento" name="fechaNacimiento"
                                 (blur)="validarFechaNacimiento()" required [min]="minFechaNacimiento"
                                 [max]="maxFechaNacimiento">
                         </div>
@@ -116,7 +98,7 @@
                         <div class="mb-3">
                             <label for="direccion"><i class="fas fa-map-marker-alt"></i> Dirección</label>
                             <input id="direccion" type="text" class="form-control" name="direccion"
-                                [(ngModel)]="personaService.selectedDocente.direccion" required maxlength="200">
+                                [(ngModel)]="personaService.selectedAdmin.direccion" required maxlength="200">
 
                         </div>
 
@@ -124,21 +106,21 @@
                         <div class="mb-3">
                             <label for="correo"><i class="fas fa-envelope"></i> Correo Electrónico</label>
                             <input id="correo" type="email" class="form-control" name="correo"
-                                [(ngModel)]="personaService.selectedDocente.correo" required email>
+                                [(ngModel)]="personaService.selectedAdmin.correo" required email>
 
                         </div>
 
                         <div class="mb-3">
                             <label for="celular"><i class="fas fa-phone"></i> Teléfono</label>
                             <input id="celular" type="text" class="form-control" name="celular"
-                                [(ngModel)]="personaService.selectedDocente.celular" required pattern="09\d{8}"
+                                [(ngModel)]="personaService.selectedAdmin.celular" required pattern="09\d{8}"
                                 (input)="filterNumeric($event)" maxlength="10">
 
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
-                            (click)="closeAddDocenteModal()">Cerrar</button>
+                            (click)="closeAddAdminModal()">Cerrar</button>
                         <button type="submit" class="btn btn-dark">Guardar</button>
                     </div>
                 </form>
@@ -172,16 +154,16 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let docente of data">
-                <td>{{docente.nombre}}</td>
-                <td>{{docente.apellido}}</td>
-                <td>{{docente.cedula}}</td>
-                <td>{{ docente.fechaNacimiento | date:'dd-MM-yyyy' }}</td>
-                <td>{{docente.direccion}}</td>
-                <td>{{docente.correo}}</td>
-                <td>{{docente.celular}}</td>
+            <tr *ngFor="let admin of data">
+                <td>{{admin.nombre}}</td>
+                <td>{{admin.apellido}}</td>
+                <td>{{admin.cedula}}</td>
+                <td>{{admin.fechaNacimiento | date:'dd-MM-yyyy' }}</td>
+                <td>{{admin.direccion}}</td>
+                <td>{{admin.correo}}</td>
+                <td>{{admin.celular}}</td>
                 <td>
-                    <button type="button" class="btn btn-success" id="" (click)="editDocente(docente)"><i
+                    <button type="button" class="btn btn-success" id="" (click)="editAdmin(admin)"><i
                             class="bi bi-pencil-square"></i></button>
                 </td>
                 <!-- Modal de Edición -->
@@ -191,28 +173,28 @@
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h6 class="" id="exampleModalLabel">
-                                    <i class="bi bi-save-fill"></i> <br> Editar Docente
+                                    <i class="bi bi-save-fill"></i> <br> Editar Administrador
                                 </h6>
                                 <button type="button" class="btn btn-light" data-bs-dismiss="modal" aria-label="Close"
-                                    (click)="closeEditDocenteModal()"><i class="bi bi-x-lg"></i></button>
+                                    (click)="closeEditAdminModal()"><i class="bi bi-x-lg"></i></button>
                             </div>
 
                             <div class="modal-body">
-                                <form #docenteForm2="ngForm">
+                                <form #adminForm2="ngForm">
                                     <!-- Campo de ID oculto -->
-                                    <input type="hidden" [(ngModel)]="personaService.selectedDocente.id" name="id" />
+                                    <input type="hidden" [(ngModel)]="personaService.selectedAdmin.id" name="id" />
                                     <div class="row">
                                         <div class="mb-3">
                                             <label for="nombre" class="form-label"><i class="fas fa-user"></i> Nombre
                                             </label>
                                             <input id="nombre" type="text" class="form-control" name="nombre"
-                                                [(ngModel)]="personaService.selectedDocente.nombre" name="nombre">
+                                                [(ngModel)]="personaService.selectedAdmin.nombre" name="nombre">
                                         </div>
                                         <div class="mb-3">
                                             <label for="apellido" class="form-label"><i class="fas fa-user"></i>
                                                 Apellido</label>
                                             <input id="apellido" type="text" class="form-control" name="apellido"
-                                                [(ngModel)]="personaService.selectedDocente.apellido" name="apellido">
+                                                [(ngModel)]="personaService.selectedAdmin.apellido" name="apellido">
                                         </div>
                                     </div>
 
@@ -221,7 +203,7 @@
                                             <label for="direccion"><i class="fas fa-map-marker-alt"></i>
                                                 Dirección</label>
                                             <input id="direccion" type="text" class="form-control" name="direccion"
-                                                [(ngModel)]="personaService.selectedDocente.direccion" name="direccion">
+                                                [(ngModel)]="personaService.selectedAdmin.direccion" name="direccion">
                                         </div>
                                     </div>
 
@@ -230,38 +212,33 @@
                                             <label for="correo"><i class="fas fa-envelope"></i> Correo
                                                 Electrónico</label>
                                             <input id="correo" type="email" class="form-control" name="correo"
-                                                [(ngModel)]="personaService.selectedDocente.correo" name="correo">
+                                                [(ngModel)]="personaService.selectedAdmin.correo" name="correo">
                                         </div>
                                         <div class="mb-3">
                                             <label for="celular"><i class="fas fa-phone"></i> Teléfono</label>
                                             <input id="celular" type="text" class="form-control" name="celular"
-                                                [(ngModel)]="personaService.selectedDocente.celular" name="celular">
+                                                [(ngModel)]="personaService.selectedAdmin.celular" name="celular">
                                         </div>
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
-                                            (click)="closeEditDocenteModal()">Cerrar</button>
+                                            (click)="closeEditAdminModal()">Cerrar</button>
                                         <!-- Botón de guardar en el modal de edición -->
                                         <button type="button" class="btn btn-dark"
-                                            (click)="updateDocente(docenteForm2)">Guardar</button>
+                                            (click)="updateAdmin(adminForm2)">Guardar</button>
                                     </div>
                                 </form>
                             </div>
                         </div>
                     </div>
                 </div>
-
             </tr>
         </tbody>
     </table>
-
 </div>
 
-
 <!--Footer-->
-
 <br> <br><br> <br><br>
-
 <footer class="footer">
     <div class="container text-center">
         <div class="row">

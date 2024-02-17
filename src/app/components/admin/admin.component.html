@@ -13,7 +13,7 @@
             </li>
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
-                    aria-haspopup="true" aria-expanded="false"> 
+                    aria-haspopup="true" aria-expanded="false">
                     Administrar </a>
                 <div class="dropdown-menu bg-dark" aria-labelledby="navbarDropdownMenuLink">
                     <a class="dropdown-item" href="/estudiante"> Estudiantes</a>
@@ -31,14 +31,19 @@
         </ul>
         <!--no mover-->
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
-            <ul class="navbar-nav">
-                <li class="nav-item dropdown ">
+            <ul class="navbar-nav ml-auto" style="margin-right: 30px;">
+                <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
                         aria-haspopup="true" aria-expanded="false">
-                        {{ mensajeBienvenida }} </a>
+                        {{ mensajeBienvenida }}
+                    </a>
                     <div class="dropdown-menu bg-dark" aria-labelledby="navbarDropdownMenuLink">
-                        <a class="dropdown-item" (click)="logout()"> Cerrar Sesión </a>
+                        <!-- Nuevo elemento -->
+                        <a class="dropdown-item" href="/administrador"><i class="bi bi-gear"></i> Configurar</a>
                     </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" (click)="logout()"> <i class="bi bi-arrow-left-square-fill"></i> Salir</a>
                 </li>
             </ul>
         </div>
@@ -116,7 +121,8 @@
         </div>
         <div class="col">
             <div class="card" style="width: auto; margin: auto auto">
-                <img src="../../../assets/tipoactividad.png" class="card-img-top" alt="" style="height: 102px; width: 102px;">
+                <img src="../../../assets/tipoactividad.png" class="card-img-top" alt=""
+                    style="height: 102px; width: 102px;">
                 <div class="card-body">
                     <h5 class="card-title"> Tipo Actividad </h5>
                     <p class="card-text">Crea, administra y actualiza la información.</p>
@@ -126,7 +132,7 @@
         </div>
         <div class="col">
             <div class="card" style="width: auto; margin: auto auto">
-                <img src="../../../assets/matricula.png" class="card-img-top" alt="" >
+                <img src="../../../assets/matricula.png" class="card-img-top" alt="">
                 <div class="card-body">
                     <h5 class="card-title">Matrícula </h5>
                     <p class="card-text">Crea, administra y actualiza la información de matrícula de un estudiante.</p>
@@ -157,7 +163,7 @@
             </div>
         </div>
         <div class="col">
-            
+
         </div>
         <div class="col">
 

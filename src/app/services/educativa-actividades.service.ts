@@ -49,8 +49,21 @@ export class EducativaActividadesService {
 
   //enviar
   postActividadesEducativas(educativas: EducativaActividades) {
-    return this.http.post(this.URL_API_ACT, educativas);
+    // Asegúrate de incluir el ID de la asignatura en el cuerpo de la solicitud
+    const body = {
+      titulo: educativas.titulo,
+      detalleActividad: educativas.detalleActividad,
+      fechaInicio: educativas.fechaInicio,
+      tipoActId: educativas.tipoActId,
+      perCalId: educativas.perCalId,
+      asignaturaId: educativas.asignaturaId, // Asegúrate de incluir el ID de la asignatura aquí
+      estado: educativas.estado
+    };
+  
+    // Realiza la solicitud POST con el cuerpo configurado
+    return this.http.post(this.URL_API_ACT, body);
   }
+  
 
   //actualizar
   putEducativaActividades(educativas: EducativaActividades): Observable<any> {

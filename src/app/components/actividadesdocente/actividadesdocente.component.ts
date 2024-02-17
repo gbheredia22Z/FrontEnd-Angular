@@ -6,8 +6,6 @@ import { EducativaActividades } from '../../models/educativa-actividades';
 import Swal from 'sweetalert2';
 import { ImpresionService } from '../../services/impresion.service';
 import { Location } from '@angular/common';
-
-
 import { PersonaService } from '../../services/persona.service'; // Importa tu servicio PersonaService
 import { ActivatedRoute, Params } from '@angular/router';
 
@@ -45,6 +43,7 @@ export class ActividadesdocenteComponent implements OnInit, OnDestroy {
   selectedActividadId: number | null = null;
   actividades: any[] = [];
 
+
   constructor(public educativaService: EducativaActividadesService, private fb: FormBuilder,
     private srvImpresion: ImpresionService, private personaService: PersonaService, private route: ActivatedRoute,
     private location: Location) {
@@ -78,9 +77,7 @@ export class ActividadesdocenteComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.route.params.subscribe((params: Params) => {
       console.log('Parámetro asignaturaId:', params['asignaturaId']);
-      this.selectedAsignaturaId = +params['asignaturaId'];
-      this.asignaturaId = this.selectedAsignaturaId.toString();
-
+      this.asignaturaId = params['asignaturaId'];
       // Llama a los métodos necesarios después de obtener el ID de la asignatura
       this.getGrados();
       this.dtOptions = {
@@ -93,8 +90,8 @@ export class ActividadesdocenteComponent implements OnInit, OnDestroy {
       this.getActividades();
       this.getActividadesEducativas1();
     });
-
   }
+
 
   getGrados() {
     this.educativaService.getGrados().subscribe((res) => {
@@ -111,16 +108,10 @@ export class ActividadesdocenteComponent implements OnInit, OnDestroy {
 
   onAsignaturaSelected() {
     if (this.selectedAsignaturaId !== null) {
-      this.educativaService.getAsignaturasPorGrado(this.selectedAsignaturaId).subscribe((actividades) => {
-        this.actividades = actividades;
-        // Establece la actividad seleccionada a null cuando cambia la asignatura
-        this.selectedActividadId = null;
-
-        // Aquí llamamos al método para cargar las actividades educativas filtradas por asignatura
-        this.getActividadesEducativas1();
-      });
+      this.educativaService.selectedActividades.asignaturaId = this.selectedAsignaturaId;
+      console.log('Asignatura seleccionada:', this.selectedAsignaturaId);
     } else {
-      console.error("Error: No se ha seleccionado una asignatura.");
+      console.error('Error: No se ha seleccionado una asignatura.');
     }
   }
 
@@ -194,7 +185,7 @@ export class ActividadesdocenteComponent implements OnInit, OnDestroy {
 
   handleSeleccionMateria(materia: any) {
     this.educativaService.selectedActividades.asignaturaId = materia.id;
-}
+  }
 
   createActividadesEducativas(form: NgForm): void {
     const requiredFields = ['titulo', 'detalleActividad', 'fechaInicio', 'tipoActId', 'perCalId', 'estado'];
@@ -203,7 +194,6 @@ export class ActividadesdocenteComponent implements OnInit, OnDestroy {
       // Verificar si el campo es nulo o vacío
       return fieldValue === null || fieldValue === undefined || fieldValue === '';
     });
-
     if (isEmptyField) {
       Swal.fire({
         icon: 'error',
@@ -229,12 +219,16 @@ export class ActividadesdocenteComponent implements OnInit, OnDestroy {
     today.setHours(0, 0, 0, 0);
     fechaInicio.setHours(0, 0, 0, 0);
 
-    if (form.value.id) {
-    } else {
-      if (form.valid) {
-        form.value.tipoActId = Number(form.value.tipoActId);
-        form.value.perCalId = Number(form.value.perCalId);
-        form.value.asignaturaId = this.educativaService.selectedActividades.asignaturaId;
+    if (form.valid) {
+      form.value.tipoActId = Number(form.value.tipoActId);
+      form.value.perCalId = Number(form.value.perCalId);
+
+      // Convertir asignaturaId a un número antes de pasarlo al servicio
+      const asignaturaIdNum = parseInt(this.asignaturaId, 10); // o Number(this.asignaturaId);
+
+      // Verifica si asignaturaId es nulo
+      if (!isNaN(asignaturaIdNum)) {
+        form.value.asignaturaId = asignaturaIdNum;
 
         console.log("tipoActId:", form.value.tipoActId);
         console.log("perCalId:", form.value.perCalId);
@@ -246,7 +240,7 @@ export class ActividadesdocenteComponent implements OnInit, OnDestroy {
             console.log('Nuevo registro agregado', resPostActividades);
             // Ya no necesitas tomar el ID de la asignatura del formulario, sino que ya lo tienes
             // en educativaService.selectedActividades.asignaturaId
-            return this.educativaService.registrarNotasAsignatura(this.educativaService.selectedActividades.asignaturaId);
+            return this.educativaService.registrarNotasAsignatura(form.value.asignaturaId);
           })
         ).subscribe(
           resRegistrarNotas => {
@@ -275,10 +269,11 @@ export class ActividadesdocenteComponent implements OnInit, OnDestroy {
           }
         );
       } else {
-        console.log('problemas');
+        console.error('Error: asignaturaId no es válido.');
       }
     }
   }
+
 
   irPagina() {
     window.location.reload();
@@ -292,6 +287,7 @@ export class ActividadesdocenteComponent implements OnInit, OnDestroy {
     }
     return false;
   }
+
   irListaActividades() {
     //this.router.navigate(["/estudiante"])
     window.location.reload()
@@ -346,6 +342,7 @@ export class ActividadesdocenteComponent implements OnInit, OnDestroy {
       });
     }
   }
+
   imprimirExcel() {
     if (this.actividadesEducativas.length > 0) {
       const encabezado = ["Titulo", "Detalle", "Estado", "Fecha Fin", "Fecha Inicio", "Periodo",
@@ -369,6 +366,7 @@ export class ActividadesdocenteComponent implements OnInit, OnDestroy {
       });
     }
   }
+
   // Método para validar que la fecha sea igual o posterior a hoy
   getPeriodo(abreviatura: string): string {
     const nombrePeriodo: { [key: string]: string } = {
@@ -398,7 +396,6 @@ export class ActividadesdocenteComponent implements OnInit, OnDestroy {
       X: 'Sexto Grado',
       M: 'Séptimo Grado',
     };
-
     return nombresGrados[abreviatura] || abreviatura;
   }
 
@@ -412,7 +409,6 @@ export class ActividadesdocenteComponent implements OnInit, OnDestroy {
       X: 'Sexto Grado',
       M: 'Séptimo Grado',
     };
-
     return nombresGrados[abreviatura] || abreviatura;
   }
 
@@ -426,14 +422,12 @@ export class ActividadesdocenteComponent implements OnInit, OnDestroy {
       X: 'Sexto Grado',
       M: 'Séptimo Grado',
     };
-
     return nombresGrados[abreviatura] || abreviatura;
   }
 
   editEducativas(educativasAc: EducativaActividades) {
     // Clona el estudiante para evitar cambios directos
     this.educativaService.selectedActividades = { ...educativasAc };
-
     // Abre el modal de edición
     const modal = document.getElementById('editModal');
     if (modal) {
@@ -441,6 +435,7 @@ export class ActividadesdocenteComponent implements OnInit, OnDestroy {
       modal.style.display = 'block'; // Establece el estilo 'display' en 'block'
     }
   }
+
   updateEstudiante(form: NgForm) {
     this.educativaService.putEducativaActividades(this.educativaService.selectedActividades).subscribe((res) => {
       Swal.fire({
@@ -452,7 +447,6 @@ export class ActividadesdocenteComponent implements OnInit, OnDestroy {
       });
       this.irListaActividades();
       this.closeAddEducativaModal();
-
       // Cierra el modal de edición utilizando $
       $('#editModal').modal('hide');
     });

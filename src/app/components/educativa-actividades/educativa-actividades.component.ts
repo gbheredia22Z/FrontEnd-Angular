@@ -91,9 +91,12 @@ export class EducativaActividadesComponent implements OnInit, OnDestroy {
 
   onGradoSelected() {
     if (this.selectedGradoId !== null) {
-      this.getAsignaturas(); // Actualiza las asignaturas al seleccionar un grado
+        this.educativaService.getAsignaturasPorGrado(this.selectedGradoId).subscribe((asignaturas) => {
+            this.asignatura = asignaturas;
+        });
     }
-  }
+}
+
   onAsignaturaSelected() {
     if (this.selectedAsignaturaId !== null) {
       this.educativaService.getAsignaturasPorGrado(this.selectedAsignaturaId).subscribe((actividades) => {
@@ -378,7 +381,6 @@ export class EducativaActividadesComponent implements OnInit, OnDestroy {
       X: 'Sexto Grado',
       M: 'Séptimo Grado',
     };
-
     return nombresGrados[abreviatura] || abreviatura;
   }
 
@@ -392,7 +394,6 @@ export class EducativaActividadesComponent implements OnInit, OnDestroy {
       X: 'Sexto Grado',
       M: 'Séptimo Grado',
     };
-
     return nombresGrados[abreviatura] || abreviatura;
   }
 
@@ -406,21 +407,24 @@ export class EducativaActividadesComponent implements OnInit, OnDestroy {
       X: 'Sexto Grado',
       M: 'Séptimo Grado',
     };
-
     return nombresGrados[abreviatura] || abreviatura;
   }
 
   editEducativas(educativasAc: EducativaActividades) {
-    // Clona el estudiante para evitar cambios directos
+    // Clona el objeto para evitar cambios directos
     this.educativaService.selectedActividades = { ...educativasAc };
+
+    // Inicializa el ID de la asignatura en el formulario de edición
+    this.selectedActividadId = this.educativaService.selectedActividades.asignaturaId;
 
     // Abre el modal de edición
     const modal = document.getElementById('editModal');
     if (modal) {
-      modal.classList.add('show'); // Agrega la clase 'show' para mostrar el modal
-      modal.style.display = 'block'; // Establece el estilo 'display' en 'block'
+        modal.classList.add('show'); // Agrega la clase 'show' para mostrar el modal
+        modal.style.display = 'block'; // Establece el estilo 'display' en 'block'
     }
-  }
+}
+
   updateEstudiante(form: NgForm) {
     this.educativaService.putEducativaActividades(this.educativaService.selectedActividades).subscribe((res) => {
       Swal.fire({

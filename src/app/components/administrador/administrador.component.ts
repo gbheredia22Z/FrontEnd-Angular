@@ -1,19 +1,18 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { NgForm, FormBuilder, FormGroup, Validators, FormControl, ValidationErrors } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
 import { Subject, Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
 import { PersonaService } from '../../services/persona.service';
 import { Persona } from '../../models/persona';
 import { ImpresionService } from '../../services/impresion.service';
 
-
 @Component({
-  selector: 'app-docente',
-  templateUrl: './docente.component.html',
-  styleUrl: './docente.component.scss'
+  selector: 'app-administrador',
+  templateUrl: './administrador.component.html',
+  styleUrl: './administrador.component.scss'
 })
-export class DocenteComponent implements OnInit, OnDestroy {
+
+export class AdministradorComponent implements OnInit, OnDestroy {
   dtOptions: DataTables.Settings = {};
   data: any = []; //aqui se alamcena
   myForm: FormGroup;
@@ -21,21 +20,24 @@ export class DocenteComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription[] = [];
   isEditModalOpen = false;
   dtTrigger: Subject<any> = new Subject<any>();
-  mensajeBienvenida: string;
 
   // Define el rango permitido para la fecha de nacimiento
   minFechaNacimiento: string;
   maxFechaNacimiento: string;
 
-  logout(): void {
-    this.router.navigate(['/login']);
+
+
+  getAdmin() {
+    // this.personaService.getDocente().subscribe((res) => {
+    //   this.personaService.docentes = res as Persona[];
+    //   console.log(res);
+
+    // });
+
   }
 
-  getDocente() {
-  }
-
-  getDocente2() {
-    this.personaService.getDocente().
+  getAdmin2() {
+    this.personaService.getAdmin().
       subscribe((data) => {
         this.data = data;
         console.log(data);
@@ -49,11 +51,11 @@ export class DocenteComponent implements OnInit, OnDestroy {
         error: `El campo ${fieldName} debe tener máximo ${maxLength} caracteres`
       };
     }
+
     return { isValid: true };
   }
 
-  constructor(public personaService: PersonaService, private fb: FormBuilder, private srvImpresion: ImpresionService,
-    private router: Router) {
+  constructor(public personaService: PersonaService, private fb: FormBuilder, private srvImpresion: ImpresionService) {
     this.myForm = this.fb.group({
       id: new FormControl('', Validators.required),
       nombre: ['', Validators.required],
@@ -72,41 +74,37 @@ export class DocenteComponent implements OnInit, OnDestroy {
         url: "/assets/Spanish.json"
       },
     };
-    this.getDocente2();
-    this.mensajeBienvenida = history.state.mensaje;
-
+    this.getAdmin2();
     this.minFechaNacimiento = '1950-01-01';
     this.maxFechaNacimiento = '2006-12-31';
   }
 
-
-
   onSearch(): void {
     // Lógica para filtrar docentes por cédula
     if (this.searchQuery && this.searchQuery.trim() !== '') {
-      this.personaService.docentes = this.personaService.docentes.filter(docente =>
-        docente.cedula.includes(this.searchQuery.trim())
+      this.personaService.administrador = this.personaService.administrador.filter(admin =>
+        admin.cedula.includes(this.searchQuery.trim())
       );
     } else {
       // Si la consulta está vacía, muestra todos los docentes nuevamente
-      this.getDocente();
+      this.getAdmin();
     }
   }
 
-  openAddDocenteModal() {
+  openAddAdminModal() {
     // Resetea el formulario antes de abrir el modal para un nuevo estudiante
     this.myForm.reset();
 
     // Crea una nueva instancia de Persona para evitar problemas con la edición
-    this.personaService.selectedDocente = new Persona();
+    this.personaService.selectedAdmin = new Persona();
 
     // Abre el modal de añadir estudiante
-    const modal = document.getElementById('addDocenteModal');
+    const modal = document.getElementById('addAdminModal');
     if (modal) {
       modal.classList.add('show'); // Agrega la clase 'show' para mostrar el modal
       modal.style.display = 'block'; // Establece el estilo 'display' en 'block'
     }
-    $('#addDocenteModal').modal('hide');
+    $('#addAdminModal').modal('hide');
   }
 
   filterNumeric(event: any): void {
@@ -183,7 +181,7 @@ export class DocenteComponent implements OnInit, OnDestroy {
     return true;
   }
 
-  createDocente(form: NgForm): void {
+  createAdmin(form: NgForm): void {
     const isFormEmpty = Object.values(form.value).every(value => !value);
     if (isFormEmpty) {
       Swal.fire({
@@ -281,9 +279,9 @@ export class DocenteComponent implements OnInit, OnDestroy {
     }
 
     // Validación de número de teléfono duplicado
-    this.personaService.getTeacherByCelular(telefonoValue).subscribe(
-      (existingTeacherByCelular) => {
-        if (existingTeacherByCelular.length > 0) {
+    this.personaService.getAdminByCelular(telefonoValue).subscribe(
+      (existingAdminByCelular) => {
+        if (existingAdminByCelular.length > 0) {
           Swal.fire({
             icon: 'error',
             title: 'Error en el número de teléfono',
@@ -291,7 +289,7 @@ export class DocenteComponent implements OnInit, OnDestroy {
           });
         } else {
           // Validación de cédula duplicada
-          this.personaService.getTeacherByCi(cedulaValue).subscribe(
+          this.personaService.getAdminByCi(cedulaValue).subscribe(
             (existingTeacher) => {
               if (existingTeacher.length > 0) {
                 Swal.fire({
@@ -301,9 +299,9 @@ export class DocenteComponent implements OnInit, OnDestroy {
                 });
               } else {
                 // Validación de correo electrónico duplicado
-                this.personaService.getTeacherByCorreo(correoValue).subscribe(
-                  (existingTeacherByCorreo) => {
-                    if (existingTeacherByCorreo.length > 0) {
+                this.personaService.getAdminByCorreo(correoValue).subscribe(
+                  (existingAdminByCorreo) => {
+                    if (existingAdminByCorreo.length > 0) {
                       Swal.fire({
                         icon: 'error',
                         title: 'Error en el correo electrónico',
@@ -311,21 +309,21 @@ export class DocenteComponent implements OnInit, OnDestroy {
                       });
                     } else {
                       // Si la cédula, el correo y el teléfono no están duplicados, continuar con la creación del docente
-                      this.personaService.postDocente(form.value).subscribe(
+                      this.personaService.postAdmin(form.value).subscribe(
                         (res) => {
                           form.reset();
                           Swal.fire({
                             position: 'top',
                             icon: 'success',
-                            title: 'Nuevo docente agregado',
+                            title: 'Nuevo administrador agregado',
                             showConfirmButton: false,
                             timer: 1500,
                           });
-                          this.closeAddDocenteModal();
-                          this.irListaDocentes();
+                          this.closeAddAdminModal();
+                          this.irListaAdmin();
                         },
                         (error) => {
-                          console.error('Error al crear docente:', error);
+                          console.error('Error al crear administrador:', error);
                           Swal.fire({
                             position: 'top',
                             icon: 'error',
@@ -370,21 +368,18 @@ export class DocenteComponent implements OnInit, OnDestroy {
     );
   }
 
-
-
-
   // Agregar un método para cerrar el modal de añadir docente
-  closeAddDocenteModal(): void {
-    const modal = document.getElementById('addDocenteModal');
+  closeAddAdminModal(): void {
+    const modal = document.getElementById('addAdminModal');
     if (modal) {
       modal.classList.remove('show'); // Quita la clase 'show' para ocultar el modal
       modal.style.display = 'none'; // Establece el estilo 'display' en 'none'
     }
   }
 
-  editDocente(docente: Persona) {
+  editAdmin(admin: Persona) {
     // Clona el estudiante para evitar cambios directos
-    this.personaService.selectedDocente = { ...docente };
+    this.personaService.selectedAdmin = { ...admin };
 
     // Abre el modal de edición
     const modal = document.getElementById('editModal');
@@ -394,8 +389,8 @@ export class DocenteComponent implements OnInit, OnDestroy {
     }
   }
 
-  updateDocente(form: NgForm) {
-    this.personaService.putDocente(this.personaService.selectedDocente).subscribe((res) => {
+  updateAdmin(form: NgForm) {
+    this.personaService.putAdmin(this.personaService.selectedAdmin).subscribe((res) => {
       Swal.fire({
         position: 'top',
         icon: 'success',
@@ -403,16 +398,16 @@ export class DocenteComponent implements OnInit, OnDestroy {
         showConfirmButton: false,
         timer: 1500,
       });
-      this.getDocente();
-      this.irListaDocentes();
-      this.closeEditDocenteModal();
+      this.getAdmin();
+      this.irListaAdmin();
+      this.closeEditAdminModal();
 
       // Cierra el modal de edición utilizando $
       $('#editModal').modal('hide');
     });
   }
 
-  closeEditDocenteModal(): void {
+  closeEditAdminModal(): void {
     const modal = document.getElementById('editModal');
     if (modal) {
       modal.classList.remove('show'); // Quita la clase 'show' para ocultar el modal
@@ -420,7 +415,7 @@ export class DocenteComponent implements OnInit, OnDestroy {
     }
   }
 
-  irListaDocentes() {
+  irListaAdmin() {
     //this.router.navigate(["/estudiante"])
     window.location.reload()
   }
@@ -486,7 +481,7 @@ export class DocenteComponent implements OnInit, OnDestroy {
         docente.celular
       ]);
 
-      this.srvImpresion.imprimir(encabezado, cuerpo, "Listado de Docentes", true);
+      this.srvImpresion.imprimir(encabezado, cuerpo, "Listado de Administradores", true);
     } else {
       // Muestra un mensaje de alerta si no hay datos para imprimir
       Swal.fire({
@@ -508,7 +503,7 @@ export class DocenteComponent implements OnInit, OnDestroy {
         docente.celular
       ]);
 
-      this.srvImpresion.imprimirExcel(encabezado, cuerpo, "Listado de Docentes", true);
+      this.srvImpresion.imprimirExcel(encabezado, cuerpo, "Listado de Administradores", true);
     } else {
       // Muestra un mensaje de alerta si no hay datos para imprimir
       Swal.fire({
