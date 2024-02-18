@@ -18,6 +18,7 @@ import { VistaDocenteComponent } from './components/vista-docente/vista-docente.
 import { ActividadesdocenteComponent } from './components/actividadesdocente/actividadesdocente.component';
 import { CambioContraseniaComponent } from './components/cambio-contrasenia/cambio-contrasenia.component';
 import { AdministradorComponent } from './components/administrador/administrador.component';
+import { NotasdocenteComponent } from './components/notasdocente/notasdocente.component';
 
 const routes: Routes = [
   {
@@ -92,7 +93,12 @@ const routes: Routes = [
   {
     path: 'administrador',
     component: AdministradorComponent
+  },
+  {
+    path: 'notas-docente/:asignaturaId',
+    component: NotasdocenteComponent
   }
+
 
 ];
 

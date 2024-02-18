@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { NotasService } from '../../services/notas.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { NotasService } from '../../services/notas.service';
+import { Location } from '@angular/common';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Subject, Subscription } from 'rxjs';
 import { Notas } from '../../models/notas';
@@ -40,7 +41,12 @@ export class NotasComponent {
   filasModificadas: Set<number> = new Set<number>();
   selectedGradoId: number | null = null;
 
-  constructor(public notaService: NotasService, private router: Router, private route: ActivatedRoute, private fb: FormBuilder, private srvImpresion: ImpresionService) {
+  regresarPagina(): void {
+    this.location.back();
+  }
+
+  constructor(public notaService: NotasService, private router: Router, private route: ActivatedRoute, private fb: FormBuilder, 
+    private srvImpresion: ImpresionService, private location: Location) {
     this.formulario = this.fb.group({
       actividad: [null],  // Utiliza un array para establecer el valor inicial
       asignatura: [null],
@@ -89,6 +95,7 @@ export class NotasComponent {
     };
   }
 
+  
   guardarCambiosNotas() {
     if (!this.editarNotasHabilitado) {
       // Itera sobre los resultados para guardar los cambios en los datos finales

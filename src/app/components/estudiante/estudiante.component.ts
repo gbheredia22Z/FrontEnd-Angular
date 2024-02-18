@@ -5,6 +5,7 @@ import Swal from 'sweetalert2';
 import { PersonaService } from '../../services/persona.service';
 import { Persona } from '../../models/persona';
 import { DataTableDirective } from 'angular-datatables';
+import { Location } from '@angular/common';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Router } from '@angular/router';
@@ -29,6 +30,10 @@ export class EstudianteComponent implements OnInit, OnDestroy {
   // Define el rango permitido para la fecha de nacimiento
   minFechaNacimiento: string;
   maxFechaNacimiento: string;
+
+  regresarPagina(): void {
+    this.location.back();
+  }
 
   getEstudiante() {
     this.personaService.getEstudiante().subscribe((res) => {
@@ -79,7 +84,8 @@ export class EstudianteComponent implements OnInit, OnDestroy {
     return { isValid: true };
   }
 
-  constructor(public personaService: PersonaService, private fb: FormBuilder, private router: Router, private srvImpresion: ImpresionService) {
+  constructor(public personaService: PersonaService, private fb: FormBuilder, private router: Router, private srvImpresion: ImpresionService,
+    private location: Location) {
     this.myForm = this.fb.group({
       id: new FormControl('', Validators.required),
       nombre: ['', Validators.required],
@@ -105,11 +111,10 @@ export class EstudianteComponent implements OnInit, OnDestroy {
     this.minFechaNacimiento = '2010-01-01';
     this.maxFechaNacimiento = '2017-12-31';
   }
-
+  
   ngOnDestroy(): void {
     //this.subscriptions.forEach(subscription => subscription.unsubscribe());
     this.dtTrigger.unsubscribe();
-
   }
 
   onSearch(): void {

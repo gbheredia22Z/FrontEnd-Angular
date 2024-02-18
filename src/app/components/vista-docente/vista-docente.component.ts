@@ -3,7 +3,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { PersonaService } from '../../services/persona.service';
 import { Asignatura } from '../../models/asignatura';
 
-
 @Component({
   selector: 'app-vista-docente',
   templateUrl: './vista-docente.component.html',
@@ -43,11 +42,20 @@ export class VistaDocenteComponent implements OnInit {
     this.router.navigate(['/actividad-docente', asignaturaId], { state: { asignaturaId: asignaturaId } });
   }
 
+  cargarNotas(asignaturaId: string) {
+    this.router.navigate(['/notas-docente', asignaturaId], { state: { asignaturaId: asignaturaId } });
+  }
+
   cerrarModal(asignaturaId: string) {
     this.modalVisible[asignaturaId] = false; // Ocultar el modal correspondiente
   }
 
   logout(): void {
     this.router.navigate(['/login']);
+  }
+
+  // Función para dividir un arreglo en subarreglos de tamaño dado
+  chunk(arr: any[], size: number): any[][] {
+    return arr.reduce((acc, _, i) => (i % size === 0 ? acc.push(arr.slice(i, i + size)) : acc, acc), []);
   }
 }

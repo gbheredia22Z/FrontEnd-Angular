@@ -1,5 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NgForm, FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Location } from '@angular/common';
 import { Grado } from '../../models/grado';
 import { Subscription } from 'rxjs/internal/Subscription';
 import Swal from 'sweetalert2';
@@ -7,8 +9,6 @@ import { GradoService } from '../../services/grado.service';
 import { Subject } from 'rxjs';
 import jsPDF from 'jspdf';
 import { ImpresionService } from '../../services/impresion.service';
-
-
 
 @Component({
   selector: 'app-grado',
@@ -35,6 +35,10 @@ export class GradoComponent implements OnInit, OnDestroy {
     });
   }
 
+  regresarPagina(): void {
+    this.location.back();
+  }
+  
   getGrado2() {
     this.gradoService.getGrado().
       subscribe((data) => {
@@ -44,7 +48,8 @@ export class GradoComponent implements OnInit, OnDestroy {
       });
   }
 
-  constructor(public gradoService: GradoService, private fb: FormBuilder, private srvImpresion: ImpresionService) {
+  constructor(public gradoService: GradoService, private fb: FormBuilder, private srvImpresion: ImpresionService
+    , private route: ActivatedRoute,private router: Router,private location: Location ) {
     this.myForm = this.fb.group({
       id: new FormControl('', Validators.required),
       anioLectivo: ['', Validators.required],
@@ -64,7 +69,7 @@ export class GradoComponent implements OnInit, OnDestroy {
     this.getGrado2();
   }
 
-
+ 
   getDocentes() {
     this.gradoService.getDocentes().subscribe((res) => {
       // Filtra los docentes que no están asignados a ningún grado
@@ -417,7 +422,7 @@ export class GradoComponent implements OnInit, OnDestroy {
     this.updateSelectedEstudianteName(docente.nombre, docente.apellido);
     this.closeDocenteListModal();
   }
-  
+
 }
 
 declare var $: any;

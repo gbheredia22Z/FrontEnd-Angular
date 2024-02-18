@@ -36,7 +36,7 @@ export class LoginComponent {
             state: { mensaje: this.mensajeBienvenida, idUser: this.idUsuario }
           });
         } else if (response.usuario && response.usuario.tipoPersona === 'A') {
-          this.mensajeBienvenida = `Bienvenido/a admin`;
+          this.mensajeBienvenida = `Bienvenido/a ${response.usuario.nombre}`;
           this.router.navigate(['/admin'], {
             state: { mensaje: this.mensajeBienvenida, idUser: this.idUsuario }
           });

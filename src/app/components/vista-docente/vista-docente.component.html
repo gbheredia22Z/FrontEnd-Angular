@@ -6,52 +6,61 @@
         aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
-    <!--no mover-->
-    <div class="collapse navbar-collapse" id="navbarNavDropdown">
-        <ul class="navbar-nav">
+    <div class="collapse navbar-collapse" id="navbarNavDropdown" style="margin-right: 3%;">
+        <ul class="navbar-nav ml-auto">
             <li class="nav-item dropdown ">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
                     aria-haspopup="true" aria-expanded="false">
+                    <i class="bi bi-person-circle"> </i>
                     {{ mensajeBienvenida }} </a>
                 <div class="dropdown-menu bg-dark" aria-labelledby="navbarDropdownMenuLink">
-                    <a class="dropdown-item" (click)="logout()"> Cerrar Sesión </a>
+                    <a class="dropdown-item" (click)="logout()"><i class="bi bi-arrow-left-square-fill"></i> Cerrar Sesión </a>
                 </div>
+
             </li>
         </ul>
     </div>
+   
 </nav>
 
-<div *ngIf="asignaturas && asignaturas.length > 0">
+
+<div *ngIf="asignaturas && asignaturas.length > 0" >
     <section class="cards">
         <div class="row">
-            <div class="col" *ngFor="let asignatura of asignaturas">
-                <div class="card mb-3" style="width: auto; margin: auto auto; height: 75%;">
-                    <img src="../../../assets/students.png" class="card-img-top" alt=""
-                        style="width: 100px; height: 100px;">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ asignatura.nombreMateria }}</h5>
-                        <button type="button" class="btn btn-primary" (click)="cargarActividades(asignatura.id)">
-                            Ver detalles
-                        </button>
-                        
-                        <!-- Actividades de la asignatura -->
-                        <div *ngIf="actividades[asignatura.id]">
-                            <h6>Actividades:</h6>
-                            <ul>
-                                <li *ngFor="let actividad of actividades[asignatura.id]">
-                                    {{ actividad.titulo }} - {{ actividad.detalleActividad }}
-                                </li>
-                            </ul>
+            <ng-container *ngFor="let row of chunk(asignaturas, 4)">
+                <div class="row">
+                    <div class="col custom-col" *ngFor="let asignatura of row">
+                        <div class="card" style="width: auto; margin: auto auto;">
+                            <img src="../../../assets/libro.png" class="card-img-top">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ asignatura.nombreMateria }}</h5><br>
+                                <button type="button" class="btn btn-primary" (click)="cargarActividades(asignatura.id)">
+                                    Actividades
+                                </button>
+                             <br>
+                                <button type="button" class="btn btn-primary" (click)="cargarNotas(asignatura.id)">
+                                    Notas
+                                </button>
+                                <!-- Actividades de la asignatura -->
+                                <div *ngIf="actividades[asignatura.id]">
+                                    <h6>Actividades:</h6>
+                                    <ul>
+                                        <li *ngFor="let actividad of actividades[asignatura.id]">
+                                            {{ actividad.titulo }} - {{ actividad.detalleActividad }}
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </ng-container>
         </div>
     </section>
 </div>
 
 
-<br> <br><br> <br><br>
+<br><br>
 
 
 <footer class="footer">

@@ -3,6 +3,7 @@ import { NgForm, FormBuilder, FormGroup, Validators, FormControl, ValidationErro
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject, Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
+import { Location } from '@angular/common';
 import { PersonaService } from '../../services/persona.service';
 import { Persona } from '../../models/persona';
 import { ImpresionService } from '../../services/impresion.service';
@@ -21,16 +22,15 @@ export class DocenteComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription[] = [];
   isEditModalOpen = false;
   dtTrigger: Subject<any> = new Subject<any>();
-  mensajeBienvenida: string;
 
   // Define el rango permitido para la fecha de nacimiento
   minFechaNacimiento: string;
   maxFechaNacimiento: string;
 
-  logout(): void {
-    this.router.navigate(['/login']);
+  regresarPagina(): void {
+    this.location.back();
   }
-
+  
   getDocente() {
   }
 
@@ -53,7 +53,7 @@ export class DocenteComponent implements OnInit, OnDestroy {
   }
 
   constructor(public personaService: PersonaService, private fb: FormBuilder, private srvImpresion: ImpresionService,
-    private router: Router) {
+    private router: Router,private location: Location) {
     this.myForm = this.fb.group({
       id: new FormControl('', Validators.required),
       nombre: ['', Validators.required],
@@ -73,7 +73,6 @@ export class DocenteComponent implements OnInit, OnDestroy {
       },
     };
     this.getDocente2();
-    this.mensajeBienvenida = history.state.mensaje;
 
     this.minFechaNacimiento = '1950-01-01';
     this.maxFechaNacimiento = '2006-12-31';

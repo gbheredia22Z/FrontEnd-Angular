@@ -1,0 +1,94 @@
+
+<div class="container text-center">
+    <div class="row align-items-center">
+      <div class="col">
+        <label for="periodo" class="form-label">Grado</label>
+        <select class="form-select" id="gradoId" [(ngModel)]="selectedGradoId" name="gradoId" (change)="onGradoSelected()"
+          required>
+          <option *ngFor="let grado of grados" [value]="grado.id">{{ getGradosTable(grado.nombreGrado) }} </option>
+        </select>
+      </div>
+      <div class="col">
+        <label for="periodo" class="form-label">Asignatura</label>
+        <select class="form-select" id="asignaturaId" [(ngModel)]="selectedAsignaturaId" name="asignaturaId"
+          (change)="onAsignaturaSelected()" required>
+          <option *ngFor="let asignatura of asignaturas" [value]="asignatura.id">{{ asignatura.nombreMateria }} </option>
+        </select>
+      </div>
+      <div class="col">
+        <label for="periodo" class="form-label">Actividad</label>
+        <select class="form-select" id="actividadId" [(ngModel)]="selectedActividadId" name="actividadId"
+          (change)="onActividadSelected()" required>
+          <option *ngFor="let actividad of actividades" [value]="actividad.id">{{ actividad.titulo }} </option>
+        </select>
+      </div>
+    </div>
+  </div>
+  
+  <br><br>
+  <div class="d-flex align-items-center">
+    <button type="button" class="btn btn-outline-danger" (click)="onImprimir()"> Descargar
+      <i class="bi bi-file-pdf" id="pdf"></i>
+    </button> <button type="button" class="btn btn-outline-success" (click)="imprimirExcel()">Descargar
+      <i class="bi bi-file-earmark-excel"></i>
+    </button>
+  </div> <br> <br>
+  <div class="form-check form-switch" style="margin-left: 1053px;">
+    <input class="form-check-input" type="checkbox" id="switchEditarNotas" [(ngModel)]="editarNotasHabilitado"
+      (ngModelChange)="guardarCambiosNotas()">
+    <label class="form-check-label" for="switchEditarNotas">Editar notas</label>
+  </div>
+  
+  <div class="container mt-4">
+  
+    <table class="table table-hover" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
+      <thead>
+        <tr>
+          <th>Estudiante</th>
+          <th>Actividad</th>
+          <th>Asignatura</th>
+          <th>Nota</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let result of datosfinales">
+          <td>{{ result.nombre }} {{ result.apellido }}</td>
+          <td>{{ result.tituloActividad }}</td>
+          <td>{{ result.nombreAsignatura}}</td>
+          <td>
+            <ng-container *ngIf="editarNotasHabilitado; else noEditable">
+              <div contenteditable="true" id="{{ result.idNota }}" (focusout)="asignarNota(result.idNota, $event)">
+                {{ result.nota }}
+              </div>
+            </ng-container>
+            <ng-template #noEditable>
+              {{ result.nota }}
+            </ng-template>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
+  <!--Footer-->
+  
+  <br> <br><br> <br><br>
+  <footer class="footer">
+    <div class="container text-center">
+      <div class="row">
+        <div class="col">
+          <h3>Brain Mentor</h3>
+          <hr>
+          <h4>Tu viaje educativo comienza con la guía perfecta hacia el conocimiento.</h4>
+        </div>
+        <div class="col">
+          <div>
+            <p class="derechos"> ©2024 Brain Mentor - Ecuador</p>
+          </div>
+        </div>
+        <div class="col">
+          <img id="imgfooter" src="assets/blanco.png" alt="Logo" width="140" heigh="50">
+        </div>
+      </div>
+    </div>
+  </footer>

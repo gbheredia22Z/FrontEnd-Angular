@@ -105,5 +105,10 @@ export class NotasService {
     return this.http.get<any[]>(url);
   }
 
+   // Método para obtener las notas por actividad y asignatura
+   getNotasPorActividadYAsignatura(actividadId: number, asignaturaId: number): Observable<any[]> {
+    const url = `http://127.0.0.1:3000/api/actividad/${actividadId}/asignatura/${asignaturaId}`;
+    return this.http.get<any[]>(url);
+  }
 
 }

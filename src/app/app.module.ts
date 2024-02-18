@@ -23,6 +23,7 @@ import { VistaDocenteComponent } from './components/vista-docente/vista-docente.
 import { ActividadesdocenteComponent } from './components/actividadesdocente/actividadesdocente.component';
 import { CambioContraseniaComponent } from './components/cambio-contrasenia/cambio-contrasenia.component';
 import { AdministradorComponent } from './components/administrador/administrador.component';
+import { NotasdocenteComponent } from './components/notasdocente/notasdocente.component';
 
 @NgModule({
     declarations: [
@@ -43,9 +44,11 @@ import { AdministradorComponent } from './components/administrador/administrador
         VistaDocenteComponent,
         ActividadesdocenteComponent,
         CambioContraseniaComponent,
-        AdministradorComponent    ],
+        AdministradorComponent,
+        NotasdocenteComponent
+        ],
     imports: [
-        BrowserModule, 
+        BrowserModule,
         AppRoutingModule,
         FormsModule,
         ReactiveFormsModule,

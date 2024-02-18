@@ -6,15 +6,15 @@
         aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarNavDropdown">
-        <ul class="navbar-nav">
+    <div class="collapse navbar-collapse" id="navbarNavDropdown" style="margin-right: 3%;">
+        <ul class="navbar-nav ml-auto">
             <li class="nav-item dropdown ">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
                     aria-haspopup="true" aria-expanded="false">
-                    <i class="bi bi-person-circle"></i>
+                    <i class="bi bi-person-circle"> </i>
                     {{ mensajeBienvenida }} </a>
                 <div class="dropdown-menu bg-dark" aria-labelledby="navbarDropdownMenuLink">
-                    <a class="dropdown-item" (click)="logout()"> Cerrar Sesión </a>
+                    <a class="dropdown-item" (click)="logout()"><i class="bi bi-arrow-left-square-fill"></i> Cerrar Sesión </a>
                 </div>
 
             </li>
@@ -34,7 +34,7 @@
                     <span style="margin-right: 8px;">
                         <i class="bi bi-book"></i>
                     </span>
-                    <strong>{{ asignatura.nombreMateria }}</strong>
+                    <strong class="justify-content-center">{{ asignatura.nombreMateria }}</strong>
                 </button>
             </h2>
             <div [id]="'flush-collapse' + i" class="accordion-collapse collapse"
@@ -42,7 +42,7 @@
                 <div *ngIf="actividadesPorAsignatura[asignatura.id]">
                     <div class="row">
                         <div class="col-md-3 mb-3" *ngFor="let actividad of actividadesPorAsignatura[asignatura.id]">
-                            <div class="card">
+                            <div class="card" >
                                 <div class="card-body">
                                     <h5 class="card-title">{{ actividad.titulo }}</h5>
                                     <p class="card-text">{{ actividad.detalleActividad }}</p>

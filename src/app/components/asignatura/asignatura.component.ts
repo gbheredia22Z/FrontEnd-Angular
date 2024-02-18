@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs/internal/Subscription';
 import Swal from 'sweetalert2';
 import { AsignaturaService } from '../../services/asignatura.service';
 import { Asigngrados } from './asigngrados';
+import { Location } from '@angular/common';
 import { Subject } from 'rxjs';
 import { ImpresionService } from '../../services/impresion.service';
 
@@ -32,6 +33,10 @@ export class AsignaturaComponent implements OnInit, OnDestroy {
   grado:any;
 
 
+  regresarPagina(): void {
+    this.location.back();
+  }
+  
   getAsignatura2() {
     this.asignaturaService.getasignaturaWithGrado().subscribe((datos) => {
       this.asignatura = datos;
@@ -68,7 +73,7 @@ export class AsignaturaComponent implements OnInit, OnDestroy {
   }
   
 
-  constructor(public asignaturaService: AsignaturaService, private fb: FormBuilder, private srvImpresion: ImpresionService) {
+  constructor(public asignaturaService: AsignaturaService, private fb: FormBuilder, private srvImpresion: ImpresionService, private location: Location) {
     this.myForm = this.fb.group({
       id: new FormControl('', Validators.required),
       anioLectivo: ['', Validators.required],

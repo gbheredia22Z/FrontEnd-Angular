@@ -4,6 +4,7 @@ import { Subject, Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
 import { PersonaService } from '../../services/persona.service';
 import { Persona } from '../../models/persona';
+import { Location } from '@angular/common';
 import { ImpresionService } from '../../services/impresion.service';
 
 @Component({
@@ -25,15 +26,11 @@ export class AdministradorComponent implements OnInit, OnDestroy {
   minFechaNacimiento: string;
   maxFechaNacimiento: string;
 
-
-
+  regresarPagina(): void {
+    this.location.back();
+  }
+  
   getAdmin() {
-    // this.personaService.getDocente().subscribe((res) => {
-    //   this.personaService.docentes = res as Persona[];
-    //   console.log(res);
-
-    // });
-
   }
 
   getAdmin2() {
@@ -51,11 +48,11 @@ export class AdministradorComponent implements OnInit, OnDestroy {
         error: `El campo ${fieldName} debe tener máximo ${maxLength} caracteres`
       };
     }
-
     return { isValid: true };
   }
 
-  constructor(public personaService: PersonaService, private fb: FormBuilder, private srvImpresion: ImpresionService) {
+  constructor(public personaService: PersonaService, private fb: FormBuilder, private srvImpresion: ImpresionService,
+    private location: Location) {
     this.myForm = this.fb.group({
       id: new FormControl('', Validators.required),
       nombre: ['', Validators.required],
@@ -78,6 +75,7 @@ export class AdministradorComponent implements OnInit, OnDestroy {
     this.minFechaNacimiento = '1950-01-01';
     this.maxFechaNacimiento = '2006-12-31';
   }
+  
 
   onSearch(): void {
     // Lógica para filtrar docentes por cédula

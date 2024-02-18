@@ -30,36 +30,43 @@
             </li>
         </ul>
         <!--no mover-->
-        <div class="collapse navbar-collapse" id="navbarNavDropdown">
-            <ul class="navbar-nav ml-auto" style="margin-right: 30px;">
-                <li class="nav-item dropdown">
+        <div class="collapse navbar-collapse" id="navbarNavDropdown" style="margin-right: 3%;">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item dropdown ">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
                         aria-haspopup="true" aria-expanded="false">
-                        {{ mensajeBienvenida }}
-                    </a>
+                        <i class="bi bi-person-circle"> </i>
+                        {{ mensajeBienvenida }} </a>
                     <div class="dropdown-menu bg-dark" aria-labelledby="navbarDropdownMenuLink">
-                        <!-- Nuevo elemento -->
-                        <a class="dropdown-item" href="/administrador"><i class="bi bi-gear"></i> Configurar</a>
+                        <a class="dropdown-item" (click)="logout()"><i class="bi bi-arrow-left-square-fill"></i> Cerrar Sesión </a>
                     </div>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" (click)="logout()"> <i class="bi bi-arrow-left-square-fill"></i> Salir</a>
+    
                 </li>
             </ul>
         </div>
     </div>
 </nav>
-<br>
-<h1 class=""> Administrar </h1>
-<br>
+
+
+
 <!--
     sistema grid
 -->
 <section class="cards">
     <div class="row">
         <div class="col">
+            <div class="card" id="admin" style="width: auto; margin: auto auto">
+                <img src="../../../assets/admin1.svg" class="card-img-top" alt="">
+                <div class="card-body">
+                    <h5 class="card-title"> Administrador </h5>
+                    <p class="card-text">Crea, administra y actualiza la información del administrador.</p>
+                    <a href="/administrador" class="btn btn-primary" id="btnad"> Configurar </a>
+                </div>
+            </div>
+        </div>
+        <div class="col">
             <div class="card" style="width: auto; margin: auto auto">
-                <img src="../../../assets/students.png" class="card-img-top" alt="">
+                <img src="../../../assets/estudent2.svg" class="card-img-top" alt="">
                 <div class="card-body">
                     <h5 class="card-title"> Estudiante </h5>
                     <p class="card-text">Crea, administra y actualiza la información de un estudiante.</p>
@@ -69,7 +76,7 @@
         </div>
         <div class="col">
             <div class="card" style="width: auto; margin: auto auto">
-                <img src="../../../assets/aprendiendo.png" class="card-img-top" alt="">
+                <img src="../../../assets/docente.svg" class="card-img-top" alt="">
                 <div class="card-body">
                     <h5 class="card-title">Docente</h5>
                     <p class="card-text"> Crea, administra y actualiza la información de un docente. </p>
@@ -79,7 +86,7 @@
         </div>
         <div class="col">
             <div class="card" style="width: auto; margin: auto auto">
-                <img src="../../../assets/gorro-de-graduacion.png" class="card-img-top" alt="">
+                <img src="../../../assets/grado.svg" class="card-img-top" alt="">
                 <div class="card-body">
                     <h5 class="card-title"> Grado </h5>
                     <p class="card-text">Crea, administra y actualiza la información de un grado.</p>
@@ -87,9 +94,11 @@
                 </div>
             </div>
         </div>
+    </div>
+    <div class="row">
         <div class="col">
             <div class="card" style="width: auto; margin: auto auto">
-                <img src="../../../assets/libro.png" class="card-img-top" alt="">
+                <img src="../../../assets/asignatura2.svg" class="card-img-top" alt="">
                 <div class="card-body">
                     <h5 class="card-title"> Asignatura </h5>
                     <p class="card-text">Crea, administra y actualiza la información de una asignatura.</p>
@@ -97,11 +106,9 @@
                 </div>
             </div>
         </div>
-    </div>
-    <div class="row">
         <div class="col">
             <div class="card" style="width: auto; margin: auto auto">
-                <img src="../../../assets/calendario.png" class="card-img-top" alt="">
+                <img src="../../../assets/perlect.svg" class="card-img-top" alt="">
                 <div class="card-body">
                     <h5 class="card-title">Periodo Lectivo</h5>
                     <p class="card-text">Crea, administra y actualiza la información de un periodo.</p>
@@ -111,7 +118,7 @@
         </div>
         <div class="col">
             <div class="card" style="width: auto; margin: auto auto">
-                <img src="../../../assets/calendario.png" class="card-img-top" alt="">
+                <img src="../../../assets/cal.svg" class="card-img-top" alt="">
                 <div class="card-body">
                     <h5 class="card-title">Perido de Calificaciones </h5>
                     <p class="card-text">Crea, administra y actualiza el periodo de califiación.</p>
@@ -121,8 +128,7 @@
         </div>
         <div class="col">
             <div class="card" style="width: auto; margin: auto auto">
-                <img src="../../../assets/tipoactividad.png" class="card-img-top" alt=""
-                    style="height: 102px; width: 102px;">
+                <img src="../../../assets/tipoact.svg" class="card-img-top" alt="">
                 <div class="card-body">
                     <h5 class="card-title"> Tipo Actividad </h5>
                     <p class="card-text">Crea, administra y actualiza la información.</p>
@@ -130,9 +136,12 @@
                 </div>
             </div>
         </div>
+
+    </div>
+    <div class="row">
         <div class="col">
             <div class="card" style="width: auto; margin: auto auto">
-                <img src="../../../assets/matricula.png" class="card-img-top" alt="">
+                <img src="../../../assets/matricula.svg" class="card-img-top" alt="">
                 <div class="card-body">
                     <h5 class="card-title">Matrícula </h5>
                     <p class="card-text">Crea, administra y actualiza la información de matrícula de un estudiante.</p>
@@ -140,11 +149,9 @@
                 </div>
             </div>
         </div>
-    </div>
-    <div class="row">
         <div class="col">
             <div class="card" style="width: auto; margin: auto auto">
-                <img src="../../../assets/crucigrama.png" class="card-img-top" alt="">
+                <img src="../../../assets/percal.svg" class="card-img-top" alt="">
                 <div class="card-body">
                     <h5 class="card-title">Actividades Educativas </h5>
                     <p class="card-text">Crea, administra y actualiza las actividades educativas.</p>
@@ -154,7 +161,7 @@
         </div>
         <div class="col">
             <div class="card" style="width: auto; margin: auto auto">
-                <img src="../../../assets/calificar.png" class="card-img-top" alt="">
+                <img src="../../../assets/calificar.svg" class="card-img-top" alt="">
                 <div class="card-body">
                     <h5 class="card-title"> Calificaciones </h5>
                     <p class="card-text">Crea, administra y actualiza calificaciones de un estudiante.</p>
@@ -165,16 +172,14 @@
         <div class="col">
 
         </div>
-        <div class="col">
 
-        </div>
 
     </div>
 </section>
 
 <!--Footer-->
 
-<br> <br><br> <br><br>
+<br>
 
 <footer class="footer">
     <div class="container text-center">

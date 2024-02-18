@@ -1,6 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
 import { Subject, Subscription } from 'rxjs';
+import { Location } from '@angular/common';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MatriculaService } from '../../services/matricula.service';
 import { Matricula } from '../../models/matricula';
 import Swal from 'sweetalert2';
@@ -23,16 +25,16 @@ export class MatriculaComponent implements OnInit, OnDestroy {
   searchResults: any[] = [];
   selectedEstudiante: any = null;
   formData: any = {};
-
   // Objeto para el estudiante seleccionado
-
   private subscriptions: Subscription[] = [];
   isEditModalOpen = false;
   grados: any[] = [];
   periodos: any[] = [];
   estudiantes: any[] = [];
   matriculaLista: any;
-  constructor(public matriculaServices: MatriculaService, private fb: FormBuilder, private srvImpresion:ImpresionService) {
+  constructor(public matriculaServices: MatriculaService, private fb: FormBuilder,
+    private srvImpresion: ImpresionService, private router: Router, private route: ActivatedRoute,
+    private location: Location) {
     this.myForm = this.fb.group({
       id: new FormControl('', Validators.required),
       estado: ['', Validators.required],
@@ -40,16 +42,20 @@ export class MatriculaComponent implements OnInit, OnDestroy {
     });
   }
 
+  regresarPagina(): void {
+    this.location.back();
+  }
+  
   searchEstudiante() {
     this.selectedEstudiante = this.estudiantes.find(estudiante => estudiante.cedula === this.searchQuery);
   }
 
   updateSelectedEstudianteName(newValue: string) {
-      //actualiza el nombre del estudiante en el formulari
-      this.myForm.patchValue({
-        idPersona : this.selectedEstudiante?.id,
-        nombreEstudiante :newValue,
-      });
+    //actualiza el nombre del estudiante en el formulari
+    this.myForm.patchValue({
+      idPersona: this.selectedEstudiante?.id,
+      nombreEstudiante: newValue,
+    });
     if (this.selectedEstudiante) {
       this.selectedEstudiante = { ...this.selectedEstudiante, nombre: newValue };
     } else {
@@ -88,12 +94,7 @@ export class MatriculaComponent implements OnInit, OnDestroy {
       this.periodos = res;
     })
   }
-  // getEstudiantes(){
-  //   this.matriculaServices.getEstudiantes().subscribe((res)=>{
-  //     this.estudiantes = res;
-  //     console.log(res);
-  //   })
-  // }
+
   getEstudiantes() {
     console.log("Matriculas:", this.matriculaServices.matriculas);
     this.matriculaServices.getEstudiantes().subscribe((res) => {
@@ -102,14 +103,10 @@ export class MatriculaComponent implements OnInit, OnDestroy {
       console.log("Estudiantes después del filtro:", this.estudiantes);
     });
   }
-  
-  
-  
-
 
   isEstudianteAsignadoToMatricula(estudianteId: string): boolean {
     return this.matriculaServices.matriculas?.
-    some(matricula => matricula.idPersona === estudianteId) || false;
+      some(matricula => matricula.idPersona === estudianteId) || false;
   }
 
   getGrados(abreviatura: string): string {
@@ -124,7 +121,7 @@ export class MatriculaComponent implements OnInit, OnDestroy {
     };
 
 
-  
+
     return nombresGrados[abreviatura] || abreviatura;
   }
   getGradosTable(abreviatura: string): string {
@@ -137,9 +134,6 @@ export class MatriculaComponent implements OnInit, OnDestroy {
       X: 'Sexto Grado',
       M: 'Séptimo Grado',
     };
-
-
-  
     return nombresGrados[abreviatura] || abreviatura;
   }
 
@@ -154,18 +148,8 @@ export class MatriculaComponent implements OnInit, OnDestroy {
       X: 'Sexto Grado',
       M: 'Séptimo Grado',
     };
-
-
-  
     return nombresGrados[abreviatura] || abreviatura;
   }
-  
-  
-
-  
-
-
-
 
   getMatricula() {
     this.matriculaServices.getMatricula().subscribe((res) => {
@@ -181,7 +165,7 @@ export class MatriculaComponent implements OnInit, OnDestroy {
       this.dtTrigger.next(this.dtOptions);
     });
   }
-  
+
 
   ngOnInit(): void {
     this.dtOptions = {
@@ -196,6 +180,7 @@ export class MatriculaComponent implements OnInit, OnDestroy {
     this.getGrado();
     this.getPeriodos();
   }
+
 
   //para abrir el modal
   openAddAsignaturaModal() {
@@ -225,7 +210,7 @@ export class MatriculaComponent implements OnInit, OnDestroy {
 
 
   createAsignatura(form: NgForm): void {
-  
+
 
     // Verifica si ya hay un estudiante asignado a alguna asignatura
     if (this.selectedEstudiante && this.selectedEstudiante.id) {
@@ -241,10 +226,10 @@ export class MatriculaComponent implements OnInit, OnDestroy {
         return;
       }
     }
-  
+
     // Verifica si la asignatura ya existe
-   
-  
+
+
     // Utiliza directamente this.matriculaServices.selectedMatricula.id para la lógica de actualización
     if (this.matriculaServices.selectedMatricula.id) {
       // Asigna la información del estudiante seleccionado a la matrícula
@@ -262,11 +247,11 @@ export class MatriculaComponent implements OnInit, OnDestroy {
       });
     } else {
       // Lógica para la inserción, similar a tu código actual...
-  
+
       if (form.valid) {
         // Asigna la información del estudiante seleccionado a la matrícula
         form.value.idPersona = this.selectedEstudiante?.id;
-  
+
         this.matriculaServices.postMaticula(form.value).subscribe((res) => {
           form.reset();
           Swal.fire({
@@ -291,9 +276,9 @@ export class MatriculaComponent implements OnInit, OnDestroy {
       }
     }
   }
-  
-  
-  
+
+
+
 
   isEstudianteAssignedToMatricula(matriculaId: string): boolean {
     return this.matriculaServices.matriculas?.some(matricula => matricula.idPersona === matriculaId) || false;
@@ -301,8 +286,8 @@ export class MatriculaComponent implements OnInit, OnDestroy {
   isAsignaturaAlreadyExists(nombreAsignatura: string): boolean {
     return this.matriculaServices.matriculas.some(matricula => matricula.grado && matricula.grado.nombreGrado === nombreAsignatura);
   }
-  
-  
+
+
 
 
   ngOnDestroy(): void {
@@ -324,23 +309,23 @@ export class MatriculaComponent implements OnInit, OnDestroy {
 
   openEstudianteListaModal() {
     console.log("Total de estudiantes:", this.estudiantes.length);
-  
+
     const estudiantesNoAsignados = this.estudiantes.filter(estudiante => !this.isEstudianteAsignadoToMatricula(estudiante.id));
     console.log("Estudiantes no asignados:", estudiantesNoAsignados.length);
-  
+
     this.searchResults = estudiantesNoAsignados;
-  
+
     // ... Resto del código
     //abrir el nuevo modal
     const studenListaModal = document.getElementById('estudianteListModal');
-    if(studenListaModal){
+    if (studenListaModal) {
       studenListaModal.classList.add('show');
       studenListaModal.style.display = 'block';
     }
   }
-  
-  
-  openEstudianteListaModal2(){
+
+
+  openEstudianteListaModal2() {
     //filtra los estudiantes que no estan asignados a ninguna matrcula
     const estudiantesNoAsignados = this.estudiantes.filter(estudiante => !this.isEstudianteAsignadoToMatricula(estudiante.id));
 
@@ -349,7 +334,7 @@ export class MatriculaComponent implements OnInit, OnDestroy {
 
     //abrir el nuevo modal
     const studenListaModal = document.getElementById('estudianteListModal2');
-    if(studenListaModal){
+    if (studenListaModal) {
       studenListaModal.classList.add('show');
       studenListaModal.style.display = 'block';
     }
@@ -372,14 +357,14 @@ export class MatriculaComponent implements OnInit, OnDestroy {
     }
   }
 
-  cargarStudiante(estudiante:any){
+  cargarStudiante(estudiante: any) {
     this.selectedEstudiante = estudiante;
     this.updateSelectedEstudianteName(estudiante.nombre);
 
     //cierra el modal
     this.closeDocenteListModal();
   }
-  irPagina(){
+  irPagina() {
     window.location.reload();
   }
 
@@ -387,10 +372,10 @@ export class MatriculaComponent implements OnInit, OnDestroy {
   editMatricula(matricula: Matricula): void {
     // Clona la matrícula para evitar cambios directos
     this.matriculaServices.selectedMatricula = { ...matricula };
-  
+
     // Agrega un console.log para imprimir el id seleccionado
     console.log('ID del registro seleccionado:', matricula.id);
-  
+
     // Abre el modal de edición
     const modal = document.getElementById('editModal');
     if (modal) {
@@ -409,7 +394,7 @@ export class MatriculaComponent implements OnInit, OnDestroy {
         showConfirmButton: false,
         timer: 1500,
       });
-      
+
       this.closeEditMatriculaModal();
       this.irPagina();
 
@@ -417,7 +402,7 @@ export class MatriculaComponent implements OnInit, OnDestroy {
       $('#editModal').modal('hide');
     });
   }
-  
+
 
 
 
@@ -428,7 +413,7 @@ export class MatriculaComponent implements OnInit, OnDestroy {
       modal.style.display = 'none'; // Establece el estilo 'display' en 'none'
     }
   }
-  cargarStudiante2(estudiante:any){
+  cargarStudiante2(estudiante: any) {
     this.selectedEstudiante = estudiante;
     this.updateSelectedEstudianteName(estudiante.nombre);
 
@@ -437,7 +422,7 @@ export class MatriculaComponent implements OnInit, OnDestroy {
   }
   onImprimir() {
     if (this.matriculaLista.length > 0) {
-      const encabezado = ["Estado", "Nombre", "Apellido","Grado","Año Electivo"];
+      const encabezado = ["Estado", "Nombre", "Apellido", "Grado", "Año Electivo"];
       const cuerpo = this.matriculaLista.map((matricula: Matricula) => [
         matricula.estado,
         matricula.persona.nombre,
@@ -456,9 +441,9 @@ export class MatriculaComponent implements OnInit, OnDestroy {
       });
     }
   }
-  imprimirExcel(){
+  imprimirExcel() {
     if (this.matriculaLista.length > 0) {
-      const encabezado = ["Estado", "Nombre", "Apellido","Grado","Año Electivo"];
+      const encabezado = ["Estado", "Nombre", "Apellido", "Grado", "Año Electivo"];
       const cuerpo = this.matriculaLista.map((matricula: Matricula) => [
         matricula.estado,
         matricula.persona.nombre,

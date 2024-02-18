@@ -1,11 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;700&display=swap');
 
-/*FUENTES*/
-input, textarea, select, label {
-	font-family: 'Raleway', sans-serif;
-	color: #1c1c1c;
 
-}
+/*FUENTES*/
 p {
     font-family: 'Raleway', sans-serif;
     
@@ -18,7 +14,7 @@ a {
 h1 {
     font-family: 'Raleway', sans-serif;
     font-weight: regular;
-    font-size: 60px;
+    font-size: 40px;
     flex: 1;
     padding: 50px;
     text-align: center;
@@ -26,6 +22,7 @@ h1 {
 
 h2 {
     font-family: 'Raleway', sans-serif;
+    font-weight: bold;
    
 }
 
@@ -51,6 +48,11 @@ h6 {
     color: #ffffff;
 }
 
+label{
+    font-family: 'Raleway', sans-serif;
+    font-weight: bold;
+}
+
 .form-label {
     display: inline-block;
     margin-bottom: .5rem;
@@ -58,6 +60,11 @@ h6 {
 }
 
 /*MENU*/
+
+nav a img{
+    margin-left: 20px;
+}
+
 .navbar{
     background-color:#9358f2 !important;
 }
@@ -88,22 +95,25 @@ nav ul li a:hover {
     background-color: #1c1c1c;
 }
 
+/*PONER EN TODO*/
+nav a img{
+    margin-left: 20px;
+}
 
+/*BOTONES*/
 .btn-primary {
-    background-color: #7917CA;
-    border: 1px solid #7917CA;
+    background-color: #484848;
+    border: 1px solid #484848;
     border-radius: 25px;
     color: #ffffff;
-
-
+    margin-top: 7px;
 }
 
 .btn-primary:hover {
     background-color: #f2f2f2;
     border-radius: 25px;
     border: 1px solid #7917CA;
-    color: #7917CA;
- 
+    color: #7917CA; 
 }
 
 /*BOTONES CARDS*/
@@ -128,11 +138,11 @@ nav ul li a:hover {
 }
 
 .cards {
-    margin: 2%;
+    margin: 4%;
 }
 
 .row {
-    margin-top: 3%;
+    margin-top:50px;
 }
 
 .card {
@@ -144,20 +154,26 @@ nav ul li a:hover {
     justify-content: center;
     align-items: center;
     text-align: center;
+    
 }
 
 .card:hover {
     -webkit-box-shadow: 0px 0px 40px 0px rgba(196, 196, 196, 1);
     -moz-box-shadow: 0px 0px 40px 0px rgba(196, 196, 196, 1);
     box-shadow: 0px 0px 40px 0px rgba(196, 196, 196, 1);
-    border-color: #7917CA;
+    border: 3px solid #dac5ff;
 }
 
 .card img {
     margin-top: 20%;
     margin-bottom: 10%;
     width: 40%;
-    height: 40%;
+    height: 32%;
+}
+
+/*DINAMICO*/
+.custom-col {
+    flex: 0 0 25%; /* Esto hará que cada columna ocupe el 25% del ancho total */
 }
 
 /*FOOTER*/

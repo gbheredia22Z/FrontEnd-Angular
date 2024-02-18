@@ -3,6 +3,7 @@ import { FormBuilder, FormControl, FormGroup, NgForm, Validators } from '@angula
 import { Subject, Subscription } from 'rxjs';
 import { TipoActividadService } from '../../services/tipo-actividad.service';
 import { TipoActividad } from '../../models/tipo-actividad';
+import { Location } from '@angular/common';
 import Swal from 'sweetalert2';
 import { ImpresionService } from '../../services/impresion.service';
 
@@ -22,7 +23,7 @@ export class ActividadesComponent implements OnInit, OnDestroy {
   dtTrigger: Subject<any> = new Subject<any>();
 
   constructor(public tipoService:TipoActividadService,
-    private fb:FormBuilder, private srvImpresion: ImpresionService)
+    private fb:FormBuilder, private srvImpresion: ImpresionService,private location: Location)
     {
       this.myForm = this.fb.group({
         id: new FormControl('',Validators.required),
@@ -30,10 +31,10 @@ export class ActividadesComponent implements OnInit, OnDestroy {
       });
     }
 
-
-
-
-
+    regresarPagina(): void {
+      this.location.back();
+    }
+    
   getTipoService(){
     this.tipoService.getTipoActividad().
     subscribe((res)=>{

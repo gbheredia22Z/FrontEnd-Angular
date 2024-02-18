@@ -1,6 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
 import { Subject, Subscription, forkJoin, mergeMap } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Location } from '@angular/common';
 import { EducativaActividadesService } from '../../services/educativa-actividades.service';
 import { EducativaActividades } from '../../models/educativa-actividades';
 import Swal from 'sweetalert2';
@@ -38,9 +40,11 @@ export class EducativaActividadesComponent implements OnInit, OnDestroy {
   selectedAsignaturaId: number | null = null;
   selectedActividadId: number | null = null;
   actividades: any[] = [];
-  constructor(public educativaService: EducativaActividadesService, private fb: FormBuilder,
-    private srvImpresion: ImpresionService) {
 
+
+  constructor(public educativaService: EducativaActividadesService, private fb: FormBuilder,
+    private srvImpresion: ImpresionService, private router: Router, private route: ActivatedRoute,
+    private location: Location) {
     this.myForm = this.fb.group({
       id: new FormControl('', Validators.required),
       titulo: ['', Validators.required],
@@ -52,7 +56,10 @@ export class EducativaActividadesComponent implements OnInit, OnDestroy {
       nombreGrado: [''],
     });
   }
-
+  
+  regresarPagina(): void {
+    this.location.back();
+  }
   minFechaActual(): string {
     const today = new Date();
     const year = today.getFullYear();
@@ -79,9 +86,8 @@ export class EducativaActividadesComponent implements OnInit, OnDestroy {
     this.getActividadesEducativas();
     this.getperiodoCalificaciones();
     this.getActividades();
-
-
   }
+
   getGrados() {
     this.educativaService.getGrados().subscribe((res) => {
       this.grados = res;
@@ -91,11 +97,11 @@ export class EducativaActividadesComponent implements OnInit, OnDestroy {
 
   onGradoSelected() {
     if (this.selectedGradoId !== null) {
-        this.educativaService.getAsignaturasPorGrado(this.selectedGradoId).subscribe((asignaturas) => {
-            this.asignatura = asignaturas;
-        });
+      this.educativaService.getAsignaturasPorGrado(this.selectedGradoId).subscribe((asignaturas) => {
+        this.asignatura = asignaturas;
+      });
     }
-}
+  }
 
   onAsignaturaSelected() {
     if (this.selectedAsignaturaId !== null) {
@@ -420,10 +426,10 @@ export class EducativaActividadesComponent implements OnInit, OnDestroy {
     // Abre el modal de edición
     const modal = document.getElementById('editModal');
     if (modal) {
-        modal.classList.add('show'); // Agrega la clase 'show' para mostrar el modal
-        modal.style.display = 'block'; // Establece el estilo 'display' en 'block'
+      modal.classList.add('show'); // Agrega la clase 'show' para mostrar el modal
+      modal.style.display = 'block'; // Establece el estilo 'display' en 'block'
     }
-}
+  }
 
   updateEstudiante(form: NgForm) {
     this.educativaService.putEducativaActividades(this.educativaService.selectedActividades).subscribe((res) => {

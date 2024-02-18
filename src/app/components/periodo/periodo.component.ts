@@ -1,11 +1,13 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { NgForm, FormBuilder, FormGroup, Validators, FormControl, NgModel, AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { Subject, Subscription } from 'rxjs';
+import { Location } from '@angular/common';
 import Swal from 'sweetalert2';
 import { PeriodoService } from '../../services/periodo.service';
 import { Periodo } from '../../models/periodo';
 import { data } from 'jquery';
 import { ImpresionService } from '../../services/impresion.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 
 @Component({
@@ -23,13 +25,14 @@ export class PeriodoComponent implements OnInit, OnDestroy {
   dtOptions:DataTables.Settings={};
   dtTrigger:Subject<any> = new Subject<any>();
 
+  regresarPagina(): void {
+    this.location.back();
+  }
 
-
-  getPeriodo() {
+ getPeriodo() {
     this.periodoService.getPeriodo().subscribe((res) => {
       this.periodoService.periodos = res as Periodo[];
       console.log(res);
-
     });
   }
 
@@ -41,7 +44,10 @@ export class PeriodoComponent implements OnInit, OnDestroy {
         this.dtTrigger.next(this.dtOptions);
       });
   }
-  constructor(public periodoService: PeriodoService, private fb: FormBuilder, private srvImpresion:ImpresionService) 
+
+  constructor(public periodoService: PeriodoService, private fb: FormBuilder, 
+    private srvImpresion:ImpresionService,private router: Router, private route: ActivatedRoute,
+    private location: Location) 
   {
     this.myForm = this.fb.group({
       id: new FormControl('', Validators.required),
@@ -60,6 +66,7 @@ export class PeriodoComponent implements OnInit, OnDestroy {
     this.getPeriodo2();
     this.getPeriodo();
   }
+
 
   ngOnDestroy(): void {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());

@@ -92,7 +92,6 @@ export class ActividadesdocenteComponent implements OnInit, OnDestroy {
     });
   }
 
-
   getGrados() {
     this.educativaService.getGrados().subscribe((res) => {
       this.grados = res;

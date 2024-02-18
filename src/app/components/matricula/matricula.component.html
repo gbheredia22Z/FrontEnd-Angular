@@ -8,8 +8,9 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNavDropdown">
         <ul class="navbar-nav">
-            <li class="nav-item">
-                <a class="nav-link" href="/admin"> Inicio <span class="sr-only">(current)</span></a>
+            <li class="nav-item" (click)="regresarPagina()">
+                <a class="nav-link"> <i class="bi bi-house-gear-fill"></i> Inicio <span
+                        class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
@@ -67,11 +68,13 @@
 
                         <div class="mb-3">
                             <label for="docente" class="form-label">Seleccione Grado:</label>
-                            <select class="form-select" id="idGrado" [(ngModel)]="matriculaServices.selectedMatricula.idGrado" name="idGrado" required>
-                              <option *ngFor="let grado of grados" [value]="grado.id">{{ getGrados(grado.nombreGrado) }}</option>
+                            <select class="form-select" id="idGrado"
+                                [(ngModel)]="matriculaServices.selectedMatricula.idGrado" name="idGrado" required>
+                                <option *ngFor="let grado of grados" [value]="grado.id">{{ getGrados(grado.nombreGrado)
+                                    }}</option>
                             </select>
-                          </div>
-                          
+                        </div>
+
 
                     </div>
                     <div class="row">
@@ -99,8 +102,9 @@
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <h6 class="modal-title fs-5" id="estudianteListModal">Lista de Estudiantes</h6>
-                                    <button type="button" class="btn btn-light" data-bs-dismiss="modal" aria-label="Close"
-                                        (click)="closeDocenteListModal()"><i class="bi bi-x-lg"></i></button>
+                                    <button type="button" class="btn btn-light" data-bs-dismiss="modal"
+                                        aria-label="Close" (click)="closeDocenteListModal()"><i
+                                            class="bi bi-x-lg"></i></button>
                                 </div>
                                 <!-- En el cuerpo del modal de la lista de docentes -->
                                 <div class="modal-body">
@@ -208,11 +212,12 @@
                                 <select class="form-select" id="idGrado"
                                     [(ngModel)]="matriculaServices.selectedMatricula.idGrado" name="idGrado" required
                                     [disabled]="true">
-                                    <option *ngFor="let grado of grados" [value]="grado.id">{{ getGradosEdit(grado.nombreGrado) }}
+                                    <option *ngFor="let grado of grados" [value]="grado.id">{{
+                                        getGradosEdit(grado.nombreGrado) }}
                                     </option>
                                 </select>
-                              </div>
-                              
+                            </div>
+
                         </div>
                         <div class="row">
 
