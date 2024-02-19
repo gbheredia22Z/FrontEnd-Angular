@@ -18,10 +18,51 @@
 
 <h1 class=""> Actividades Educativas </h1>
 
-<div class="d-flex align-items-center">
-    <button type="button" class="btn btn-primary" id="modal" (click)="openAddEducativaModal()">
+<div class="d-flex justify-content-center align-items-center">
+    <button type="button" class="btn btn-primary btn-sm mx-2" id="modal" (click)="openAddActividadModal()">
+        Añadir Tipo
+    </button>
+    <button type="button" class="btn btn-primary btn-sm mx-2" id="modal" (click)="openAddEducativaModal()">
         Añadir Actividad
     </button>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="addActividadModal" tabindex="-1" aria-labelledby="addPeriodoModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title fs-5" id="exampleModalLabel"> <i class="bi bi-building-fill-up"></i> <br>
+                    Añadir Tipo Actividad </h6>
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal" aria-label="Close"
+                    (click)="closeAddAvtividadModal()"><i class="bi bi-x-lg"></i></button>
+            </div>
+            <div class="modal-body">
+                <form #periodoForm="ngForm">
+                    <div class="input-group">
+                        <input name="code" class="form-control" type="hidden" name="id_periodo" #id="ngModel"
+                            [(ngModel)]="tipoService.selectedActividad.id" />
+                    </div>
+                    <div class="row">
+                        <div class="mb-3">
+                            <label for="nombreActividad" class="form-label"> Tipo Actividad </label>
+                            <input type="text" class="form-control" id="nombreActividad"
+                                placeholder="Ingrese el tipo de actividad"
+                                [(ngModel)]="tipoService.selectedActividad.nombreActividad" name="nombreActividad"
+                                required>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                    (click)="closeAddAvtividadModal()">Cerrar</button>
+                <button type="button" class="btn btn-dark" id="btn-g"
+                    (click)="createTipoActividad(periodoForm)">Guardar</button>
+            </div>
+        </div>
+    </div>
 </div>
 
 <!-- Modal -->
@@ -79,7 +120,7 @@
                                     {{getPeriodo(periodo.nombrePeriodo) }} </option>
                             </select>
                         </div>
-                       
+
 
                         <div class=" mb-3">
                             <label for="estado" class="form-label">Estado:</label>
@@ -100,6 +141,8 @@
         </div>
     </div>
 </div>
+
+<br>
 
 <div class="container mt-4">
     <div class="d-flex align-items-center">

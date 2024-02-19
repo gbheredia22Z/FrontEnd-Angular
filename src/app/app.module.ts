@@ -24,6 +24,7 @@ import { ActividadesdocenteComponent } from './components/actividadesdocente/act
 import { CambioContraseniaComponent } from './components/cambio-contrasenia/cambio-contrasenia.component';
 import { AdministradorComponent } from './components/administrador/administrador.component';
 import { NotasdocenteComponent } from './components/notasdocente/notasdocente.component';
+import { CambioContraseniaOlvidoComponent } from './components/cambio-contrasenia-olvido/cambio-contrasenia-olvido.component';
 
 @NgModule({
     declarations: [
@@ -45,7 +46,8 @@ import { NotasdocenteComponent } from './components/notasdocente/notasdocente.co
         ActividadesdocenteComponent,
         CambioContraseniaComponent,
         AdministradorComponent,
-        NotasdocenteComponent
+        NotasdocenteComponent,
+        CambioContraseniaOlvidoComponent
         ],
     imports: [
         BrowserModule,
@@ -58,6 +60,7 @@ import { NotasdocenteComponent } from './components/notasdocente/notasdocente.co
     ],
     providers: [],
     bootstrap: [AppComponent],
+    
 })
 export class AppModule {
 }

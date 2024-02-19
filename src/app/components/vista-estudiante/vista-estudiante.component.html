@@ -14,7 +14,8 @@
                     <i class="bi bi-person-circle"> </i>
                     {{ mensajeBienvenida }} </a>
                 <div class="dropdown-menu bg-dark" aria-labelledby="navbarDropdownMenuLink">
-                    <a class="dropdown-item" (click)="logout()"><i class="bi bi-arrow-left-square-fill"></i> Cerrar Sesión </a>
+                    <a class="dropdown-item" (click)="logout()"><i class="bi bi-arrow-left-square-fill"></i> Cerrar
+                        Sesión </a>
                 </div>
 
             </li>
@@ -24,6 +25,9 @@
 
 <h1 class=""> Asignaturas </h1>
 
+
+
+
 <div *ngIf="asignaturas && asignaturas.length > 0" class="justify-content-center" style="margin-left: 180px;">
     <div class="accordion accordion-flush" id="accordionFlushExample" style="max-width: 900px;">
         <div class="accordion-item" *ngFor="let asignatura of asignaturas; let i = index">
@@ -31,18 +35,20 @@
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                     [attr.data-bs-target]="'#flush-collapse' + i" aria-expanded="false"
                     [attr.aria-controls]="'flush-collapse' + i" (click)="seleccionarMateria(+asignatura.id)">
-                    <span style="margin-right: 8px;">
-                        <i class="bi bi-book"></i>
-                    </span>
-                    <strong class="justify-content-center">{{ asignatura.nombreMateria }}</strong>
+                    <div class="d-flex align-items-center">
+                        <img src="../../../assets/libro.png" class="card-img-top" id="imgcard"
+                            style="width: 30px; height: 30px;">
+                        <strong style="margin-left: 15px;">{{ asignatura.nombreMateria }}</strong>
+                    </div>
                 </button>
+
             </h2>
             <div [id]="'flush-collapse' + i" class="accordion-collapse collapse"
                 [attr.data-bs-parent]="'#accordionFlushExample'">
                 <div *ngIf="actividadesPorAsignatura[asignatura.id]">
                     <div class="row">
                         <div class="col-md-3 mb-3" *ngFor="let actividad of actividadesPorAsignatura[asignatura.id]">
-                            <div class="card" >
+                            <div class="card">
                                 <div class="card-body">
                                     <h5 class="card-title">{{ actividad.titulo }}</h5>
                                     <p class="card-text">{{ actividad.detalleActividad }}</p>
@@ -55,9 +61,9 @@
                 <div *ngIf="!actividadesPorAsignatura[asignatura.id]">
                     No hay actividades disponibles.
                 </div>
+            </div>
         </div>
     </div>
-</div>
 </div>
 
 

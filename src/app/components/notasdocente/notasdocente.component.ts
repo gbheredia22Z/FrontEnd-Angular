@@ -44,7 +44,7 @@ export class NotasdocenteComponent {
     this.location.back();
   }
 
-  constructor(public notaService: NotasService, private router: Router, private route: ActivatedRoute, private fb: FormBuilder, 
+  constructor(public notaService: NotasService, private router: Router, private route: ActivatedRoute, private fb: FormBuilder,
     private srvImpresion: ImpresionService, private location: Location) {
     this.formulario = this.fb.group({
       actividad: [null],  // Utiliza un array para establecer el valor inicial
@@ -59,33 +59,23 @@ export class NotasdocenteComponent {
   estadoAsignacion: { [id: string]: boolean } = {};
   mostrarAlerta: boolean = false;
 
-
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
       const asignaturaId = params.get('asignaturaId');
       console.log('Asignatura ID:', asignaturaId);
+      this.selectedAsignaturaId = asignaturaId ? +asignaturaId : null; // Convertir a number o asignar null si es null
+      this.loadActivities(); // Cargar actividades al detectar un cambio en la asignatura
     });
-    this.formulario.get('grado')?.valueChanges.subscribe((gradoId) => {
-      this.selectedGradoId = gradoId;
-      this.onGradoSelected();
-    });
-
-
-    this.formulario.get('asignatura')?.valueChanges.subscribe((asignaturaId) => {
-      this.selectedAsignaturaId = asignaturaId;
-      this.onAsignaturaSelected();
-    });
+  
 
     this.formulario.get('actividad')?.valueChanges.subscribe((actividadId) => {
       this.selectedActividadId = actividadId;
       this.onActividadSelected();
     });
 
-    this.getAsignaturas();
     this.getActividadesEducativas();
     this.getEstudiante();
     this.getNotas();
-    this.getGrados();
 
     this.dtOptions = {
       language: {
@@ -94,7 +84,22 @@ export class NotasdocenteComponent {
     };
   }
 
-  
+  loadActivities() {
+    if (this.selectedAsignaturaId !== null) {
+      this.notaService.getActividadesPorAsignatura(this.selectedAsignaturaId).subscribe(
+        (actividades) => {
+          this.actividades = actividades;
+        },
+        (error) => {
+          console.error('Error al obtener las actividades por asignatura:', error);
+        }
+      );
+    }
+  }
+
+
+
+
   guardarCambiosNotas() {
     if (!this.editarNotasHabilitado) {
       // Itera sobre los resultados para guardar los cambios en los datos finales
@@ -107,21 +112,8 @@ export class NotasdocenteComponent {
       }
     }
   }
-  
-  
 
-
-  getAsignaturas() {
-    // Verifica que selectedGradoId no sea null antes de llamar a la función
-    if (this.selectedGradoId !== null) {
-      this.notaService.getAsignaturasPorGrado(this.selectedGradoId).subscribe((res) => {
-        this.asignaturas = res;
-      });
-    } else {
-      // Manejar el caso donde selectedGradoId es null
-      console.error('Error: selectedGradoId es null');
-    }
-  }
+ 
   getGrados() {
     // Asumiendo que tienes un método en tu servicio para obtener los grados
     this.notaService.getGrados().subscribe((res) => {
@@ -162,12 +154,7 @@ export class NotasdocenteComponent {
       );
     }
   }
-  onGradoSelected() {
-    if (this.selectedGradoId !== null) {
-      this.getAsignaturas();
-      this.actividades = [];// Actualiza las asignaturas al seleccionar un grado
-    }
-  }
+
 
   //modal para abrir formulario
 
@@ -400,6 +387,6 @@ export class NotasdocenteComponent {
     // Verifica si la nota está marcada como asignada en el estado
     return this.estadoAsignacion[id] || false;
   }
-  
+
 
 }

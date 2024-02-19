@@ -12,6 +12,9 @@ export class EducativaActividadesService {
   [x: string]: any;
   grados!: Grado[];
   selectedActividades: EducativaActividades;
+  periodoCalificacion: string = ''; // Define la propiedad 'periodoCalificacion' con un valor inicial
+
+
   actividades!: EducativaActividades[];
   URL_API_ACT = "http://127.0.0.1:3000/api/actividades/"
   URL_API = "http://127.0.0.1:3000/api"

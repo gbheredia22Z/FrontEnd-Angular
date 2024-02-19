@@ -2,6 +2,8 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
 import { Subject, Subscription, forkJoin, mergeMap } from 'rxjs';
 import { EducativaActividadesService } from '../../services/educativa-actividades.service';
+import { TipoActividadService } from '../../services/tipo-actividad.service';
+import { TipoActividad } from '../../models/tipo-actividad';
 import { EducativaActividades } from '../../models/educativa-actividades';
 import Swal from 'sweetalert2';
 import { ImpresionService } from '../../services/impresion.service';
@@ -16,6 +18,7 @@ import { ActivatedRoute, Params } from '@angular/router';
   styleUrl: './actividadesdocente.component.scss'
 })
 export class ActividadesdocenteComponent implements OnInit, OnDestroy {
+  onSearch: any;
   gradoId: number;
   grados: any = [];
   datos: any = [];
@@ -46,7 +49,7 @@ export class ActividadesdocenteComponent implements OnInit, OnDestroy {
 
   constructor(public educativaService: EducativaActividadesService, private fb: FormBuilder,
     private srvImpresion: ImpresionService, private personaService: PersonaService, private route: ActivatedRoute,
-    private location: Location) {
+    private location: Location, public tipoService: TipoActividadService,) {
 
     this.myForm = this.fb.group({
       id: new FormControl('', Validators.required),
@@ -57,6 +60,7 @@ export class ActividadesdocenteComponent implements OnInit, OnDestroy {
       asignaturaId: [null, Validators.required], // Inicializa con null o un valor por defecto
       estado: ['', Validators.required],
       nombreGrado: [''],
+      nombreActividad: ['', Validators.required]
     });
   }
 
@@ -89,6 +93,8 @@ export class ActividadesdocenteComponent implements OnInit, OnDestroy {
       this.getperiodoCalificaciones();
       this.getActividades();
       this.getActividadesEducativas1();
+      this.getTipoService();
+      this.getActividadesT();
     });
   }
 
@@ -450,6 +456,131 @@ export class ActividadesdocenteComponent implements OnInit, OnDestroy {
       $('#editModal').modal('hide');
     });
   }
+
+  //TipoActividad
+
+  getTipoService() {
+    this.tipoService.getTipoActividad().
+      subscribe((res) => {
+        this.tipoService.tiposactividades = res as TipoActividad[];
+        console.log(res);
+      })
+  }
+
+  getActividadesT() {
+    this.tipoService.getTipoActividad().
+      subscribe((data) => {
+        this.data = data;
+        console.log(data);
+      
+      });
+  }
+
+  //MODALES
+  openAddActividadModal() {
+    // Resetea el formulario antes de abrir el modal para un nuevo estudiante
+    this.myForm.reset();
+
+    // Crea una nueva instancia de Persona para evitar problemas con la edición
+    this.tipoService.selectedActividad = new TipoActividad();
+
+    // Abre el modal de añadir estudiante
+    const modal = document.getElementById('addActividadModal');
+    if (modal) {
+      modal.classList.add('show'); // Agrega la clase 'show' para mostrar el modal
+      modal.style.display = 'block'; // Establece el estilo 'display' en 'block'
+    }
+    $('#addActividadModal').modal('hide');
+  }
+
+  closeAddAvtividadModal(): void {
+    const modal = document.getElementById('addActividadModal');
+    if (modal) {
+      modal.classList.remove('show'); // Quita la clase 'show' para ocultar el modal
+      modal.style.display = 'none'; // Establece el estilo 'display' en 'none'
+    }
+  }
+
+  createTipoActividad(form: NgForm): void {
+    const nombreActividad = form.value.nombreActividad;
+    // Verifica si la actividad ya existe en la lista de tipos de actividad
+    const actividadExistente = this.tipoService.tiposactividades.find(
+      actividad => actividad.nombreActividad === nombreActividad
+    );
+
+    // Expresión regular para validar letras (puede incluir espacios, pero no caracteres especiales)
+    const regexSoloLetras = /^[a-zA-Z\s]+$/;
+
+    if (!regexSoloLetras.test(nombreActividad)) {
+      // Muestra un mensaje de error indicando que el nombre de la actividad no es válido
+      Swal.fire({
+        position: 'top',
+        icon: 'error',
+        title: 'Ingrese solo letras en el nombre de la actividad',
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    } else {
+      // Continúa con la lógica original para agregar la actividad
+      if (form.value.id) {
+        this.tipoService.putTipoActividad(form.value).subscribe((res) => {
+          Swal.fire({
+            position: 'top',
+            icon: 'success',
+            title: 'Registro actualizado',
+            showConfirmButton: false,
+            timer: 1500,
+          });
+          this.getTipoService();
+          this.closeAddAvtividadModal();
+          this.irPagina();
+        });
+      } else {
+        if (form.valid) {
+          if (actividadExistente) {
+            // Muestra un mensaje de error indicando que la actividad ya existe
+            this.mostrarErrorActividadExistente();
+          } else {
+            this.tipoService.postTipoActividad(form.value).subscribe((res) => {
+              form.reset();
+              Swal.fire({
+                position: 'top',
+                icon: 'success',
+                title: 'Nuevo registro agregado',
+                showConfirmButton: false,
+                timer: 1500,
+              });
+              this.getTipoService();
+              this.closeAddAvtividadModal();
+              this.irPagina();
+            });
+          }
+        } else {
+          Swal.fire({
+            position: 'top',
+            icon: 'error',
+            title: 'Llene todos todos los campos',
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        }
+      }
+    }
+  }
+
+  // Agrega un nuevo método para mostrar el mensaje de error de actividad existente
+  mostrarErrorActividadExistente() {
+    Swal.fire({
+      position: 'top',
+      icon: 'error',
+      title: 'La actividad ya existe',
+      showConfirmButton: false,
+      timer: 1500,
+    });
+  }
+
 }
+
+
 
 declare var $: any;

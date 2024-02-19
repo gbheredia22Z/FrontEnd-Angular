@@ -40,6 +40,7 @@ export class EducativaActividadesComponent implements OnInit, OnDestroy {
   selectedAsignaturaId: number | null = null;
   selectedActividadId: number | null = null;
   actividades: any[] = [];
+  selectedActividades: EducativaActividades;
 
 
   constructor(public educativaService: EducativaActividadesService, private fb: FormBuilder,

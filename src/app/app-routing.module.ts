@@ -19,16 +19,18 @@ import { ActividadesdocenteComponent } from './components/actividadesdocente/act
 import { CambioContraseniaComponent } from './components/cambio-contrasenia/cambio-contrasenia.component';
 import { AdministradorComponent } from './components/administrador/administrador.component';
 import { NotasdocenteComponent } from './components/notasdocente/notasdocente.component';
+import { CambioContraseniaOlvidoComponent } from './components/cambio-contrasenia-olvido/cambio-contrasenia-olvido.component';
 
 const routes: Routes = [
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
   {
-    path: '',
-    redirectTo: 'login',
-    pathMatch: 'full'
+    path: 'login',
+    component: LoginComponent
   },
   {
     path: 'estudiante',
-    component: EstudianteComponent
+    component: EstudianteComponent,
+
   },
   {
     path: 'admin',
@@ -36,7 +38,7 @@ const routes: Routes = [
   },
   {
     path: 'docente',
-    component: DocenteComponent
+    component: DocenteComponent,
   },
   {
     path: 'periodo',
@@ -87,7 +89,7 @@ const routes: Routes = [
     component: ActividadesdocenteComponent
   },
   {
-    path: 'cambio-contrasenia',
+    path: 'cambio-contrasenia/:cedula',
     component: CambioContraseniaComponent
   },
   {
@@ -97,9 +99,11 @@ const routes: Routes = [
   {
     path: 'notas-docente/:asignaturaId',
     component: NotasdocenteComponent
-  }
-
-
+  },
+  {
+    path: 'cambio-contrasenia-olvido',
+    component: CambioContraseniaOlvidoComponent
+  },
 ];
 
 @NgModule({
