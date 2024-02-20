@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Login } from '../models/login';
 import { Observable } from 'rxjs/internal/Observable';
 import { catchError } from 'rxjs/internal/operators/catchError';
+import { tap } from 'rxjs/internal/operators/tap';
 
 @Injectable({
   providedIn: 'root'
@@ -11,6 +12,7 @@ export class LoginService {
   selectedLogin: Login;
   logins: Login[] = [];
   URL_API = "http://127.0.0.1:3000/api/login/";
+  private authToken: string;
 
   constructor(private http: HttpClient) {
     this.selectedLogin = new Login();
@@ -21,7 +23,21 @@ export class LoginService {
   }
 
   postLogin(login: Login): Observable<any> {
-    return this.http.post<any>(this.URL_API, login);
+    return this.http.post<any>(this.URL_API, login).pipe(
+      tap(response => {
+        // Almacenar el token después de un inicio de sesión exitoso
+        this.authToken = response.token; // Asumiendo que el token se devuelve en la respuesta del servidor
+      }),
+      catchError((error: any) => {
+        console.error(error);
+        throw error;
+      })
+    );
+  }
+
+  
+  isLoggedIn(): boolean {
+    return !!this.authToken;
   }
 
 
@@ -51,7 +67,7 @@ export class LoginService {
     const body = { cedula, nuevaContrasena };
     return this.http.put<any>(this.apiUrl, body);
   }
-
+  
 
   // Método para cambiar la contraseña si se olvidó
   cambiarContrasenaOlvido(cedula: string, nuevaContrasena: string): Observable<any> {

@@ -3,30 +3,27 @@
         <div class="image-holder">
             <img src="assets/brain_login.png" alt="">
         </div>
-        <form (ngSubmit)="onSubmit()" #firstTimeLoginForm="ngForm" [formGroup]="cambioContrasenaForm">
+        <form (ngSubmit)="onSubmit()" [formGroup]="cambioContrasenaForm" #firstTimeLoginForm="ngForm">
             <h2 style="text-align: center;"> Actualización de Contraseña </h2>
             <br><br>
             <div class="mb-3">
                 <label for="nuevaContrasena" class="form-label">Nueva Contraseña:</label>
-                <input type="password" class="form-control" formControlName="nuevaContrasena" id="nuevaContrasena" [(ngModel)]="nuevaContrasena"
-                    name="nuevaContrasena" required >
+                <input type="password" class="form-control" id="nuevaContrasena" [(ngModel)]="nuevaContrasena"
+                    name="nuevaContrasena" formControlName="nuevaContrasena" required>
                 <div *ngIf="cambioContrasenaForm.get('nuevaContrasena')?.hasError('required') && cambioContrasenaForm.get('nuevaContrasena')?.touched"
                     class="error-message">
                     La contraseña es obligatoria.
                 </div>
-
                 <div *ngIf="cambioContrasenaForm.get('nuevaContrasena')?.hasError('minlength') && cambioContrasenaForm.get('nuevaContrasena')?.touched"
                     class="error-message">
                     La contraseña debe tener al menos 8 caracteres.
                 </div>
-
                 <div *ngIf="cambioContrasenaForm.get('nuevaContrasena')?.hasError('pattern') && cambioContrasenaForm.get('nuevaContrasena')?.touched"
                     class="error-message">
-                    La contraseña debe contener al menos una mayúscula.
+                    La contraseña debe contener al menos una mayúscula y un simbolo.
                 </div>
-
             </div>
-            <button type="submit" class="btn btn-primary"> Actualizar </button>
+            <button type="submit" class="btn btn-primary" [disabled]="!cambioContrasenaForm.valid"> Actualizar </button>
         </form>
     </div>
 </div>

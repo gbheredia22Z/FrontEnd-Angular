@@ -27,7 +27,7 @@ export class VistaEstudianteComponent implements OnInit {
   ngOnInit(): void {
     this.mensajeBienvenida = history.state.mensaje;
     this.idEstudiante = history.state.idUser;
-   
+
     if ('usuario' in history.state) {
       this.idEstudiante = history.state.usuario.id;
     }
@@ -52,27 +52,35 @@ export class VistaEstudianteComponent implements OnInit {
 
   obtenerActividadesDeNotas(idEstudiante: number, idMateria: number): void {
     this.notasService.obtenerNotasEstudiante(idEstudiante, idMateria).subscribe(
-        (actividades: any[]) => {
-            console.log('Actividades de notas:', actividades); 
-            this.actividadesPorAsignatura[idMateria] = actividades; // Guardar las actividades por id de asignatura
-        },
-        (error) => {
-            console.error('Error al obtener las actividades de notas:', error);
-        }
+      (actividades: any[]) => {
+        console.log('Actividades de notas:', actividades);
+        this.actividadesPorAsignatura[idMateria] = actividades; // Guardar las actividades por id de asignatura
+      },
+      (error) => {
+        console.error('Error al obtener las actividades de notas:', error);
+      }
     );
   }
 
+   nombrePeriodo(abreviatura: string): string {
+    const nombrePeriodo: { [key: string]: string } = {
+      P: 'Primer Trimestre',
+      S: 'Segundo Trimestre',
+      T: 'Tercer Trimestre',
+    };
+    return nombrePeriodo[abreviatura] || abreviatura;
+  }
   obtenerNotasEstudiante(idEstudiante: number, idAsignatura: number) {
     this.notasService.obtenerNotasEstudiante(idEstudiante, idAsignatura).subscribe(
-        (data: any[]) => {
-            console.log('Actividades de notas:', data);
-            this.actividadesPorAsignatura[idAsignatura] = data;
-        },
-        (error) => {
-            console.error('Error al obtener las actividades de notas:', error);
-        }
+      (data: any[]) => {
+        console.log('Actividades de notas:', data);
+        this.actividadesPorAsignatura[idAsignatura] = data;
+      },
+      (error) => {
+        console.error('Error al obtener las actividades de notas:', error);
+      }
     );
-}
+  }
 
 
   logout(): void {

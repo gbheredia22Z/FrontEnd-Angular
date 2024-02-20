@@ -2,14 +2,18 @@
 
 /*FUENTES*/
 
-input, textarea, select, label {
-	font-family: 'Raleway', sans-serif;
-	color: #1c1c1c;
+input,
+textarea,
+select,
+label {
+    font-family: 'Raleway', sans-serif;
+    color: #1c1c1c;
 
 }
+
 p {
     font-family: 'Raleway', sans-serif;
-    
+
 }
 
 a {
@@ -19,7 +23,7 @@ a {
 h1 {
     font-family: 'Raleway', sans-serif;
     font-weight: regular;
-    font-size: 60px;
+    font-size: 40px;
     flex: 1;
     padding: 50px;
     text-align: center;
@@ -27,7 +31,7 @@ h1 {
 
 h2 {
     font-family: 'Raleway', sans-serif;
-   
+
 }
 
 h3 {
@@ -59,13 +63,14 @@ h6 {
 }
 
 
+
 /*MENU*/
-nav a img{
+nav a img {
     margin-left: 20px;
 }
 
-.navbar{
-    background-color:#9358f2 !important;
+.navbar {
+    background-color: #9358f2 !important;
 }
 
 nav ul li {
@@ -86,11 +91,11 @@ nav ul li a:hover {
     border-radius: 20px;
 }
 
-.dropdown-item{
+.dropdown-item {
     color: #1c1c1c;
 }
 
-.sticky-top{
+.sticky-top {
     background-color: #1c1c1c;
 }
 
@@ -221,6 +226,40 @@ div.dataTables_wrapper div.dataTables_filter input {
 }
 
 
+.linea {
+    border-top: 2px solid #833df3;
+    height: 2px;
+    max-width: 200px;
+    padding: 0;
+    margin: 10px auto 0 auto;
+    margin-bottom: 50px;
+
+}
+
+/*TABLA*/
+
+.tabla {
+    margin: 80px;
+
+}
+
+.table {
+    margin: 20px;
+}
+
+th {
+    font-family: 'Raleway', sans-serif;
+
+}
+
+td {
+    font-family: 'Raleway', sans-serif;
+
+}
+
+button {
+    font-family: 'Raleway', sans-serif;
+}
 
 /*FOOTER*/
 .container {
@@ -245,21 +284,21 @@ ul {
     color: white;
 }
 
-hr{
+hr {
     width: 90px;
     height: 3px;
     background-color: #ead1ff;
 
 }
 
-.derechos{
+.derechos {
     margin-top: 15%;
     text-align: center;
     color: #939393;
 
-    
+
 }
 
-#imgfooter{
+#imgfooter {
     margin-top: 8%;
 }

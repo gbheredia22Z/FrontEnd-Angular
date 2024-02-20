@@ -30,20 +30,19 @@
                 </div>
             </li>
         </ul>
-       
+
     </div>
 </nav>
 
 <h1 class=""> Actividades Educativas </h1>
+<div class="linea"></div>
 
 <div class="d-flex align-items-center">
-
     <!-- Botón "Añadir Docente" -->
     <button type="button" class="btn btn-primary" id="modal" (click)="openAddEducativaModal()">
         Añadir Actividad
     </button>
 </div>
-
 <!-- Modal -->
 <div class="modal fade" id="addEducativaModal" tabindex="-1" aria-labelledby="addEducativaModalLabel"
     aria-hidden="true">
@@ -64,12 +63,13 @@
                     </div>
                     <div class="row">
                         <div class="mb-3">
-                            <label for="titulo"><i class="fas fa-user"></i> Titulo </label>
+                            <label for="titulo"><i class="bi bi-menu-button-wide-fill"></i> Titulo </label>
                             <input id="titulo" type="text" class="form-control" name="titulo"
                                 [(ngModel)]="educativaService.selectedActividades.titulo" required maxlength="100">
                         </div>
                         <div class="mb-3">
-                            <label for="detalleActividad"><i class="fas fa-user"></i> Detalle Actividad</label>
+                            <label for="detalleActividad"><i class="bi bi-chat-square-text-fill"></i> Detalle
+                                Actividad</label>
                             <input id="detalleActividad" type="text" class="form-control" name="detalleActividad"
                                 [(ngModel)]="educativaService.selectedActividades.detalleActividad" required
                                 maxlength="100">
@@ -77,14 +77,15 @@
                     </div>
                     <div class="row">
                         <div class="mb-3">
-                            <label for="fechaInicio"><i class="fas fa-id-card"></i> Fecha Inicio</label>
+                            <label for="fechaInicio"><i class="bi bi-calendar-day-fill"></i> Fecha Inicio</label>
                             <input id="fechaInicio" type="date" class="form-control" name="fechaInicio"
                                 [(ngModel)]="educativaService.selectedActividades.fechaInicio" [min]="minFechaActual()">
                         </div>
                     </div>
                     <div class="row">
                         <div class="mb-3">
-                            <label for="actividad" class="form-label">Tipo Actividad</label>
+                            <label for="actividad" class="form-label"><i class="bi bi-card-checklist"></i> Tipo
+                                Actividad</label>
                             <select class="form-select" id="tipoActId"
                                 [(ngModel)]="educativaService.selectedActividades.tipoActId" name="tipoActId" required>
                                 <option *ngFor="let tipActividad of actividad" [value]="tipActividad.id">{{
@@ -92,7 +93,7 @@
                             </select>
                         </div>
                         <div class="mb-3">
-                            <label for="periodo" class="form-label">Periodo Calificacion</label>
+                            <label for="periodo" class="form-label"><i class="bi bi-clipboard-check-fill"></i> Periodo Calificacion</label>
                             <select class="form-select" id="perCalId"
                                 [(ngModel)]="educativaService.selectedActividades.perCalId" name="perCalId" required>
                                 <option *ngFor="let periodo of periodoCalificacion" [value]="periodo.id">
@@ -101,7 +102,7 @@
                         </div>
                         <!-- Dentro del formulario en el modal -->
                         <div class="mb-3">
-                            <label for="grado" class="form-label">Grado</label>
+                            <label for="grado" class="form-label"> <i class="bi bi-file-bar-graph-fill"></i> Grado</label>
                             <select class="form-select" id="gradoId" [(ngModel)]="selectedGradoId" name="gradoId"
                                 (change)="onGradoSelected()" required>
                                 <option *ngFor="let grado of grados" [value]="grado.id">{{
@@ -110,7 +111,7 @@
 
                         </div>
                         <div class=" mb-3">
-                            <label for="periodo" class="form-label">Asignatura</label>
+                            <label for="periodo" class="form-label"> <i class="bi bi-book-fill"></i> Asignatura</label>
                             <select class="form-select" id="asignaturaId"
                                 [(ngModel)]="educativaService.selectedActividades.asignaturaId" name="asignaturaId"
                                 required>
@@ -119,7 +120,7 @@
                             </select>
                         </div>
                         <div class=" mb-3">
-                            <label for="estado" class="form-label">Estado:</label>
+                            <label for="estado" class="form-label"><i class="bi bi-toggles"></i> Estado</label>
                             <select class="form-select" aria-label="Selecciona el estado" id="estado" name="estado"
                                 [(ngModel)]="educativaService.selectedActividades.estado" required>
                                 <option value="A">Activo</option>
@@ -146,141 +147,150 @@
             <i class="bi bi-file-earmark-excel"></i>
         </button>
     </div>
-    <br><br>
-    <table class="table table-hover" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
-        <thead>
-            <tr>
-                <th scope="col">Titulo</th>
-                <th scope="col">Detalle</th>
-                <th scope="col"> Tipo Actividad </th>
-                <th scope="col">Fecha Inicio </th>
-                <th scope="col"> Periodo Calificacion </th>
-                <th scope="col"> Asignatura </th>
-                <th scope="col">Estado</th>
-                <th>Acciones</th>
+    <section class="tabla">
+        <table class="table table-hover" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
+            <thead>
+                <tr>
+                    <th scope="col">Titulo</th>
+                    <th scope="col">Detalle</th>
+                    <th scope="col"> Tipo Actividad </th>
+                    <th scope="col">Fecha Inicio </th>
+                    <th scope="col"> Periodo Calificacion </th>
+                    <th scope="col"> Asignatura </th>
+                    <th scope="col">Estado</th>
+                    <th>Acciones</th>
 
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let educativasAc of actividadesEducativas">
-                <td>{{ educativasAc.titulo }}</td>
-                <td>{{ educativasAc.detalleActividad }}</td>
-                <td>{{ educativasAc.tipoActividad.nombreActividad }}</td>
-                <td>{{ educativasAc.fechaInicio | date: 'dd/MM/yyyy' }}</td>
-                <td>{{ getPeriodo(educativasAc.periodoCalificaciones.nombrePeriodo) }}</td>
-                <td>{{ educativasAc.asignatura.nombreMateria }}</td>
-                <td>{{ educativasAc.estado === 'A' ? 'Activo' : 'Inactivo' }}</td>
-                <td>
-                    <button type="button" class="btn btn-success" id="btn-g" (click)="editEducativas(educativasAc)"><i
-                            class="bi bi-pencil-square"></i></button>
-                </td>
-                <!-- Modal de Edición -->
-                <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                    aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-scrollable">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h6 class="" id="exampleModalLabel">
-                                    <i class="bi bi-save-fill"></i> <br> Editar Actividad
-                                </h6>
-                                <button type="button" class="btn btn-light" data-bs-dismiss="modal" aria-label="Close"
-                                    (click)="closeEditEducativaModal()"><i class="bi bi-x-lg"></i></button>
-                            </div>
-                            <div class="modal-body">
-                                <form #gradoForm="ngForm">
-                                    <!-- Campo de ID oculto -->
-                                    <input type="hidden" [(ngModel)]="educativaService.selectedActividades.id"
-                                        name="id" />
-                                    <div class="row">
-                                        <div class="mb-3">
-                                            <div class="row">
-                                                <div class="mb-3">
-                                                    <label for="titulo"><i class="fas fa-user"></i> Titulo </label>
-                                                    <input id="titulo" type="text" class="form-control" name="titulo"
-                                                        [(ngModel)]="educativaService.selectedActividades.titulo"
-                                                        required maxlength="100">
-                                                </div>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let educativasAc of actividadesEducativas">
+                    <td>{{ educativasAc.titulo }}</td>
+                    <td>{{ educativasAc.detalleActividad }}</td>
+                    <td>{{ educativasAc.tipoActividad.nombreActividad }}</td>
+                    <td>{{ educativasAc.fechaInicio | date: 'dd/MM/yyyy' }}</td>
+                    <td>{{ getPeriodo(educativasAc.periodoCalificaciones.nombrePeriodo) }}</td>
+                    <td>{{ educativasAc.asignatura.nombreMateria }}</td>
+                    <td>{{ educativasAc.estado === 'A' ? 'Activo' : 'Inactivo' }}</td>
+                    <td>
+                        <button type="button" class="btn btn-success" id="btn-g"
+                            (click)="editEducativas(educativasAc)"><i class="bi bi-pencil-square"></i></button>
+                    </td>
+                    <!-- Modal de Edición -->
+                    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-scrollable">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h6 class="" id="exampleModalLabel">
+                                        <i class="bi bi-save-fill"></i> <br> Editar Actividad
+                                    </h6>
+                                    <button type="button" class="btn btn-light" data-bs-dismiss="modal"
+                                        aria-label="Close" (click)="closeEditEducativaModal()"><i
+                                            class="bi bi-x-lg"></i></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form #gradoForm="ngForm">
+                                        <!-- Campo de ID oculto -->
+                                        <input type="hidden" [(ngModel)]="educativaService.selectedActividades.id"
+                                            name="id" />
+                                        <div class="row">
+                                            <div class="mb-3">
+                                                <div class="row">
+                                                    <div class="mb-3">
+                                                        <label for="titulo"><i class="bi bi-menu-button-wide-fill"></i> Titulo </label>
+                                                        <input id="titulo" type="text" class="form-control"
+                                                            name="titulo"
+                                                            [(ngModel)]="educativaService.selectedActividades.titulo"
+                                                            required maxlength="100">
+                                                    </div>
 
-                                                <div class="mb-3">
-                                                    <label for="detalleActividad"><i class="fas fa-user"></i> Detalle
-                                                        Actividad</label>
-                                                    <input id="detalleActividad" type="text" class="form-control"
-                                                        name="detalleActividad"
-                                                        [(ngModel)]="educativaService.selectedActividades.detalleActividad"
-                                                        required maxlength="100">
+                                                    <div class="mb-3">
+                                                        <label for="detalleActividad"><i
+                                                                class="bi bi-chat-square-text-fill"></i>
+                                                            Detalle Actividad</label>
+                                                        <input id="detalleActividad" type="text" class="form-control"
+                                                            name="detalleActividad"
+                                                            [(ngModel)]="educativaService.selectedActividades.detalleActividad"
+                                                            required maxlength="100">
 
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="mb-3">
-                                                    <label for="fechaInicio"><i class="fas fa-id-card"></i> Fecha
-                                                        Inicio</label>
-                                                    <input id="fechaInicio" type="date" class="form-control"
-                                                        name="fechaInicio"
-                                                        [(ngModel)]="educativaService.selectedActividades.fechaInicio"
-                                                        [min]="minFechaActual()">
-                                                </div>
-                                            </div>
-
-                                            <div class="row">
-                                                <div class="mb-3">
-                                                    <label for="actividad" class="form-label">Tipo Actividad</label>
-                                                    <select class="form-select" id="tipoActId"
-                                                        [(ngModel)]="educativaService.selectedActividades.tipoActId"
-                                                        name="tipoActId" required>
-                                                        <option *ngFor="let tipActividad of actividad"
-                                                            [value]="tipActividad.id">{{
-                                                            tipActividad.nombreActividad }} </option>
-                                                    </select>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label for="periodo" class="form-label">Periodo Calificacion</label>
-                                                    <select class="form-select" id="perCalId"
-                                                        [(ngModel)]="educativaService.selectedActividades.perCalId"
-                                                        name="perCalId" required>
-                                                        <option *ngFor="let periodo of periodoCalificacion"
-                                                            [value]="periodo.id">{{
-                                                            getPeriodoEdit(periodo.nombrePeriodo) }} </option>
-                                                    </select>
+                                                <div class="row">
+                                                    <div class="mb-3">
+                                                        <label for="fechaInicio"><i class="bi bi-calendar-day-fill"></i>
+                                                            Fecha
+                                                            Inicio</label>
+                                                        <input id="fechaInicio" type="date" class="form-control"
+                                                            name="fechaInicio"
+                                                            [(ngModel)]="educativaService.selectedActividades.fechaInicio"
+                                                            [min]="minFechaActual()">
+                                                    </div>
                                                 </div>
 
-                                                <div class=" mb-3">
-                                                    <label for="periodo" class="form-label">Asignatura</label>
-                                                    <select class="form-select" id="asignaturaId"
-                                                        [(ngModel)]="educativaService.selectedActividades.asignaturaId"
-                                                        name="asignaturaId" required>
-                                                        <option *ngFor="let asignaturas of asignatura"
-                                                            [value]="asignaturas.id">{{
-                                                            asignaturas.nombreMateria }} </option>
-                                                    </select>
+                                                <div class="row">
+                                                    <div class="mb-3">
+                                                        <label for="actividad" class="form-label"><i
+                                                                class="bi bi-card-checklist"></i> Tipo Actividad</label>
+                                                        <select class="form-select" id="tipoActId"
+                                                            [(ngModel)]="educativaService.selectedActividades.tipoActId"
+                                                            name="tipoActId" required>
+                                                            <option *ngFor="let tipActividad of actividad"
+                                                                [value]="tipActividad.id">{{
+                                                                tipActividad.nombreActividad }} </option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="periodo" class="form-label"><i class="bi bi-clipboard-check-fill"></i> Periodo
+                                                            Calificacion</label>
+                                                        <select class="form-select" id="perCalId"
+                                                            [(ngModel)]="educativaService.selectedActividades.perCalId"
+                                                            name="perCalId" required>
+                                                            <option *ngFor="let periodo of periodoCalificacion"
+                                                                [value]="periodo.id">{{
+                                                                getPeriodoEdit(periodo.nombrePeriodo) }} </option>
+                                                        </select>
+                                                    </div>
+
+                                                    <div class=" mb-3">
+                                                        <label for="periodo" class="form-label"><i
+                                                                class="bi bi-book-fill"></i> Asignatura</label>
+                                                        <select class="form-select" id="asignaturaId"
+                                                            [(ngModel)]="educativaService.selectedActividades.asignaturaId"
+                                                            name="asignaturaId" required>
+                                                            <option *ngFor="let asignaturas of asignatura"
+                                                                [value]="asignaturas.id">{{
+                                                                asignaturas.nombreMateria }} </option>
+                                                        </select>
+                                                    </div>
+                                                    <div class=" mb-3">
+                                                        <label for="estado" class="form-label"><i class="bi bi-toggles"></i> Estado</label>
+                                                        <select class="form-select" aria-label="Selecciona el estado"
+                                                            id="estado" name="estado"
+                                                            [(ngModel)]="educativaService.selectedActividades.estado"
+                                                            required>
+                                                            <option value="A">Activo</option>
+                                                            <option value="I">Inactivo</option>
+                                                        </select>
+                                                    </div>
                                                 </div>
-                                                <div class=" mb-3">
-                                                    <label for="estado" class="form-label">Estado:</label>
-                                                    <select class="form-select" aria-label="Selecciona el estado"
-                                                        id="estado" name="estado"
-                                                        [(ngModel)]="educativaService.selectedActividades.estado"
-                                                        required>
-                                                        <option value="A">Activo</option>
-                                                        <option value="I">Inactivo</option>
-                                                    </select>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                        data-bs-dismiss="modal"
+                                                        (click)="closeEditEducativaModal()">Cerrar</button>
+                                                    <button type="button" class="btn btn-dark"
+                                                        (click)="updateEstudiante(gradoForm)">Guardar</button>
                                                 </div>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
-                                                    (click)="closeEditEducativaModal()">Cerrar</button>
-                                                <button type="button" class="btn btn-dark"
-                                                    (click)="updateEstudiante(gradoForm)">Guardar</button>
                                             </div>
                                         </div>
-                                    </div>
-                                </form>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </tr>
-        </tbody>
-    </table>
+                </tr>
+            </tbody>
+        </table>
+    </section>
 </div>
 
 <!--Footer-->

@@ -36,6 +36,8 @@
 
 <h1 class=""> Periodo de Calificaciones </h1>
 
+<div class="linea"></div>
+
 <div class="d-flex align-items-center">
     <button type="button" class="btn btn-primary" id="modal" (click)="openAddActividadModal()">
         Añadir Periodo </button>
@@ -58,7 +60,7 @@
                     </div>
                     <div class="row">
                         <div class="mb-3">
-                            <label for="nombrePeriodo" class="form-label">Nombre Periodo:</label>
+                            <label for="nombrePeriodo" class="form-label"><i class="bi bi-clipboard-check-fill"></i> Periodo de Calificaciones</label>
                             <select class="form-select" aria-label="Selecciona el periodo" id="nombrePeriodo"
                                 name="nombrePeriodo" [(ngModel)]="perService.selectPerCalificaciones.nombrePeriodo"
                                 required>
@@ -69,7 +71,7 @@
                         </div>
                     </div>
                     <div class="mb-3">
-                        <label for="estado" class="form-label">Estado:</label>
+                        <label for="estado" class="form-label"><i class="bi bi-toggles"></i> Estado</label>
                         <select class="form-select" aria-label="Selecciona el estado" id="estado" name="estado"
                             [(ngModel)]="perService.selectPerCalificaciones.estado" required>
                             <option value="A">Activo</option>
@@ -95,87 +97,89 @@
             <i class="bi bi-file-earmark-excel"></i>
         </button>
     </div>
-    <br><br>
-    <table class="table table-hover" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
-        <thead>
-            <tr>
-                <th scope="col">Nombre Periodo</th>
-                <th scope="col">Estado</th>
-                <th scope="col">Acción</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let periodo of data">
-                <td>
-                    {{ periodo.nombrePeriodo === 'P' ? 'Primer Trimestre' :
-                    periodo.nombrePeriodo === 'S' ? 'Segundo Trimestre' :
-                    periodo.nombrePeriodo === 'T' ? 'Tercer Trimestre' : '' }}
-                </td>
-                <td>{{ periodo.estado === 'A' ? 'Activo' : 'Inactivo'}}</td>
+    <section class="tabla">
+        <table class="table table-hover" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
+            <thead>
+                <tr>
+                    <th scope="col">Nombre Periodo</th>
+                    <th scope="col">Estado</th>
+                    <th scope="col">Acción</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let periodo of data">
+                    <td>
+                        {{ periodo.nombrePeriodo === 'P' ? 'Primer Trimestre' :
+                        periodo.nombrePeriodo === 'S' ? 'Segundo Trimestre' :
+                        periodo.nombrePeriodo === 'T' ? 'Tercer Trimestre' : '' }}
+                    </td>
+                    <td>{{ periodo.estado === 'A' ? 'Activo' : 'Inactivo'}}</td>
 
-                <td>
-                    <button type="button" class="btn btn-success" id="" (click)="editTipoActividad(periodo)"><i
-                            class="bi bi-pencil-square"></i></button>
-                </td>
-                <!-- Modal de Edición -->
-                <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                    aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-scrollable">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h6 class="" id="exampleModalLabel">
-                                    <i class="bi bi-save-fill"></i> <br> Editar Periodo de Calificaciones
-                                </h6> <button type="button" class="btn btn-light" data-bs-dismiss="modal"
-                                    aria-label="Close" (click)="closeEditActividadModal()"><i
-                                        class="bi bi-x-lg"></i></button>
-                            </div>
-                            <div class="modal-body">
-                                <form #periodoForm2="ngForm">
-                                    <input type="hidden" [(ngModel)]="perService.selectPerCalificaciones" name="id" />
-                                    <div class="row">
-                                        <div class="mb-3">
-                                            <label for="nombreActividad" class="form-label">Nombre:</label>
-                                            <select class="form-select" aria-label="Selecciona el periodo"
-                                                id="nombreActividad" name="nombreActividad"
-                                                [value]="myForm.get('nombreActividad')?.value" [disabled]="true"
-                                                [(ngModel)]="perService.selectPerCalificaciones.nombrePeriodo">
-                                                <option value="P"
-                                                    [selected]="perService.selectPerCalificaciones.nombrePeriodo === 'P'">
-                                                    Primer Trimestre</option>
-                                                <option value="S"
-                                                    [selected]="perService.selectPerCalificaciones.nombrePeriodo === 'S'">
-                                                    Segundo Trimestre</option>
-                                                <option value="T"
-                                                    [selected]="perService.selectPerCalificaciones.nombrePeriodo === 'T'">
-                                                    Tercer Trimestre</option>
-                                            </select>
+                    <td>
+                        <button type="button" class="btn btn-success" id="" (click)="editTipoActividad(periodo)"><i
+                                class="bi bi-pencil-square"></i></button>
+                    </td>
+                    <!-- Modal de Edición -->
+                    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-scrollable">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h6 class="" id="exampleModalLabel">
+                                        <i class="bi bi-save-fill"></i> <br> Editar Periodo de Calificaciones
+                                    </h6> <button type="button" class="btn btn-light" data-bs-dismiss="modal"
+                                        aria-label="Close" (click)="closeEditActividadModal()"><i
+                                            class="bi bi-x-lg"></i></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form #periodoForm2="ngForm">
+                                        <input type="hidden" [(ngModel)]="perService.selectPerCalificaciones"
+                                            name="id" />
+                                        <div class="row">
+                                            <div class="mb-3">
+                                                <label for="nombreActividad" class="form-label"><i class="bi bi-clipboard-check-fill"></i> Periodo de Calificaciones </label>
+                                                <select class="form-select" aria-label="Selecciona el periodo"
+                                                    id="nombreActividad" name="nombreActividad"
+                                                    [value]="myForm.get('nombreActividad')?.value" [disabled]="true"
+                                                    [(ngModel)]="perService.selectPerCalificaciones.nombrePeriodo">
+                                                    <option value="P"
+                                                        [selected]="perService.selectPerCalificaciones.nombrePeriodo === 'P'">
+                                                        Primer Trimestre</option>
+                                                    <option value="S"
+                                                        [selected]="perService.selectPerCalificaciones.nombrePeriodo === 'S'">
+                                                        Segundo Trimestre</option>
+                                                    <option value="T"
+                                                        [selected]="perService.selectPerCalificaciones.nombrePeriodo === 'T'">
+                                                        Tercer Trimestre</option>
+                                                </select>
 
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="estado" class="form-label"><i class="bi bi-toggles"></i> Estado</label>
+                                                <select class="form-select" aria-label="Selecciona el estado"
+                                                    id="estado" name="estado"
+                                                    [(ngModel)]="perService.selectPerCalificaciones.estado" required>
+                                                    <option value="A">Activo</option>
+                                                    <option value="I">Inactivo</option>
+                                                </select>
+                                            </div>
                                         </div>
-                                        <div class="mb-3">
-                                            <label for="estado" class="form-label">Estado:</label>
-                                            <select class="form-select" aria-label="Selecciona el estado" id="estado"
-                                                name="estado" [(ngModel)]="perService.selectPerCalificaciones.estado"
-                                                required>
-                                                <option value="A">Activo</option>
-                                                <option value="I">Inactivo</option>
-                                            </select>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                                                (click)="closeEditActividadModal()">Cerrar</button>
+                                            <!-- Botón de guardar en el modal de edición -->
+                                            <button type="button" class="btn btn-dark"
+                                                (click)="updatePeriodo(periodoForm2)">Guardar</button>
                                         </div>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
-                                            (click)="closeEditActividadModal()">Cerrar</button>
-                                        <!-- Botón de guardar en el modal de edición -->
-                                        <button type="button" class="btn btn-dark"
-                                            (click)="updatePeriodo(periodoForm2)">Guardar</button>
-                                    </div>
-                                </form>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </tr>
-        </tbody>
-    </table>
+                </tr>
+            </tbody>
+        </table>
+    </section>
 </div>
 
 

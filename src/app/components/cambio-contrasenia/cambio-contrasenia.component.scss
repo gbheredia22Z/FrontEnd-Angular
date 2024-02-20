@@ -1,93 +1,110 @@
-
 @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;700&display=swap');
 
 /*FUENTES*/
 p {
-    font-family: 'Raleway', sans-serif;
-    
+	font-family: 'Raleway', sans-serif;
+
 }
 
 a {
-    font-family: 'Raleway', sans-serif;
+	font-family: 'Raleway', sans-serif;
+	text-align: right;
+	font-size: 13px;
+	flex: 1;
+	margin-left: 40px;
+	color: #9358f2;
 }
 
 h1 {
-    font-family: 'Raleway', sans-serif;
-    font-weight: regular;
-    font-size: 60px;
-    flex: 1;
-    padding: 50px;
-    text-align: center;
+	font-family: 'Raleway', sans-serif;
+	font-weight: regular;
+	font-size: 60px;
+	flex: 1;
+	padding: 50px;
+	text-align: center;
 }
 
 h2 {
-    font-family: 'Raleway', sans-serif;
-    font-weight: bold;
-   
+	font-family: 'Raleway', sans-serif;
+	font-weight: bold;
+	margin-bottom: 20px;
+	font-size: 25px;
+
 }
 
 h3 {
-    font-family: 'Raleway', sans-serif;
-    text-align: left;
+	font-family: 'Raleway', sans-serif;
+	text-align: left;
 }
 
 h4 {
-    font-family: 'Raleway', sans-serif;
-    text-align: left;
-    font-size: 16px;
+	font-family: 'Raleway', sans-serif;
+	text-align: left;
+	font-size: 16px;
 
 }
 
 h6 {
-    font-family: 'Raleway', sans-serif;
-    font-weight: bold;
-    font-size: 20px;
-    flex: 1;
-    padding: 3px;
-    text-align: center;
-    color: #ffffff;
+	font-family: 'Raleway', sans-serif;
+	font-weight: bold;
+	font-size: 20px;
+	flex: 1;
+	padding: 3px;
+	text-align: center;
+	color: #ffffff;
 }
 
-label{
-    font-family: 'Raleway', sans-serif;
-    font-weight: bold;
+/*pegar en formularios*/
+label {
+	font-family: 'Raleway', sans-serif;
+	font-weight: bold;
+	font-size: 13px;
 }
 
 * {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
 }
+
 body {
 
 	color: #333;
 	font-size: 13px;
 	margin: 0;
 }
-input, textarea, select, button {
+
+input,
+textarea,
+select,
+button {
 	font-family: 'Raleway', sans-serif;
 	color: #1c1c1c;
 	font-size: 13px;
 }
 
 input:hover {
-    border: 1px solid #9358f2;
+	border: 1px solid #9358f2;
 }
 
 img {
 	max-width: 100%;
-    border-radius: 15px;
+	border-radius: 15px;
 }
+
 ul {
 	padding-left: 0;
 	margin-bottom: 0;
 }
+
 a:hover {
 	text-decoration: none;
 }
+
 :focus {
-    outline: none;
+	outline: none;
 }
+
 .wrapper {
 	min-height: 100vh;
 	background-size: cover;
@@ -95,34 +112,38 @@ a:hover {
 	display: flex;
 	align-items: center;
 }
+
 .inner {
-    border-radius:25px ;
+	border-radius: 25px;
 	padding: 20px;
 	background: #fff;
 	max-width: 850px;
 	margin: auto;
 	display: flex;
+
 	.image-holder {
 		width: 50%;
 	}
+
 	form {
 		width: 50%;
 		padding-top: 36px;
 		padding-left: 45px;
 		padding-right: 45px;
 	}
-	
+
 }
 
 
 
 button {
-    border-color: #9358f2;
-	border-radius:30px;
+	border-color: #9358f2;
+	border-radius: 30px;
 	width: 164px;
 	height: 51px;
 	margin: auto;
-	margin-top: 40px;
+	margin-top: 60px;
+
 	cursor: pointer;
 	display: flex;
 	align-items: center;
@@ -136,15 +157,20 @@ button {
 	transform: perspective(1px) translateZ(0);
 	-webkit-transition-duration: 0.3s;
 	transition-duration: 0.3s;
+
 	i {
 		margin-left: 10px;
 		-webkit-transform: translateZ(0);
-  		transform: translateZ(0);
+		transform: translateZ(0);
 	}
-	&:hover, &:focus, &:active {
-        background-color: #fff;
-        color: #9358f2;
-        border-color: #9358f2;
+
+	&:hover,
+	&:focus,
+	&:active {
+		background-color: #fff;
+		color: #9358f2;
+		border-color: #9358f2;
+
 		i {
 			-webkit-animation-name: hvr-icon-wobble-horizontal;
 			animation-name: hvr-icon-wobble-horizontal;
@@ -157,63 +183,77 @@ button {
 		}
 	}
 }
+
 @-webkit-keyframes hvr-icon-wobble-horizontal {
-  16.65% {
-    -webkit-transform: translateX(6px);
-    transform: translateX(6px);
-  }
-  33.3% {
-    -webkit-transform: translateX(-5px);
-    transform: translateX(-5px);
-  }
-  49.95% {
-    -webkit-transform: translateX(4px);
-    transform: translateX(4px);
-  }
-  66.6% {
-    -webkit-transform: translateX(-2px);
-    transform: translateX(-2px);
-  }
-  83.25% {
-    -webkit-transform: translateX(1px);
-    transform: translateX(1px);
-  }
-  100% {
-    -webkit-transform: translateX(0);
-    transform: translateX(0);
-  }
+	16.65% {
+		-webkit-transform: translateX(6px);
+		transform: translateX(6px);
+	}
+
+	33.3% {
+		-webkit-transform: translateX(-5px);
+		transform: translateX(-5px);
+	}
+
+	49.95% {
+		-webkit-transform: translateX(4px);
+		transform: translateX(4px);
+	}
+
+	66.6% {
+		-webkit-transform: translateX(-2px);
+		transform: translateX(-2px);
+	}
+
+	83.25% {
+		-webkit-transform: translateX(1px);
+		transform: translateX(1px);
+	}
+
+	100% {
+		-webkit-transform: translateX(0);
+		transform: translateX(0);
+	}
 }
+
 @keyframes hvr-icon-wobble-horizontal {
-  16.65% {
-    -webkit-transform: translateX(6px);
-    transform: translateX(6px);
-  }
-  33.3% {
-    -webkit-transform: translateX(-5px);
-    transform: translateX(-5px);
-  }
-  49.95% {
-    -webkit-transform: translateX(4px);
-    transform: translateX(4px);
-  }
-  66.6% {
-    -webkit-transform: translateX(-2px);
-    transform: translateX(-2px);
-  }
-  83.25% {
-    -webkit-transform: translateX(1px);
-    transform: translateX(1px);
-  }
-  100% {
-    -webkit-transform: translateX(0);
-    transform: translateX(0);
-  }
+	16.65% {
+		-webkit-transform: translateX(6px);
+		transform: translateX(6px);
+	}
+
+	33.3% {
+		-webkit-transform: translateX(-5px);
+		transform: translateX(-5px);
+	}
+
+	49.95% {
+		-webkit-transform: translateX(4px);
+		transform: translateX(4px);
+	}
+
+	66.6% {
+		-webkit-transform: translateX(-2px);
+		transform: translateX(-2px);
+	}
+
+	83.25% {
+		-webkit-transform: translateX(1px);
+		transform: translateX(1px);
+	}
+
+	100% {
+		-webkit-transform: translateX(0);
+		transform: translateX(0);
+	}
 }
-@media (max-width: 1199px) { 
+
+@media (max-width: 1199px) {
 	.wrapper {
 		background-position: right center;
 	}
 }
+
 @media (max-width: 991px) {
 	.inner form {
 		padding-top: 10px;
@@ -221,17 +261,21 @@ button {
 		padding-right: 30px;
 	}
 }
+
 @media (max-width: 767px) {
 	.inner {
 		display: block;
+
 		.image-holder {
 			width: 100%;
 		}
+
 		form {
 			width: 100%;
 			padding: 40px 0 30px;
 		}
 	}
+
 	button {
 		margin-top: 60px;
 	}

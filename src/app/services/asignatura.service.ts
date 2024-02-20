@@ -64,7 +64,7 @@ export class AsignaturaService {
 
 
   getGrados() {
-    return this.http.get<any[]>('http://127.0.0.1:3000/api/grado'); // Ajusta la ruta según tu API
+    return this.http.get<any[]>('http://127.0.0.1:3000/api/grado'); 
   }
 
   getAsignaturaById(id: number): Observable<Asignatura> {
@@ -80,6 +80,5 @@ export class AsignaturaService {
   getGradoById(idGrado: string) {
     return this.http.get<any>(`${this.URL_GRADOS_BY_ID}${idGrado}`);
   }
-  
-  
+
 }

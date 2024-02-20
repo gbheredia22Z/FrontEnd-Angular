@@ -8,7 +8,7 @@
   </button>
   <div class="collapse navbar-collapse" id="navbarNavDropdown">
     <ul class="navbar-nav">
-      <li class="nav-item" (click)="regresarPagina()">
+      <li class="nav-item" (click)="regresarPagina()" >
         <a class="nav-link"> <i class="bi bi-house-gear-fill"></i> Inicio <span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item dropdown">
@@ -33,25 +33,26 @@
 </nav>
 
 <h1 class=""> Calificaciones </h1>
+<div class="linea"></div>
 
 <div class="container text-center">
   <div class="row align-items-center">
-    <div class="col">
-      <label for="periodo" class="form-label">Grado</label>
+    <div class="col" style="margin-left: 95px;">
+      <label for="periodo" class="form-label"><i class="bi bi-file-bar-graph-fill"></i> Grado</label>
       <select class="form-select" id="gradoId" [(ngModel)]="selectedGradoId" name="gradoId" (change)="onGradoSelected()"
         required>
         <option *ngFor="let grado of grados" [value]="grado.id">{{ getGradosTable(grado.nombreGrado) }} </option>
       </select>
     </div>
     <div class="col">
-      <label for="periodo" class="form-label">Asignatura</label>
+      <label for="periodo" class="form-label"> <i class="bi bi-book-fill"></i> Asignatura</label>
       <select class="form-select" id="asignaturaId" [(ngModel)]="selectedAsignaturaId" name="asignaturaId"
         (change)="onAsignaturaSelected()" required>
         <option *ngFor="let asignatura of asignaturas" [value]="asignatura.id">{{ asignatura.nombreMateria }} </option>
       </select>
     </div>
-    <div class="col">
-      <label for="periodo" class="form-label">Actividad</label>
+    <div class="col" style="margin-right: 55px;">
+      <label for="periodo" class="form-label"><i class="bi bi-chat-square-text-fill"></i> Actividad</label>
       <select class="form-select" id="actividadId" [(ngModel)]="selectedActividadId" name="actividadId"
         (change)="onActividadSelected()" required>
         <option *ngFor="let actividad of actividades" [value]="actividad.id">{{ actividad.titulo }} </option>
@@ -59,7 +60,6 @@
     </div>
   </div>
 </div>
-
 <br><br>
 <div class="d-flex align-items-center">
   <button type="button" class="btn btn-outline-danger" (click)="onImprimir()"> Descargar
@@ -67,42 +67,45 @@
   </button> <button type="button" class="btn btn-outline-success" (click)="imprimirExcel()">Descargar
     <i class="bi bi-file-earmark-excel"></i>
   </button>
-</div> <br> <br>
-<div class="form-check form-switch" style="margin-left: 1053px;">
+</div>
+<br><br>
+
+<div class="form-check form-switch" style="margin-left: 990px;">
   <input class="form-check-input" type="checkbox" id="switchEditarNotas" [(ngModel)]="editarNotasHabilitado"
     (ngModelChange)="guardarCambiosNotas()">
   <label class="form-check-label" for="switchEditarNotas">Editar notas</label>
 </div>
 
 <div class="container mt-4">
-
-  <table class="table table-hover" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
-    <thead>
-      <tr>
-        <th>Estudiante</th>
-        <th>Actividad</th>
-        <th>Asignatura</th>
-        <th>Nota</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let result of datosfinales">
-        <td>{{ result.nombre }} {{ result.apellido }}</td>
-        <td>{{ result.tituloActividad }}</td>
-        <td>{{ result.nombreAsignatura}}</td>
-        <td>
-          <ng-container *ngIf="editarNotasHabilitado; else noEditable">
-            <div contenteditable="true" id="{{ result.idNota }}" (focusout)="asignarNota(result.idNota, $event)">
+  <section class="tabla">
+    <table class="table table-hover" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
+      <thead>
+        <tr>
+          <th>Estudiante</th>
+          <th>Actividad</th>
+          <th>Asignatura</th>
+          <th>Nota</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let result of datosfinales">
+          <td>{{ result.nombre }} {{ result.apellido }}</td>
+          <td>{{ result.tituloActividad }}</td>
+          <td>{{ result.nombreAsignatura}}</td>
+          <td>
+            <ng-container *ngIf="editarNotasHabilitado; else noEditable">
+              <div contenteditable="true" id="{{ result.idNota }}" (focusout)="asignarNota(result.idNota, $event)">
+                {{ result.nota }}
+              </div>
+            </ng-container>
+            <ng-template #noEditable>
               {{ result.nota }}
-            </div>
-          </ng-container>
-          <ng-template #noEditable>
-            {{ result.nota }}
-          </ng-template>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+            </ng-template>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
 </div>
 
 <!--Footer-->

@@ -35,7 +35,7 @@
 </nav>
 
 <h1 class=""> Estudiantes </h1>
-
+<div class="linea" ></div>
 
 <div class="d-flex align-items-center">
     <!-- Botón "Añadir Estudiante" -->
@@ -65,12 +65,12 @@
 
                     <div class="row">
                         <div class="mb-3">
-                            <label for="nombre" class="form-label">Nombre:</label>
+                            <label for="nombre" class="form-label"> <i class="fas fa-user"></i> Nombre:</label>
                             <input id="nombre" type="text" class="form-control" name="nombre"
                                 [(ngModel)]="personaService.selectedEstudiante.nombre" required maxlength="100">
                         </div>
                         <div class=" mb-3">
-                            <label for="apellido"><i class="fas fa-user"></i> Apellido</label>
+                            <label for="apellido"><i class="fas fa-user"></i>  Apellido</label>
                             <input id="apellido" type="text" class="form-control" name="apellido"
                                 [(ngModel)]="personaService.selectedEstudiante.apellido" required maxlength="100">
                         </div>
@@ -85,7 +85,7 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="fechaNacimiento" class="form-label">Fecha de Nacimiento:</label>
+                            <label for="fechaNacimiento" class="form-label"> <i class="bi bi-calendar-date-fill"></i> Fecha de Nacimiento:</label>
                             <input type="date" class="form-control" id="fechaNacimiento" #fechaNacimiento="ngModel"
                                 [(ngModel)]="personaService.selectedEstudiante.fechaNacimiento" name="fechaNacimiento"
                                 (blur)="validarFechaNacimiento()" required [min]="minFechaNacimiento"
@@ -132,103 +132,108 @@
             <i class="bi bi-file-earmark-excel"></i>
         </button>
     </div>
-    <br><br>
+    <br>
+    <section class="tabla">
+        <table class="table table-hover" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
+            <thead>
+                <tr>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Apellido</th>
+                    <th scope="col">Cedula</th>
+                    <th scope="col">Fecha Nacimiento</th>
+                    <th scope="col">Edad</th>
+                    <th scope="col">Direccion</th>
+                    <th scope="col">Correo</th>
+                    <th scope="col">Celular</th>
+                    <th scope="col">Acción</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let estudiante of data">
+                    <td>{{estudiante.nombre}}</td>
+                    <td>{{estudiante.apellido}}</td>
+                    <td>{{estudiante.cedula}}</td>
+                    <td>{{ estudiante.fechaNacimiento | date:'dd-MM-yyyy' }}</td>
+                    <td>{{ calcularEdad(estudiante.fechaNacimiento) }}</td>
+                    <td>{{estudiante.direccion}}</td>
+                    <td>{{estudiante.correo}}</td>
+                    <td>{{estudiante.celular}}</td>
+                    <td>
+                        <button type="button" class="btn btn-success" id="" (click)="editEstudiante(estudiante)"><i
+                                class="bi bi-pencil-square"></i></button>
+                    </td>
+                    <!-- Modal de Edición -->
+                    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-scrollable">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h6 class="modal-title fs-5" id="exampleModalLabel">
+                                        <i class="bi bi-save-fill"></i> <br> Editar Estudiante
+                                    </h6>
+                                    <button type="button" class="btn btn-light" data-bs-dismiss="modal"
+                                        aria-label="Close" (click)="closeEditEstudianteModal()"><i
+                                            class="bi bi-x-lg"></i></button>
+                                </div>
 
-    <table class="table table-hover" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
-        <thead>
-            <tr>
-                <th scope="col">Nombre</th>
-                <th scope="col">Apellido</th>
-                <th scope="col">Cedula</th>
-                <th scope="col">Fecha Nacimiento</th>
-                <th scope="col">Edad</th>
-                <th scope="col">Direccion</th>
-                <th scope="col">Correo</th>
-                <th scope="col">Celular</th>
-                <th scope="col">Acción</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let estudiante of data">
-                <td>{{estudiante.nombre}}</td>
-                <td>{{estudiante.apellido}}</td>
-                <td>{{estudiante.cedula}}</td>
-                <td>{{ estudiante.fechaNacimiento | date:'dd-MM-yyyy' }}</td>
-                <td>{{ calcularEdad(estudiante.fechaNacimiento) }}</td>
-                <td>{{estudiante.direccion}}</td>
-                <td>{{estudiante.correo}}</td>
-                <td>{{estudiante.celular}}</td>
-                <td>
-                    <button type="button" class="btn btn-success" id="" (click)="editEstudiante(estudiante)"><i
-                            class="bi bi-pencil-square"></i></button>
-                </td>
-                <!-- Modal de Edición -->
-                <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                    aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-scrollable">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h6 class="modal-title fs-5" id="exampleModalLabel">
-                                    <i class="bi bi-save-fill"></i> <br> Editar Estudiante
-                                </h6>
-                                <button type="button" class="btn btn-light" data-bs-dismiss="modal" aria-label="Close"
-                                    (click)="closeEditEstudianteModal()"><i class="bi bi-x-lg"></i></button>
-                            </div>
+                                <div class="modal-body">
+                                    <form #estudianteForm2="ngForm">
+                                        <!-- Campo de ID oculto -->
+                                        <input type="hidden" [(ngModel)]="personaService.selectedEstudiante.id"
+                                            name="id" />
+                                        <div class="row">
+                                            <div class="mb-3">
+                                                <label for="nombre" class="form-label"> <i class="fas fa-user"></i> Nombre:</label>
+                                                <input type="text" class="form-control" id="nombre"
+                                                    [(ngModel)]="personaService.selectedEstudiante.nombre"
+                                                    name="nombre">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="apellido" class="form-label"> <i class="fas fa-user"></i> Apellido:</label>
+                                                <input type="text" class="form-control" id="apellido"
+                                                    [(ngModel)]="personaService.selectedEstudiante.apellido"
+                                                    name="apellido">
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="mb-3">
+                                                <label for="direccion" class="form-label"><i class="fas fa-map-marker-alt"> </i> Dirección:</label>
+                                                <input type="text" class="form-control" id="direccionedit"
+                                                    [(ngModel)]="personaService.selectedEstudiante.direccion"
+                                                    name="direccion">
+                                            </div>
+                                        </div> 
+                                        <div class="row">
+                                            <div class="mb-3">
+                                                <label for="correo" class="form-label"> <i class="fas fa-envelope"> </i> Correo:</label>
+                                                <input type="text" class="form-control" id="correo"
+                                                    [(ngModel)]="personaService.selectedEstudiante.correo"
+                                                    name="correo">
 
-                            <div class="modal-body">
-                                <form #estudianteForm2="ngForm">
-                                    <!-- Campo de ID oculto -->
-                                    <input type="hidden" [(ngModel)]="personaService.selectedEstudiante.id" name="id" />
-                                    <div class="row">
-                                        <div class="mb-3">
-                                            <label for="nombre" class="form-label">Nombre:</label>
-                                            <input type="text" class="form-control" id="nombre"
-                                                [(ngModel)]="personaService.selectedEstudiante.nombre" name="nombre">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="celular" class="form-label"> <i class="fas fa-phone"></i> Teléfono:</label>
+                                                <input type="text" class="form-control" id="celular"
+                                                    [(ngModel)]="personaService.selectedEstudiante.celular"
+                                                    name="celular">
+                                            </div>
                                         </div>
-                                        <div class="mb-3">
-                                            <label for="apellido" class="form-label">Apellido:</label>
-                                            <input type="text" class="form-control" id="apellido"
-                                                [(ngModel)]="personaService.selectedEstudiante.apellido"
-                                                name="apellido">
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                                                (click)="closeEditEstudianteModal()">Cerrar</button>
+                                            <!-- Botón de guardar en el modal de edición -->
+                                            <button type="button" class="btn btn-dark"
+                                                (click)="updateEstudiante(estudianteForm2)">Guardar</button>
                                         </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="mb-3">
-                                            <label for="direccion" class="form-label">Dirección:</label>
-                                            <input type="text" class="form-control" id="direccionedit"
-                                                [(ngModel)]="personaService.selectedEstudiante.direccion"
-                                                name="direccion">
-                                        </div>
-                                    </div> <br>
-                                    <div class="row">
-                                        <div class="mb-3">
-                                            <label for="correo" class="form-label">Correo:</label>
-                                            <input type="text" class="form-control" id="correo"
-                                                [(ngModel)]="personaService.selectedEstudiante.correo" name="correo">
-
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="celular" class="form-label">Celular:</label>
-                                            <input type="text" class="form-control" id="celular"
-                                                [(ngModel)]="personaService.selectedEstudiante.celular" name="celular">
-                                        </div>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
-                                            (click)="closeEditEstudianteModal()">Cerrar</button>
-                                        <!-- Botón de guardar en el modal de edición -->
-                                        <button type="button" class="btn btn-dark"
-                                            (click)="updateEstudiante(estudianteForm2)">Guardar</button>
-                                    </div>
-                                </form>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </tr>
-        </tbody>
-    </table>
-
+                </tr>
+            </tbody>
+        </table>
+    </section>
 </div>
 <!--Footer-->
 

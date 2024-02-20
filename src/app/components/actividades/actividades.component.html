@@ -30,11 +30,12 @@
                 </div>
             </li>
         </ul>
-        
+
     </div>
 </nav>
 
 <h1 class=""> Tipo de Actividad </h1>
+<div class="linea"></div>
 
 <div class="d-flex align-items-center">
     <button type="button" class="btn btn-primary" id="modal" (click)="openAddActividadModal()">
@@ -58,7 +59,7 @@
                     </div>
                     <div class="row">
                         <div class="mb-3">
-                            <label for="nombreActividad" class="form-label"> Tipo Actividad </label>
+                            <label for="nombreActividad" class="form-label"><i class="bi bi-card-checklist"></i> Tipo Actividad </label>
                             <input type="text" class="form-control" id="nombreActividad"
                                 placeholder="Ingrese el tipo de actividad"
                                 [(ngModel)]="tipoService.selectedActividad.nombreActividad" name="nombreActividad"
@@ -88,62 +89,64 @@
             <i class="bi bi-file-earmark-excel"></i>
         </button>
     </div>
-    <br><br>
+   
+    <section class="tabla">
+        <table class="table table-hover" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
+            <thead>
+                <tr>
+                    <th scope="col">Nombre Actividad</th>
+                    <th scope="col"> Acción </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let periodo of data">
+                    <td>{{periodo.nombreActividad}}</td>
+                    <td>
+                        <button type="button" class="btn btn-success" id="" (click)="editTipoActividad(periodo)"><i
+                                class="bi bi-pencil-square"></i></button>
+                    </td>
+                    <!-- Modal de Edición -->
+                    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-scrollable">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h6 class="modal-title fs-5" id="exampleModalLabel"><i class="bi bi-card-checklist"></i>
+                                        <br>Editar Tipo Actividad
+                                    </h6>
+                                    <button type="button" class="btn btn-light" data-bs-dismiss="modal"
+                                        aria-label="Close" (click)="closeEditActividadModal()"><i
+                                            class="bi bi-x-lg"></i></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form #periodoForm2="ngForm">
+                                        <!-- Campo de ID oculto -->
+                                        <input type="hidden" [(ngModel)]="tipoService.selectedActividad.id" name="id" />
+                                        <div class="row">
+                                            <div class="mb-3">
+                                                <label for="nombreActividad" class="form-label"><i class="bi bi-card-checklist"></i> Tipo Actividad </label>
+                                                <input type="text" class="form-control" id="nombreActividad"
+                                                    [(ngModel)]="tipoService.selectedActividad.nombreActividad"
+                                                    name="nombreActividad">
+                                            </div>
 
-    <table class="table table-hover" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
-        <thead>
-            <tr>
-                <th scope="col">Nombre Actividad</th>
-                <th scope="col"> Acción </th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let periodo of data">
-                <td>{{periodo.nombreActividad}}</td>
-                <td>
-                    <button type="button" class="btn btn-success" id="" (click)="editTipoActividad(periodo)"><i
-                            class="bi bi-pencil-square"></i></button>
-                </td>
-                <!-- Modal de Edición -->
-                <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                    aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-scrollable">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h6 class="modal-title fs-5" id="exampleModalLabel"><i class="bi bi-save-fill"></i>
-                                    <br>Editar Tipo Actividad
-                                </h6>
-                                <button type="button" class="btn btn-light" data-bs-dismiss="modal" aria-label="Close"
-                                    (click)="closeEditActividadModal()"><i class="bi bi-x-lg"></i></button>
-                            </div>
-                            <div class="modal-body">
-                                <form #periodoForm2="ngForm">
-                                    <!-- Campo de ID oculto -->
-                                    <input type="hidden" [(ngModel)]="tipoService.selectedActividad.id" name="id" />
-                                    <div class="row">
-                                        <div class="mb-3">
-                                            <label for="nombreActividad" class="form-label"> Tipo Actividad </label>
-                                            <input type="text" class="form-control" id="nombreActividad"
-                                                [(ngModel)]="tipoService.selectedActividad.nombreActividad"
-                                                name="nombreActividad">
                                         </div>
-
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
-                                            (click)="closeEditActividadModal()">Cerrar</button>
-                                        <!-- Botón de guardar en el modal de edición -->
-                                        <button type="button" class="btn btn-dark"
-                                            (click)="createTipoActividad(periodoForm2)">Guardar</button>
-                                    </div>
-                                </form>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                                                (click)="closeEditActividadModal()">Cerrar</button>
+                                            <!-- Botón de guardar en el modal de edición -->
+                                            <button type="button" class="btn btn-dark"
+                                                (click)="createTipoActividad(periodoForm2)">Guardar</button>
+                                        </div>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </tr>
-        </tbody>
-    </table>
+                </tr>
+            </tbody>
+        </table>
+    </section>
 </div>
 <!--Footer-->
 

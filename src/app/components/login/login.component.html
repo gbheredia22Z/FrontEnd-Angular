@@ -5,7 +5,7 @@
     </div>
     <form (ngSubmit)="onSubmit()">
       <h2 style="text-align: center;">Inicio de sesión</h2>
-      <br>
+      
       <div class="mb-3">
         <label for="exampleInputEmail1" class="form-label">Usuario </label>
         <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
@@ -20,11 +20,11 @@
       <div class="mb-3 form-check">
         <input type="checkbox" class="form-check-input" id="exampleCheck1">
         <label class="form-check-label" for="exampleCheck1">Recordarme</label>
+        <a [routerLink]="['/cambio-contrasenia-olvido']">¿Olvidó su contraseña?</a>
       </div>
       <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
-      <div class="mb-3">
-        <a [routerLink]="['/cambio-contrasenia-olvido']">¿Olvidó su contraseña?</a>   
-      </div>
+     
+      
     </form>
 
   </div>

@@ -50,9 +50,12 @@
                         <div class="col-md-3 mb-3" *ngFor="let actividad of actividadesPorAsignatura[asignatura.id]">
                             <div class="card">
                                 <div class="card-body">
-                                    <h5 class="card-title">{{ actividad.titulo }}</h5>
-                                    <p class="card-text">{{ actividad.detalleActividad }}</p>
-                                    <p class="card-text">Nota: {{ actividad.valor_nota }}</p>
+                                    <h2 class="card-title">{{actividad.titulo}}</h2>
+                                    <p class="card-text">{{actividad.detalleActividad}}</p>
+                                    <div class="linea" ></div>
+                                        <h6 class="card-text">Nota:{{ actividad.valor_nota}}</h6>
+                                        <p class="card-text">{{nombrePeriodo(actividad.nombrePeriodo)}}</p>
+
                                 </div>
                             </div>
                         </div>
