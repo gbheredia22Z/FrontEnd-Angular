@@ -27,10 +27,18 @@ export class DocenteComponent implements OnInit, OnDestroy {
   minFechaNacimiento: string;
   maxFechaNacimiento: string;
 
-  regresarPagina(): void {
-    this.location.back();
+  mensajeBienvenida: string;
+
+  logout(): void {
+    localStorage.removeItem('token');
+    this.router.navigate(['/login']);
   }
-  
+
+  regresarPagina(): void {
+    //this.location.back();
+    this.router.navigate(['/admin']);
+  }
+
   getDocente() {
   }
 
@@ -67,6 +75,7 @@ export class DocenteComponent implements OnInit, OnDestroy {
     });
   }
   ngOnInit(): void {
+    this.mensajeBienvenida = history.state.mensaje ?? "Bienvenido/a admin";
     this.dtOptions = {
       language: {
         url: "/assets/Spanish.json"

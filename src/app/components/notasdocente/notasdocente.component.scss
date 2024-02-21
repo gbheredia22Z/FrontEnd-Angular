@@ -23,7 +23,7 @@ a {
 h1 {
     font-family: 'Raleway', sans-serif;
     font-weight: regular;
-    font-size: 40px;
+    font-size: 60px;
     flex: 1;
     padding: 50px;
     text-align: center;
@@ -63,16 +63,6 @@ h6 {
 }
 
 
-.linea {
-    border-top: 2px solid #833df3;
-    height: 2px;
-    max-width: 200px;
-    padding: 0;
-    margin: 10px auto 0 auto;
-    margin-bottom: 50px;
-
-  }
-  
 /*MENU*/
 nav a img {
     margin-left: 20px;
@@ -299,30 +289,4 @@ hr {
     /* Ajusta el ancho del select según sea necesario */
     margin-bottom: 5px;
     /* Ajusta el espacio entre el select y el elemento siguiente según sea necesario */
-}
-
-
-/*TABLA*/
-
-.tabla{
-    margin: 80px;
-
-}
-
-.table{
-margin: 20px;
-}
-
-th{
-    font-family: 'Raleway', sans-serif;
-    
-}
-
-td{
-    font-family: 'Raleway', sans-serif;
-    
-}
-
-button{
-    font-family: 'Raleway', sans-serif;
 }

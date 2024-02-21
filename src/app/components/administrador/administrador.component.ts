@@ -6,6 +6,7 @@ import { PersonaService } from '../../services/persona.service';
 import { Persona } from '../../models/persona';
 import { Location } from '@angular/common';
 import { ImpresionService } from '../../services/impresion.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-administrador',
@@ -22,14 +23,22 @@ export class AdministradorComponent implements OnInit, OnDestroy {
   isEditModalOpen = false;
   dtTrigger: Subject<any> = new Subject<any>();
 
+  mensajeBienvenida: string;
+
   // Define el rango permitido para la fecha de nacimiento
   minFechaNacimiento: string;
   maxFechaNacimiento: string;
 
-  regresarPagina(): void {
-    this.location.back();
+  logout(): void {
+    localStorage.removeItem('token');
+    this.router.navigate(['/login']);
   }
-  
+
+  regresarPagina(): void {
+    //this.location.back();
+    this.router.navigate(['/admin']);
+  }
+
   getAdmin() {
   }
 
@@ -51,7 +60,7 @@ export class AdministradorComponent implements OnInit, OnDestroy {
     return { isValid: true };
   }
 
-  constructor(public personaService: PersonaService, private fb: FormBuilder, private srvImpresion: ImpresionService,
+  constructor(private router: Router, public personaService: PersonaService, private fb: FormBuilder, private srvImpresion: ImpresionService,
     private location: Location) {
     this.myForm = this.fb.group({
       id: new FormControl('', Validators.required),
@@ -66,6 +75,7 @@ export class AdministradorComponent implements OnInit, OnDestroy {
     });
   }
   ngOnInit(): void {
+    this.mensajeBienvenida = history.state.mensaje ?? "Bienvenido/a admin";
     this.dtOptions = {
       language: {
         url: "/assets/Spanish.json"
@@ -75,7 +85,7 @@ export class AdministradorComponent implements OnInit, OnDestroy {
     this.minFechaNacimiento = '1950-01-01';
     this.maxFechaNacimiento = '2006-12-31';
   }
-  
+
 
   onSearch(): void {
     // Lógica para filtrar docentes por cédula

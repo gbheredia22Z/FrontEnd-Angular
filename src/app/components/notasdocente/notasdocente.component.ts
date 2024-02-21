@@ -66,7 +66,7 @@ export class NotasdocenteComponent {
       this.selectedAsignaturaId = asignaturaId ? +asignaturaId : null; // Convertir a number o asignar null si es null
       this.loadActivities(); // Cargar actividades al detectar un cambio en la asignatura
     });
-  
+
 
     this.formulario.get('actividad')?.valueChanges.subscribe((actividadId) => {
       this.selectedActividadId = actividadId;
@@ -113,7 +113,7 @@ export class NotasdocenteComponent {
     }
   }
 
- 
+
   getGrados() {
     // Asumiendo que tienes un método en tu servicio para obtener los grados
     this.notaService.getGrados().subscribe((res) => {

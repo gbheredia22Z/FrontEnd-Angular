@@ -31,8 +31,16 @@ export class EstudianteComponent implements OnInit, OnDestroy {
   minFechaNacimiento: string;
   maxFechaNacimiento: string;
 
+  mensajeBienvenida: string;
+
+  logout(): void {
+    localStorage.removeItem('token');
+    this.router.navigate(['/login']);
+  }
+
   regresarPagina(): void {
-    this.location.back();
+    //this.location.back();
+    this.router.navigate(['/admin']);
   }
 
   getEstudiante() {
@@ -99,6 +107,7 @@ export class EstudianteComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.mensajeBienvenida = history.state.mensaje ?? "Bienvenido/a admin";
     this.dtOptions = {
       language: {
         url: "/assets/Spanish.json"
@@ -111,7 +120,7 @@ export class EstudianteComponent implements OnInit, OnDestroy {
     this.minFechaNacimiento = '2010-01-01';
     this.maxFechaNacimiento = '2017-12-31';
   }
-  
+
   ngOnDestroy(): void {
     //this.subscriptions.forEach(subscription => subscription.unsubscribe());
     this.dtTrigger.unsubscribe();

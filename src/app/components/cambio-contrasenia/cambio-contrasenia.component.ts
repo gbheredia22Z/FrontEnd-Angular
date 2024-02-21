@@ -49,7 +49,6 @@ export class CambioContraseniaComponent implements OnInit{
       .subscribe(
         (response) => {
           console.log(response);
-          Swal.fire('Contraseña cambiada', 'La contraseña se cambió exitosamente.', 'success');
           this.router.navigate(['/login']);
         },
         (error) => {

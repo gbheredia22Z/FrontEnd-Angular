@@ -24,6 +24,7 @@ export class LoginComponent {
     this.loginService.postLogin(this.selectedLogin).subscribe(
       (response) => {
         console.log(response);
+        console.log(response.token);
         if (response.primerInicioSesion) {
           // Es el primer inicio de sesión, redirige a cambio de contraseña
           this.cedula2 = this.selectedLogin.cedula;
@@ -39,11 +40,12 @@ export class LoginComponent {
             this.mensajeBienvenida = `Bienvenido/a ${response.usuario.nombre}`;
             this.idUsuario = response.usuario.id;
             this.router.navigate(['/vista-docente'], { state: { mensaje: this.mensajeBienvenida, idUser: this.idUsuario} });
-          } else {
+          } else if (response.usuario && response.usuario.tipoPersona === 'A') {
             this.mensajeBienvenida = `Bienvenido/a admin`;
             this.router.navigate(['/admin'], { state: { mensaje: this.mensajeBienvenida, idUser: this.idUsuario } });
           }
         }
+        localStorage.setItem('token', response.token);
       },
       (error) => {
         console.error(error);

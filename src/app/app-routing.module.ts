@@ -20,73 +20,87 @@ import { CambioContraseniaComponent } from './components/cambio-contrasenia/camb
 import { AdministradorComponent } from './components/administrador/administrador.component';
 import { NotasdocenteComponent } from './components/notasdocente/notasdocente.component';
 import { CambioContraseniaOlvidoComponent } from './components/cambio-contrasenia-olvido/cambio-contrasenia-olvido.component';
+import { authGuard } from './guards/auth.guard';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   {
     path: 'login',
-    component: LoginComponent
+    component: LoginComponent,
   },
   {
     path: 'estudiante',
     component: EstudianteComponent,
-
+    canActivate: [authGuard]
   },
   {
     path: 'admin',
-    component: AdminComponent
+    component: AdminComponent,
+    canActivate: [authGuard]
   },
   {
     path: 'docente',
     component: DocenteComponent,
+    canActivate: [authGuard]
   },
   {
     path: 'periodo',
-    component: PeriodoComponent
+    component: PeriodoComponent,
+    canActivate: [authGuard]
   },
   {
     path: 'asignatura',
-    component: AsignaturaComponent
+    component: AsignaturaComponent,
+    canActivate: [authGuard]
   },
   {
     path: 'grado',
-    component: GradoComponent
+    component: GradoComponent,
+    canActivate: [authGuard]
   },
   {
     path: 'matricula',
-    component: MatriculaComponent
+    component: MatriculaComponent,
+    canActivate: [authGuard]
   },
-  {
+  /*{
     path: 'login',
-    component: LoginComponent
-  },
+    component: LoginComponent,
+  },*/
   {
     path: 'actividades',
-    component: ActividadesComponent
+    component: ActividadesComponent,
+    canActivate: [authGuard]
   },
   {
     path: 'periodo-calificaciones',
-    component: PerCalificacionesComponent
+    component: PerCalificacionesComponent,
+    canActivate: [authGuard]
   },
   {
     path: 'actividades-educativas',
-    component: EducativaActividadesComponent
+    component: EducativaActividadesComponent,
+    canActivate: [authGuard]
   },
   {
     path: 'nota',
-    component: NotasComponent
+    component: NotasComponent,
+    canActivate: [authGuard]
   },
   {
     path: 'vista-estudiante',
-    component: VistaEstudianteComponent
+    component: VistaEstudianteComponent,
+    canActivate: [authGuard]
   },
   {
     path: 'vista-docente',
-    component: VistaDocenteComponent
+    component: VistaDocenteComponent,
+    canActivate: [authGuard]
   },
   {
     path: 'actividad-docente/:asignaturaId',
-    component: ActividadesdocenteComponent
+    component: ActividadesdocenteComponent,
+    canActivate: [authGuard]
   },
   {
     path: 'cambio-contrasenia/:cedula',
@@ -94,11 +108,13 @@ const routes: Routes = [
   },
   {
     path: 'administrador',
-    component: AdministradorComponent
+    component: AdministradorComponent,
+    canActivate: [authGuard]
   },
   {
     path: 'notas-docente/:asignaturaId',
-    component: NotasdocenteComponent
+    component: NotasdocenteComponent,
+    canActivate: [authGuard]
   },
   {
     path: 'cambio-contrasenia-olvido',

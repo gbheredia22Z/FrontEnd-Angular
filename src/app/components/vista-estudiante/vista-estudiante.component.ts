@@ -84,6 +84,7 @@ export class VistaEstudianteComponent implements OnInit {
 
 
   logout(): void {
+    localStorage.removeItem('token');
     this.router.navigate(['/login']);
   }
 }

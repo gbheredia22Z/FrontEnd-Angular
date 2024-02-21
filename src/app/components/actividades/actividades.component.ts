@@ -6,6 +6,7 @@ import { TipoActividad } from '../../models/tipo-actividad';
 import { Location } from '@angular/common';
 import Swal from 'sweetalert2';
 import { ImpresionService } from '../../services/impresion.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-actividades',
@@ -22,7 +23,7 @@ export class ActividadesComponent implements OnInit, OnDestroy {
   data: any = []; //aqui se alamcena
   dtTrigger: Subject<any> = new Subject<any>();
 
-  constructor(public tipoService: TipoActividadService,
+  constructor(private router: Router, public tipoService: TipoActividadService,
     private fb: FormBuilder, private srvImpresion: ImpresionService, private location: Location) {
     this.myForm = this.fb.group({
       id: new FormControl('', Validators.required),
@@ -30,8 +31,16 @@ export class ActividadesComponent implements OnInit, OnDestroy {
     });
   }
 
+  mensajeBienvenida: string;
+
+  logout(): void {
+    localStorage.removeItem('token');
+    this.router.navigate(['/login']);
+  }
+
   regresarPagina(): void {
-    this.location.back();
+    //this.location.back();
+    this.router.navigate(['/admin']);
   }
 
   getTipoService() {
@@ -51,6 +60,7 @@ export class ActividadesComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.mensajeBienvenida = history.state.mensaje ?? "Bienvenido/a admin";
     this.dtOptions = {
       language: {
         url: "/assets/Spanish.json"

@@ -20,13 +20,13 @@ export class NotasService {
   estudiantes!: Persona[];
   selectDTO: NotasDTO;
   seleccionarDto: Notasdtoall;
-  URL_API = "http://127.0.0.1:3000/api"
-  URL_ASIGNATURAS = "http://127.0.0.1:3000/api/asignatura/";
-  URL_API3 = "http://127.0.0.1:3000/api/actividades/";
-  private apiUrl = 'http://localhost:3000/api';
-  URL_Student = "http://127.0.0.1:3000/api/estudiante/";
-  URL_ESTUDIANTE_BY_ID = "http://127.0.0.1:3000/api/estudiante/traer/";
-  URL_APIACT = 'http://localhost:3000/api';
+  URL_API = "http://54.196.78.164:9000/api"
+  URL_ASIGNATURAS = "http://54.196.78.164:9000/api/asignatura/";
+  URL_API3 = "http://54.196.78.164:9000/api/actividades/";
+  private apiUrl = 'http://54.196.78.164:9000/api';
+  URL_Student = "http://54.196.78.164:9000/api/estudiante/";
+  URL_ESTUDIANTE_BY_ID = "http://54.196.78.164:9000/api/estudiante/traer/";
+  URL_APIACT = 'http://54.196.78.164:9000/api';
 
 
   constructor(private http: HttpClient) {
@@ -101,13 +101,13 @@ export class NotasService {
   }
   // En NotasService
   obtenerNotasEstudiante(idEstudiante: number, idAsignatura: number): Observable<any[]> {
-    const url = `http://127.0.0.1:3000/api/traeractividades/asignatura/estudiante/?idEstudiante=${idEstudiante}&idAsignatura=${idAsignatura}`;
+    const url = `http://54.196.78.164:9000/api/traeractividades/asignatura/estudiante/?idEstudiante=${idEstudiante}&idAsignatura=${idAsignatura}`;
     return this.http.get<any[]>(url);
   }
 
   // Método para obtener las notas por actividad y asignatura
   getNotasPorActividadYAsignatura(actividadId: number, asignaturaId: number): Observable<any[]> {
-    const url = `http://127.0.0.1:3000/api/actividad/${actividadId}/asignatura/${asignaturaId}`;
+    const url = `http://54.196.78.164:9000/api/actividad/${actividadId}/asignatura/${asignaturaId}`;
     return this.http.get<any[]>(url);
   }
 

@@ -14,7 +14,7 @@ export class PeriodoService {
   periodos!: Periodo[];
   
   
-  URL_API = "http://127.0.0.1:3000/api/periodo/";
+  URL_API = "http://54.196.78.164:9000/api/periodo/";
 
   constructor(private http: HttpClient) {
     this.selectedPeriodo = new Periodo();

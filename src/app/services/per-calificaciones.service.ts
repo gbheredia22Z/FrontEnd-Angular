@@ -12,7 +12,7 @@ export class PerCalificacionesService {
   selectPerCalificaciones:PerCalificaciones;
   tiposPerCalificaciones !: PerCalificaciones[];
 
-  URL_API = "http://127.0.0.1:3000/api/periodoCalificaciones/";
+  URL_API = "http://54.196.78.164:9000/api/periodoCalificaciones/";
 
   constructor(private http:HttpClient) 
   {

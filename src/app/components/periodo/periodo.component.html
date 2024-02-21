@@ -30,6 +30,19 @@
                 </div>
             </li>
         </ul>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown" style="margin-right: 3%;">
+          <ul class="navbar-nav ml-auto">
+              <li class="nav-item dropdown ">
+                  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
+                      aria-haspopup="true" aria-expanded="false">
+                      <i class="bi bi-person-circle"> </i>
+                      {{ mensajeBienvenida }} </a>
+                  <div class="dropdown-menu bg-dark" aria-labelledby="navbarDropdownMenuLink">
+                      <a class="dropdown-item" (click)="logout()"><i class="bi bi-arrow-left-square-fill"></i> Cerrar Sesión </a>
+                  </div>
+                </li>
+            </ul>
+        </div>
     </div>
 </nav>
 

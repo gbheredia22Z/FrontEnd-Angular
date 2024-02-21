@@ -12,10 +12,10 @@ export class GradoService {
   [x: string]: any;
   selectedGrado: Grado;
   grados!: Grado[];
-  selectedDocentes:any;
-  
-  URL_API = "http://127.0.0.1:3000/api/grado/";
-  URL_DOCENTES_BY_ID = "http://localhost:3000/api/docentes/traer/";
+  selectedDocentes: any;
+
+  URL_API = "http://54.196.78.164:9000/api/grado/";
+  URL_DOCENTES_BY_ID = "http://54.196.78.164:9000/api/docentes/traer/";
   constructor(private http: HttpClient) {
     this.selectedGrado = new Grado();
     this.selectedGrado = new Grado();
@@ -27,7 +27,7 @@ export class GradoService {
   }
 
   getDocentes() {
-    return this.http.get<any[]>('http://127.0.0.1:3000/api/docente'); // Ajusta la ruta según tu API
+    return this.http.get<any[]>('http://54.196.78.164:9000/api/docente'); // Ajusta la ruta según tu API
   }
   postGrado(grado: Grado) {
     return this.http.post(this.URL_API, grado);

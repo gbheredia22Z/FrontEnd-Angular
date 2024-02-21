@@ -41,11 +41,19 @@ export class NotasComponent {
   filasModificadas: Set<number> = new Set<number>();
   selectedGradoId: number | null = null;
 
-  regresarPagina(): void {
-    this.location.back();
+  mensajeBienvenida: string;
+
+  logout(): void {
+    localStorage.removeItem('token');
+    this.router.navigate(['/login']);
   }
 
-  constructor(public notaService: NotasService, private router: Router, private route: ActivatedRoute, private fb: FormBuilder, 
+  regresarPagina(): void {
+    //this.location.back();
+    this.router.navigate(['/admin']);
+  }
+
+  constructor(public notaService: NotasService, private router: Router, private route: ActivatedRoute, private fb: FormBuilder,
     private srvImpresion: ImpresionService, private location: Location) {
     this.formulario = this.fb.group({
       actividad: [null],  // Utiliza un array para establecer el valor inicial
@@ -62,6 +70,7 @@ export class NotasComponent {
 
 
   ngOnInit() {
+    this.mensajeBienvenida = history.state.mensaje ?? "Bienvenido/a admin";
     this.route.paramMap.subscribe(params => {
       const asignaturaId = params.get('asignaturaId');
       console.log('Asignatura ID:', asignaturaId);
@@ -95,7 +104,7 @@ export class NotasComponent {
     };
   }
 
-  
+
   guardarCambiosNotas() {
     if (!this.editarNotasHabilitado) {
       // Itera sobre los resultados para guardar los cambios en los datos finales
@@ -108,8 +117,8 @@ export class NotasComponent {
       }
     }
   }
-  
-  
+
+
 
 
   getAsignaturas() {
@@ -405,6 +414,8 @@ export class NotasComponent {
     // Verifica si la nota está marcada como asignada en el estado
     return this.estadoAsignacion[id] || false;
   }
-  
+
 
 }
+
+

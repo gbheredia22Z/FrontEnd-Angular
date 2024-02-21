@@ -26,10 +26,18 @@ export class PerCalificacionesComponent {
   data: any = []; //aqui se alamcena
   dtTrigger: Subject<any> = new Subject<any>();
 
-  regresarPagina(): void {
-    this.location.back();
+  mensajeBienvenida: string;
+
+  logout(): void {
+    localStorage.removeItem('token');
+    this.router.navigate(['/login']);
   }
-  
+
+  regresarPagina(): void {
+    //this.location.back();
+    this.router.navigate(['/admin']);
+  }
+
   constructor(public perService: PerCalificacionesService,
     private fb: FormBuilder, private srvImpresion: ImpresionService, private router: Router, private route: ActivatedRoute,
     private location: Location) {
@@ -39,7 +47,7 @@ export class PerCalificacionesComponent {
       estado: ['', Validators.required],
     });
   }
- 
+
 
   getPeriodoCalificaciones() {
     this.perService.getPeriodoCalificaciones()
@@ -60,6 +68,7 @@ export class PerCalificacionesComponent {
   }
 
   ngOnInit(): void {
+    this.mensajeBienvenida = history.state.mensaje ?? "Bienvenido/a admin";
     this.dtOptions = {
       language: {
         url: "/assets/Spanish.json"

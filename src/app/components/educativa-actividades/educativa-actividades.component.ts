@@ -42,6 +42,7 @@ export class EducativaActividadesComponent implements OnInit, OnDestroy {
   actividades: any[] = [];
   selectedActividades: EducativaActividades;
 
+  mensajeBienvenida: string;
 
   constructor(public educativaService: EducativaActividadesService, private fb: FormBuilder,
     private srvImpresion: ImpresionService, private router: Router, private route: ActivatedRoute,
@@ -57,10 +58,17 @@ export class EducativaActividadesComponent implements OnInit, OnDestroy {
       nombreGrado: [''],
     });
   }
-  
-  regresarPagina(): void {
-    this.location.back();
+
+  logout(): void {
+    localStorage.removeItem('token');
+    this.router.navigate(['/login']);
   }
+
+  regresarPagina(): void {
+    //this.location.back();
+    this.router.navigate(['/admin']);
+  }
+
   minFechaActual(): string {
     const today = new Date();
     const year = today.getFullYear();
@@ -74,6 +82,7 @@ export class EducativaActividadesComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.mensajeBienvenida = history.state.mensaje ?? "Bienvenido/a admin";
     this.getGrados();
     this.dtOptions = {
       language: {

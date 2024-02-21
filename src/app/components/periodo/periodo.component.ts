@@ -25,11 +25,19 @@ export class PeriodoComponent implements OnInit, OnDestroy {
   dtOptions:DataTables.Settings={};
   dtTrigger:Subject<any> = new Subject<any>();
 
-  regresarPagina(): void {
-    this.location.back();
+  mensajeBienvenida: string;
+
+  logout(): void {
+    localStorage.removeItem('token');
+    this.router.navigate(['/login']);
   }
 
- getPeriodo() {
+  regresarPagina(): void {
+    //this.location.back();
+    this.router.navigate(['/admin']);
+  }
+
+  getPeriodo() {
     this.periodoService.getPeriodo().subscribe((res) => {
       this.periodoService.periodos = res as Periodo[];
       console.log(res);
@@ -45,9 +53,9 @@ export class PeriodoComponent implements OnInit, OnDestroy {
       });
   }
 
-  constructor(public periodoService: PeriodoService, private fb: FormBuilder, 
+  constructor(public periodoService: PeriodoService, private fb: FormBuilder,
     private srvImpresion:ImpresionService,private router: Router, private route: ActivatedRoute,
-    private location: Location) 
+    private location: Location)
   {
     this.myForm = this.fb.group({
       id: new FormControl('', Validators.required),
@@ -57,6 +65,7 @@ export class PeriodoComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.mensajeBienvenida = history.state.mensaje ?? "Bienvenido/a admin";
     //this.getPeriodo();
     this.dtOptions = {
       language: {
@@ -90,17 +99,17 @@ export class PeriodoComponent implements OnInit, OnDestroy {
   isGradoAlreadyExists(anioLectivo: string): boolean {
     return this.periodoService.periodos.some(grado => grado.anioLectivo === anioLectivo);
   }
-  
+
   createPeriodo(form: NgForm): void {
     const anioLectivo = form.value.anioLectivo;
     console.log('Año Lectivo:', anioLectivo);
-  
+
     // Verifica si el año lectivo ya existe en la lista de períodos
     console.log('Períodos en this.periodoService.periodos:', this.periodoService.periodos);
     const periodoExistente = this.periodoService.periodos.find(periodo => periodo.anioLectivo === anioLectivo);
     console.log('Período Existente:', periodoExistente);
-    
-    
+
+
     if (periodoExistente) {
       // Muestra un mensaje de error indicando que el período ya existe
       Swal.fire({
@@ -151,7 +160,7 @@ export class PeriodoComponent implements OnInit, OnDestroy {
       }
     }
   }
-  
+
 
   closeAddPeriodoModal(): void {
     const modal = document.getElementById('addPeriodoModal');
@@ -161,7 +170,7 @@ export class PeriodoComponent implements OnInit, OnDestroy {
     }
   }
 
-  
+
   editPeriodo(periodo: Periodo) {
     // Clona el estudiante para evitar cambios directos
     this.periodoService.selectedPeriodo = { ...periodo };
@@ -176,10 +185,10 @@ export class PeriodoComponent implements OnInit, OnDestroy {
 
   updatePeriodo(form: NgForm) {
     const anioLectivo = form.value.anioLectivo;
-  
+
     // Verifica si el año lectivo ya existe en la lista de períodos, excluyendo el período que se está editando
     const periodoExistente = this.periodoService.periodos.find(periodo => periodo.anioLectivo === anioLectivo && periodo.id !== this.periodoService.selectedPeriodo.id);
-  
+
     if (periodoExistente) {
       // Muestra un mensaje de error indicando que el período ya existe
       Swal.fire({
@@ -201,13 +210,13 @@ export class PeriodoComponent implements OnInit, OnDestroy {
         });
         this.getPeriodo();
         this.irPagina();
-  
+
         // Cierra el modal de edición utilizando $
         $('#editModal').modal('hide');
       });
     }
   }
-  
+
 
   closeEditPeriodoModal(): void {
     const modal = document.getElementById('editModal');

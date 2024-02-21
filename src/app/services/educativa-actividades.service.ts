@@ -16,16 +16,16 @@ export class EducativaActividadesService {
 
 
   actividades!: EducativaActividades[];
-  URL_API_ACT = "http://127.0.0.1:3000/api/actividades/"
-  URL_API = "http://127.0.0.1:3000/api"
-  URL_API_AC = "http://127.0.0.1:3000/api"
-  URL_ASIGNATURAS = "http://127.0.0.1:3000/api/asignatura/"
-  URL_PERACADEMIC = "http://127.0.0.1:3000/api/periodoCalificaciones/"
-  URL_TACTIVIDAD = "http://127.0.0.1:3000/api/tipoActividad/"
-  URL_NOTAS = "http://127.0.0.1:3000/api"
-  URL_GRADO = "http://127.0.0.1:3000/api/grado";
-  URL_API2 = "http://127.0.0.1:3000/api"
-  URL_API3 = "http://127.0.0.1:3000/api"
+  URL_API_ACT = "http://54.196.78.164:9000/api/actividades/"
+  URL_API = "http://54.196.78.164:9000/api"
+  URL_API_AC = "http://54.196.78.164:9000/api"
+  URL_ASIGNATURAS = "http://54.196.78.164:9000/api/asignatura/"
+  URL_PERACADEMIC = "http://54.196.78.164:9000/api/periodoCalificaciones/"
+  URL_TACTIVIDAD = "http://54.196.78.164:9000/api/tipoActividad/"
+  URL_NOTAS = "http://54.196.78.164:9000/api"
+  URL_GRADO = "http://54.196.78.164:9000/api/grado";
+  URL_API2 = "http://54.196.78.164:9000/api"
+  URL_API3 = "http://54.196.78.164:9000/api"
 
   constructor(private http: HttpClient) {
     this.selectedActividades = new EducativaActividades();
@@ -62,11 +62,11 @@ export class EducativaActividadesService {
       asignaturaId: educativas.asignaturaId, // Asegúrate de incluir el ID de la asignatura aquí
       estado: educativas.estado
     };
-  
+
     // Realiza la solicitud POST con el cuerpo configurado
     return this.http.post(this.URL_API_ACT, body);
   }
-  
+
 
   //actualizar
   putEducativaActividades(educativas: EducativaActividades): Observable<any> {

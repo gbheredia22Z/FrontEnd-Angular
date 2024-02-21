@@ -15,10 +15,10 @@ export class AsignaturaService {
   asignaturas: Asignatura[] = [];
   selectedGrado: any;
   grados!: Grado[];
-  URL_API = "http://127.0.0.1:3000/api/asignatura/";
-  URL_API2 = "http://127.0.0.1:3000/api/asignaturaWithGrado";
-  URL_GRADOS_BY_ID="http://localhost:3000/api/grado/traer/";
-  URL_API3 = "http://127.0.0.1:3000/api/asignatura/";
+  URL_API = "http://54.196.78.164:9000/api/asignatura/";
+  URL_API2 = "http://54.196.78.164:9000/api/asignaturaWithGrado";
+  URL_GRADOS_BY_ID="http://54.196.78.164:9000/api/grado/traer/";
+  URL_API3 = "http://54.196.78.164:9000/api/asignatura/";
 
   constructor(private http: HttpClient) {
     this.selectedAsignatura = new Asignatura();
@@ -64,7 +64,7 @@ export class AsignaturaService {
 
 
   getGrados() {
-    return this.http.get<any[]>('http://127.0.0.1:3000/api/grado'); 
+    return this.http.get<any[]>('http://54.196.78.164:9000/api/grado'); // Ajusta la ruta según tu API
   }
 
   getAsignaturaById(id: number): Observable<Asignatura> {
@@ -80,5 +80,6 @@ export class AsignaturaService {
   getGradoById(idGrado: string) {
     return this.http.get<any>(`${this.URL_GRADOS_BY_ID}${idGrado}`);
   }
-
+  
+  
 }

@@ -8,6 +8,7 @@ import { Asigngrados } from './asigngrados';
 import { Location } from '@angular/common';
 import { Subject } from 'rxjs';
 import { ImpresionService } from '../../services/impresion.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-asignatura',
@@ -32,11 +33,18 @@ export class AsignaturaComponent implements OnInit, OnDestroy {
   selectedGrados: any = null;
   grado:any;
 
+  mensajeBienvenida: string;
+
+  logout(): void {
+    localStorage.removeItem('token');
+    this.router.navigate(['/login']);
+  }
 
   regresarPagina(): void {
-    this.location.back();
+    //this.location.back();
+    this.router.navigate(['/admin']);
   }
-  
+
   getAsignatura2() {
     this.asignaturaService.getasignaturaWithGrado().subscribe((datos) => {
       this.asignatura = datos;
@@ -71,9 +79,9 @@ export class AsignaturaComponent implements OnInit, OnDestroy {
       this.dtTrigger.next(this.dtOptions);
     })
   }
-  
 
-  constructor(public asignaturaService: AsignaturaService, private fb: FormBuilder, private srvImpresion: ImpresionService, private location: Location) {
+
+  constructor(private router: Router, public asignaturaService: AsignaturaService, private fb: FormBuilder, private srvImpresion: ImpresionService, private location: Location) {
     this.myForm = this.fb.group({
       id: new FormControl('', Validators.required),
       anioLectivo: ['', Validators.required],
@@ -84,13 +92,14 @@ export class AsignaturaComponent implements OnInit, OnDestroy {
 
 
   ngOnInit(): void {
+    this.mensajeBienvenida = history.state.mensaje ?? "Bienvenido/a admin";
     this.dtOptions = {
       language: {
         url: "/assets/Spanish.json"
       },
     };
     this.getAsignaturas();
- 
+
     this.getGrado();
   }
 
@@ -98,41 +107,41 @@ export class AsignaturaComponent implements OnInit, OnDestroy {
 
   getGrados2() {
     console.log("Asignaturas:", this.asignaturaService.asignaturas);
-  
+
     this.asignaturaService.getGrados().subscribe((res) => {
       console.log("Grados antes del filtro:", res);
-  
+
       this.grados = res.filter(grado => !this.isGradoAssignedToAsignatura(grado.id));
-  
+
       console.log("Grados después del filtro:", this.grados);
     });
   }
 
   getGrados3() {
     console.log("Asignaturas:", this.asignaturaService.asignaturas);
-  
+
     this.asignaturaService.getGrados().subscribe((res) => {
       console.log("Grados antes del filtro:", res);
-  
+
       this.grado = res.filter(grado => !this.isGradoAssignedToAsignatura(grado.id));
-  
+
       console.log("Grados después del filtro:", this.grado);
     });
   }
-  
+
   getGrado() {
     this.asignaturaService.getGrados().
       subscribe((datos) => {
         this.datos = datos;
         console.log("grados totales",datos);
-        
+
       });
   }
-  
+
   isGradoAssignedToAsignatura(gradoId: string): boolean {
     return this.asignaturaService.asignaturas?.some(asignatura => asignatura.idGrado === gradoId);
   }
-  
+
   isGradoAsignadoToAsignatura(idGrado: string): boolean {
     return this.asignaturaService.asignaturas?.
       some(asignatura => asignatura.idGrado === idGrado) || false;
@@ -147,7 +156,7 @@ export class AsignaturaComponent implements OnInit, OnDestroy {
       X: 'Sexto Grado',
       M: 'Séptimo Grado',
     };
-  
+
     return nombresGrados[abreviatura] || abreviatura;
   }
 
@@ -155,10 +164,10 @@ export class AsignaturaComponent implements OnInit, OnDestroy {
     const grado = this.grados.find(grado => grado.id === idGrado);
     return grado ? grado.nombreGrado : 'Grado Desconocido';
   }
-  
 
 
-  
+
+
 
   getNombreGradoAsignatura(abreviatura: string): string {
     const nombresGrados: { [key: string]: string } = {
@@ -170,7 +179,7 @@ export class AsignaturaComponent implements OnInit, OnDestroy {
       'X': 'Sexto Grado',
       'M': 'Séptimo Grado',
     };
-  
+
     return nombresGrados[abreviatura] || abreviatura;
   }
 
@@ -185,12 +194,12 @@ export class AsignaturaComponent implements OnInit, OnDestroy {
       7: 'Séptimo Grado',
 
     };
-  
+
     return nombresGrados[abreviatura] || abreviatura;
   }
-  
-  
-  
+
+
+
   getNombreCompletoGrado(abreviatura: string): string {
     const nombresGrados: { [key: string]: string } = {
       P: 'Primer Grado',
@@ -229,7 +238,7 @@ export class AsignaturaComponent implements OnInit, OnDestroy {
 
     return nombresGrados[abreviatura] || abreviatura;
   }
-  
+
   openGradosListaModal() {
     console.log("Total de grados:", this.grados.length);
     // Filtra los docentes que no están asignados a ningún grado
@@ -357,12 +366,12 @@ export class AsignaturaComponent implements OnInit, OnDestroy {
 
   updateAsignatura(form: NgForm): void {
     console.log('Intentando actualizar asignatura con el formulario:', form.value);
-  
+
     // Verifica si hay un ID válido para la asignatura
     const asignaturaId = form.value.id;
     if (asignaturaId) {
       console.log('ID de la asignatura válido:', asignaturaId);
-  
+
       // Continúa con el resto del código...
       this.asignaturaService.putAsignatura(form.value).subscribe((res) => {
         Swal.fire({
@@ -376,13 +385,13 @@ export class AsignaturaComponent implements OnInit, OnDestroy {
         this.closeAddAsignaturaModal();
         this.irPagina();
       });
-  
+
     } else {
       // Manejo de error si no hay un ID válido para la asignatura
       console.error('Error: ID de la asignatura no válido para la actualización.');
     }
   }
-  
+
   irPagina(){
     window.location.reload();
   }
@@ -440,7 +449,7 @@ export class AsignaturaComponent implements OnInit, OnDestroy {
   editAsignatura(asignatura: Asignatura) {
     // Clonar asignatura para evitar cambios directos
     this.asignaturaService.selectedAsignatura = { ...asignatura };
-  
+
     // Obtener el nombre del grado asociado a la asignatura
     this.asignaturaService.getGradoById(asignatura.idGrado).subscribe((grado: any) => {
       if (grado) {
@@ -449,10 +458,10 @@ export class AsignaturaComponent implements OnInit, OnDestroy {
           nombreGrado: grado.nombreGrado
         });
       }
-  
+
       // Establecer this.selectedGrados con los detalles del grado
       this.selectedGrados = grado || {};
-  
+
       // Abre el modal de edición
       const modal = document.getElementById('editModal');
       if (modal) {
@@ -461,7 +470,7 @@ export class AsignaturaComponent implements OnInit, OnDestroy {
       }
     });
   }
-  
+
   closeEditAsignaturaModal(): void {
     const modal = document.getElementById('editModal');
     if (modal) {

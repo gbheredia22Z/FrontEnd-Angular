@@ -11,7 +11,7 @@ export class MatriculaService {
   [x: string]: any;
   selectedMatricula: Matricula;
   matriculas!: Matricula[];
-  URL_API = "http://127.0.0.1:3000/api/matricula/";
+  URL_API = "http://54.196.78.164:9000/api/matricula/";
   selectedEstudiante:any;
 
 
@@ -41,19 +41,18 @@ export class MatriculaService {
     );
   }
   
-
    //persona
    getEstudiantes() {
-    return this.http.get<any[]>('http://127.0.0.1:3000/api/estudiante'); // Ajusta la ruta según tu API
+    return this.http.get<any[]>('http://54.196.78.164:9000/api/estudiante'); // Ajusta la ruta según tu API
   }
    //periodo
    getPeriodo() {
-    return this.http.get<any[]>('http://127.0.0.1:3000/api/periodo'); // Ajusta la ruta según tu API
+    return this.http.get<any[]>('http://54.196.78.164:9000/api/periodo'); // Ajusta la ruta según tu API
   }
    
    //grado
    getGrados() {
-    return this.http.get<any[]>('http://127.0.0.1:3000/api/grado'); // Ajusta la ruta según tu API
+    return this.http.get<any[]>('http://54.196.78.164:9000/api/grado'); // Ajusta la ruta según tu API
   }
 
    

@@ -18,15 +18,15 @@ export class PersonaService {
   administrador!: Persona[];
 
 
-  URL_API = "http://127.0.0.1:3000/api/estudiante/";
-  URL_API2 = "http://127.0.0.1:3000/api/docente/";
-  apiUrl = "http://127.0.0.1:3000/api";
-  apiUrl2 = "http://127.0.0.1:3000/api";
-  URL_API_A = "http://127.0.0.1:3000/api";
-  URL_API_D = "http://127.0.0.1:3000/api";
-  URL_API_AC = "http://127.0.0.1:3000/api";
-  URL_Docente = "http://127.0.0.1:3000/api";
-  URL_Admin = "http://127.0.0.1:3000/api/admin/";
+  URL_API = "http://54.196.78.164:9000/api/estudiante/";
+  URL_API2 = "http://54.196.78.164:9000/api/docente/";
+  apiUrl = "http://54.196.78.164:9000/api";
+  apiUrl2 = "http://54.196.78.164:9000/api";
+  URL_API_A = "http://54.196.78.164:9000/api";
+  URL_API_D = "http://54.196.78.164:9000/api";
+  URL_API_AC = "http://54.196.78.164:9000/api";
+  URL_Docente = "http://54.196.78.164:9000/api";
+  URL_Admin = "http://54.196.78.164:9000/api/admin/";
 
   constructor(private http: HttpClient) {
     this.selectedEstudiante = new Persona();

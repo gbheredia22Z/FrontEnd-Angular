@@ -28,6 +28,13 @@ export class GradoComponent implements OnInit, OnDestroy {
   searchResults: any[] = [];
   selectedDocentes: any = null;
 
+  mensajeBienvenida: string;
+
+  logout(): void {
+    localStorage.removeItem('token');
+    this.router.navigate(['/login']);
+  }
+
   getGrado() {
     this.gradoService.getGrado().subscribe((res) => {
       this.gradoService.grados = res as Grado[];
@@ -36,9 +43,10 @@ export class GradoComponent implements OnInit, OnDestroy {
   }
 
   regresarPagina(): void {
-    this.location.back();
+    //this.location.back();
+    this.router.navigate(['/admin']);
   }
-  
+
   getGrado2() {
     this.gradoService.getGrado().
       subscribe((data) => {
@@ -59,6 +67,7 @@ export class GradoComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.mensajeBienvenida = history.state.mensaje ?? "Bienvenido/a admin";
     this.dtOptions = {
       language: {
         url: "/assets/Spanish.json"
@@ -69,7 +78,7 @@ export class GradoComponent implements OnInit, OnDestroy {
     this.getGrado2();
   }
 
- 
+
   getDocentes() {
     this.gradoService.getDocentes().subscribe((res) => {
       // Filtra los docentes que no están asignados a ningún grado

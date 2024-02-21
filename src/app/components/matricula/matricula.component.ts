@@ -32,6 +32,9 @@ export class MatriculaComponent implements OnInit, OnDestroy {
   periodos: any[] = [];
   estudiantes: any[] = [];
   matriculaLista: any;
+
+  mensajeBienvenida: string;
+
   constructor(public matriculaServices: MatriculaService, private fb: FormBuilder,
     private srvImpresion: ImpresionService, private router: Router, private route: ActivatedRoute,
     private location: Location) {
@@ -42,10 +45,16 @@ export class MatriculaComponent implements OnInit, OnDestroy {
     });
   }
 
-  regresarPagina(): void {
-    this.location.back();
+  logout(): void {
+    localStorage.removeItem('token');
+    this.router.navigate(['/login']);
   }
-  
+
+  regresarPagina(): void {
+    //this.location.back();
+    this.router.navigate(['/admin']);
+  }
+
   searchEstudiante() {
     this.selectedEstudiante = this.estudiantes.find(estudiante => estudiante.cedula === this.searchQuery);
   }
@@ -168,6 +177,7 @@ export class MatriculaComponent implements OnInit, OnDestroy {
 
 
   ngOnInit(): void {
+    this.mensajeBienvenida = history.state.mensaje ?? "Bienvenido/a admin";
     this.dtOptions = {
       language: {
         url: "/assets/Spanish.json"
@@ -384,7 +394,7 @@ export class MatriculaComponent implements OnInit, OnDestroy {
     }
   }
 
-  //update 
+  //update
   updateMatricula(form: NgForm) {
     this.matriculaServices.putMatricula(this.matriculaServices.selectedMatricula).subscribe((res) => {
       Swal.fire({

@@ -10,10 +10,11 @@ export class AdminComponent {
   constructor(private router: Router, private route: ActivatedRoute
   ) { }
   ngOnInit(): void {
-    this.mensajeBienvenida = history.state.mensaje;
+    this.mensajeBienvenida = history.state.mensaje ?? "Bienvenido/a admin";
   }
 
   logout(): void {
+    localStorage.removeItem('token');
     this.router.navigate(['/login']);
   }
 }
