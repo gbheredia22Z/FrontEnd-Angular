@@ -178,20 +178,35 @@ nav ul li a:hover {
 
 /*BOTONES*/
 .btn-primary {
-    background-color: #833df3;
-    border: 1px solid #833df3;
+    background-color: #9358f2;
+    border: 1px solid #9358f2;
     border-radius: 25px;
     color: #ffffff;
+    height: 50px;
+    width: 170px;
 }
 
 .btn-primary:hover {
     background-color: #f2f2f2;
     border-radius: 25px;
-    border: 1px solid #7917CA;
-    color: #7917CA;
-
+    border: 1px solid #9358f2;
+    color: #9358f2;
+    margin: 30px;
 }
 
+.btn-dark {
+    background-color: #9358f2;
+    border: 1px solid #9358f2;
+    border-radius: 25px;
+    color: #ffffff;
+}
+
+.btn-dark:hover {
+    background-color: #f2f2f2;
+    border-radius: 25px;
+    border: 1px solid #9358f2;
+    color: #9358f2;
+}
 
 .btn-secondary {
     background-color: #8f8f8f;
