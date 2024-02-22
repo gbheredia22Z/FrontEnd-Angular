@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { LoginService } from '../../services/login.service';
 import { Router } from '@angular/router';
 import { Login } from '../../models/login';
+import Swal from 'sweetalert2';
 
 
 @Component({
@@ -49,6 +50,8 @@ export class LoginComponent {
       },
       (error) => {
         console.error(error);
+        Swal.fire('¡OOPS!', 'Error al iniciar sesión. Por favor, verifique sus credenciales', 'error');
+
       }
     );
   }

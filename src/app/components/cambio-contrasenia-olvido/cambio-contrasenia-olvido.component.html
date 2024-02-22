@@ -4,16 +4,16 @@
             <img src="assets/brain_login.png" alt="">
         </div>
         <form (ngSubmit)="onSubmit()" [formGroup]="cambioContrasenaForm">
-            <h2 style="text-align: center;">Cambio de contraseña</h2>
+            <h2 style="text-align: center;">Recuperación de contraseña</h2>
             <br>
             <div class="mb-3">
                 <label for="cedula" class="form-label">Cédula</label>
                 <input type="text" class="form-control" id="cedula" [(ngModel)]="cedula" name="cedula" maxlength="10"
-                    formControlName="nuevaContrasena" required>
+                    formControlName="cedula" required>
             </div>
             <div class="mb-3">
                 <label for="nuevaContrasena" class="form-label">Nueva Contraseña</label>
-                <input type="password" class="form-control" id="nuevaContrasena" [(ngModel)]="nuevaContrasena"
+                <input type="password" class="form-control" [(ngModel)]="nuevaContrasena" id="nuevaContrasena"
                     name="nuevaContrasena" formControlName="nuevaContrasena" required>
             </div>
             <div *ngIf="cambioContrasenaForm.get('nuevaContrasena')?.hasError('required') && cambioContrasenaForm.get('nuevaContrasena')?.touched"
@@ -30,9 +30,7 @@
                 class="error-message">
                 La contraseña debe contener al menos una mayúscula y un simbolo.
             </div>
-            <button type="submit" class="btn btn-primary">Recuperar</button>
-            <a style="text-align: center;" href="/login"> Regresar</a>
-            
+            <button type="submit" class="btn btn-primary" [disabled]="!cambioContrasenaForm.valid">Recuperar</button>
         </form>
 
     </div>
