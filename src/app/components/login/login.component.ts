@@ -26,6 +26,7 @@ export class LoginComponent {
       (response) => {
         console.log(response);
         console.log(response.token);
+        Swal.fire('Inicio de sesión exitoso', '', 'success');
         if (response.primerInicioSesion) {
           // Es el primer inicio de sesión, redirige a cambio de contraseña
           this.cedula2 = this.selectedLogin.cedula;
